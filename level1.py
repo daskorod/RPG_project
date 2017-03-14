@@ -20,7 +20,7 @@ class Level ():
 		self.control = control
 		self.hero = hero
 		self.camera = camera
-
+		
 		self.battle = battle
 		self.zomb = classes.Monster (0,0, self.battle, text.zombitext, self.control, 10,0,10,1)
 		self.block_group.add (self.zomb)

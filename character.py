@@ -5,6 +5,9 @@ import screens
 import fonts
 #from functions import self.battle.render_inf
 import random
+import classes
+from screens import *
+from constants import *
 
 svin_anim_list = [('images/svin_motion.png',0.5),('images/svin_motion2.png',0.3),('images/svin_motion3.png',0.2)]
 svin_anim = pyganim.PygAnimation(svin_anim_list)
@@ -42,6 +45,12 @@ class Hero(pygame.sprite.Sprite):
 		self.attack_roll = False
 		self.wait_for_next_turn = False
 		self.monster_turn = False
+		self.mx = 50
+		self.my = 50		
+		self.marker = classes.Marker (self.mx,self.my)
+		self.go_left = False
+		self.dice_fun = False
+		self.dice_value = 0
 		
 
 	def conversation (self, tree):
@@ -199,16 +208,47 @@ class Hero(pygame.sprite.Sprite):
 	# BATTLE OPTIONS
 
 
+	def dice_rolling (self):
+
+		information_screen.blit (roll_screen, (0,0))
+		roll_screen.fill ((black))
+		roll_screen.blit (self.marker.image, (self.mx, self.my))
+
+		if self.go_left == False:
+			self.mx = self.mx +10
+
+		if self.go_left == True:
+			self.mx = self.mx -10
+
+		if self.mx > 430:
+			self.go_left = True
+
+		if self.mx < 80:
+			self.go_left = False
+
+		if self.control.k_e == True:
+			self.control.k_e = False
+			self.dice_fun = False
+			self.dice_value = int((self.mx - 80) / 20)
+			self.attack_roll = True
+
+
+
 		
 	def battle_action_main (self):
+
+
 		if self.turn_main == True:
-			self.battle.change_inf (1, "Что будете делать? 1 - атаковать; 2 - спец.способность; 3 - убегать.")
+			
+			self.battle.change_inf (1, "Что будете делать?")
+			self.battle.change_inf (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
 	
 			if self.control.k_1 == True:
 				self.turn_main = False
 				self.control.k_1 = False
 				self.assault = True
-				self.attack_roll = True
+				self.dice_fun = True
+				self.battle.clear_inf ()
 	
 			if self.control.k_2 == True:
 				self.turn_main = False
@@ -229,6 +269,7 @@ class Hero(pygame.sprite.Sprite):
 		if self.special == True:
 			self.special_fun ()
 
+
 	def chang (self):
 		pass
 	def special_fun (self):
@@ -237,10 +278,13 @@ class Hero(pygame.sprite.Sprite):
 		pass
 
 	def assault_fun (self, monster):
+		if self.dice_fun == True:
+			self.dice_rolling ()
+
 		if self.attack_roll == True:
 			self.battle.clear_inf ()
 
-			a = random.randint (1,6)
+			a = self.dice_value
 			b = random.randint (1,6)
 			c = self.at + a 
 			d = monster.ac + b

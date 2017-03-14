@@ -57,12 +57,29 @@ class Battle ():
 		self.b5 = ''
 		self.b6 = ''
 		self.b7 = ''
+		self.m1 = ''
+		self.m2 = 'Атака: '
+		self.m3 = 'Защита: '
+		self.m4 = 'Жизни: '
+		self.m5 = 'Урон: '
+
 
 	def main_loop (self, hero, monster):
 
 		hero.battle_action_main ()
 		monster.battle_action (hero)
 		self.render_battle_info ()
+		instrumental_screen.blit (monster_screen, (678,8))
+
+		monster_screen.fill ((sea_color))
+		self.render_monster_inf (monster)
+
+	def render_monster_inf (self, monster):
+		monster_screen.blit(fonts.font3.render (str(self.m1 + str(monster.name)), True, (250,250,250)),(2,0))
+		monster_screen.blit(fonts.font3.render (str(self.m2 + str(monster.at)), True, (250,250,250)),(2,15))
+		monster_screen.blit(fonts.font3.render (str(self.m3+ str(monster.ac)), True, (250,250,250)),(2,30))
+		monster_screen.blit(fonts.font3.render (str(self.m4+ str(monster.hp)), True, (250,250,250)),(2,45))
+		monster_screen.blit(fonts.font3.render (str(self.m5+ str(monster.damage)), True, (250,250,250)),(2,60))
 
 	def render_battle_info (self):
 		information_screen.blit(fonts.font2.render (str(self.b1), True, (250,250,250)),(2,0))
