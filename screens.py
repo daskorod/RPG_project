@@ -25,6 +25,6 @@ def main_interface ():
 	start_screen.blit (instrumental_screen, (0,430))
 	instrumental_screen.fill ((red))
 	instrumental_screen.blit (hero_screen, (4,4))
-	#hero_screen.fill ((cool_orange))
+	hero_screen.fill ((black))
 	instrumental_screen.blit (information_screen, (74,4))
 	information_screen.fill ((black))

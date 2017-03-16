@@ -13,6 +13,7 @@ svin_anim_list = [('images/svin_motion.png',0.5),('images/svin_motion2.png',0.3)
 svin_anim = pyganim.PygAnimation(svin_anim_list)
 svin_anim.play ()
 
+
 class Hero(pygame.sprite.Sprite):
 
 	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem):
@@ -22,6 +23,7 @@ class Hero(pygame.sprite.Sprite):
 		#self.image.set_colorkey ((255,255,255))
 		self.control = control
 		self.battle = battle
+		self.name = 'Рихтер'
 		self.image = pygame.Surface ((45,45))
 		#self.image = svin_anim.getImagesFromSpriteSheet()
 		self.image.fill ((100,200,230))
@@ -51,32 +53,54 @@ class Hero(pygame.sprite.Sprite):
 		self.go_left = False
 		self.dice_fun = False
 		self.dice_value = 0
+		self.status = "alive"
+
+
 		
 
-	def conversation (self, tree):
+	def conversation (self, tree, interlocutor):
 
-		text_massive, self.add_information = tree[self.n]
 
-		self.view.render_text (text_massive)
-		#except:
-		#	self.n = 0
-		#	self.s = 1
 
+		#try:
+		#if self.n in tree:
+		text_massive, self.etwas.add_information, text_massive_answer = tree[interlocutor.n]
+		self.view.render_text (text_massive, text_massive_answer)
+#	except:
+#		self.n = 0
+#		self.s = 1
+		if self.etwas.add_information == 'war':
+			self.etwas.agression = True
 		if self.control.k_1 == True:
 			self.control.k_1 = False
-			self.s = self.s*10
-			self.n = (self.n+(1*self.s))
+			self.etwas.s = self.etwas.s*10
+			self.etwas.n = (self.etwas.n+(1*self.etwas.s))
 			self.view.a = 0
+			self.view.an = 0
+			if self.etwas.n not in tree:
+	
+				self.etwas.n = (self.etwas.n-(1*self.etwas.s))
+				self.etwas.s = int(self.etwas.s/10)		
 		if self.control.k_2 == True:
 			self.control.k_2 = False
-			self.s = self.s*10
-			self.n = (self.n+(2*self.s))
+			self.etwas.s = self.etwas.s*10
+			self.etwas.n = (self.etwas.n+(2*self.etwas.s))
 			self.view.a = 0
+			self.view.an = 0
+			if self.etwas.n not in tree:
+				#self.s = self.s/10
+				self.etwas.n = (self.etwas.n-(2*self.etwas.s))
+				self.etwas.s = int(self.etwas.s/10)				
 		if self.control.k_3 == True:
 			self.control.k_3 = False
-			self.s = self.s*10
-			self.n = (self.n+(3*self.s))
+			self.etwas.s = self.etwas.s*10
+			self.etwas.n = (self.etwas.n+(3*self.etwas.s))
 			self.view.a = 0
+			self.view.an = 0
+			if self.etwas.n not in tree:
+				#self.s = self.s/10
+				self.etwas.n = (self.etwas.n-(3*self.etwas.s))
+				self.etwas.s = int(self.etwas.s/10)
 
 	def collide (self, array):
 
@@ -84,11 +108,26 @@ class Hero(pygame.sprite.Sprite):
 			if pygame.sprite.collide_rect (self, entity):
 				return entity
 
+	def check_for_death (self):
+		if self.hp <= 0:
+			self.death ()
+
+	def render_information (self):
+		#hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
+		#hero_screen.blit(fonts.font3.render ('аt: ' + str(self.at), True, (250,250,250)),(2,15))
+		#hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
+		hero_screen.blit(fonts.font3.render ('ac:' + str(self.ac), True, (250,250,250)),(2,30))
+		hero_screen.blit(fonts.font3.render ('hp: ' + str(self.hp), True, (250,250,250)),(2,45))
+		hero_screen.blit(fonts.font3.render ('dam: ' + str(self.damage), True, (250,250,250)),(2,60))
 
 	def update (self, array):
-		if self.collide_control == True and self.add_information != "war":
-			self.conversation(self.etwas.tree)
 
+
+		if self.collide_control == True and self.etwas.add_information != "war":
+			self.conversation(self.etwas.tree, self.etwas)
+	
+			hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
+			hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
 
 		#RIGHT
 		if self.control.right == True:
@@ -206,6 +245,16 @@ class Hero(pygame.sprite.Sprite):
 		#svin_anim.blit (surface, (self.rect.x,self.rect.y))
 
 	# BATTLE OPTIONS
+
+	def death (self):
+		self.status = 'dead'
+
+	def end_text (self):
+		pass
+
+
+		#self.view.render_text ("Вы умерли, вы лох!")
+
 
 
 	def dice_rolling (self):

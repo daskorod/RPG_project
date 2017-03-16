@@ -15,20 +15,43 @@ class Compose_dialog_tree ():
 		self.n = 0
 		self.a = 0
 		self.control = control
+		self.strokes_number = 0
+		self.super_a_max = 0
+		self.an = 0
+		self.start = True
 
-	def render_text (self,text):
 
-		self.a_max = len(text)//350
+	def render_text (self,text,answer):
+
+		self.a_max = (len(text)//350)
+		num_end_symb = len(text)%50
+		answer = " "*len(text)+(" "*(100-num_end_symb))+answer 
+		self.super_a_max = len (answer)// 350
 		self.n = self.a*350
 
 		if self.control.k_n == True:
 			self.control.k_n = False
-			self.s1 = text[self.n+0:self.n+50]
-			if self.a < self.a_max:
+			if self.a < self.super_a_max:
 				self.a = self.a+1
 			else:
 				self.a = 0
+			 
+		an1 = answer[self.n+0:self.n+50]
+		an2 = answer[self.n+50:self.n+100]
+		an3 = answer[self.n+100:self.n+150]
+		an4 = answer[self.n+150:self.n+200]
+		an5 = answer[self.n+200:self.n+250]
+		an6 = answer[self.n+250:self.n+300]
+		an7 = answer[self.n+300:self.n+350]	
 
+		information_screen.blit(fonts.font2.render (str(an1), True, (250,250,250)),(2,0))
+		information_screen.blit(fonts.font2.render (str(an2), True, (250,250,250)),(2,22))
+		information_screen.blit(fonts.font2.render (str(an3), True, (250,250,250)),(2,44))
+		information_screen.blit(fonts.font2.render (str(an4), True, (250,250,250)),(2,66))
+		information_screen.blit(fonts.font2.render (str(an5), True, (250,250,250)),(2,88))
+		information_screen.blit(fonts.font2.render (str(an6), True, (250,250,250)),(2,110))
+		information_screen.blit(fonts.font2.render (str(an7), True, (250,250,250)),(2,132))
+	
 		s1 = text[self.n+0:self.n+50]
 		s2 = text[self.n+50:self.n+100]
 		s3 = text[self.n+100:self.n+150]
@@ -36,7 +59,7 @@ class Compose_dialog_tree ():
 		s5 = text[self.n+200:self.n+250]
 		s6 = text[self.n+250:self.n+300]
 		s7 = text[self.n+300:self.n+350]
-	
+
 		information_screen.blit(fonts.font2.render (str(s1), True, (250,250,250)),(2,0))
 		information_screen.blit(fonts.font2.render (str(s2), True, (250,250,250)),(2,22))
 		information_screen.blit(fonts.font2.render (str(s3), True, (250,250,250)),(2,44))
@@ -44,6 +67,14 @@ class Compose_dialog_tree ():
 		information_screen.blit(fonts.font2.render (str(s5), True, (250,250,250)),(2,88))
 		information_screen.blit(fonts.font2.render (str(s6), True, (250,250,250)),(2,110))
 		information_screen.blit(fonts.font2.render (str(s7), True, (250,250,250)),(2,132))	
+
+
+		#adventure_screen.blit(fonts.font2.render ((str(self.a) + ' self.a'), True, (250,250,250)),(0,35))
+		#adventure_screen.blit(fonts.font2.render ((str(self.an) + " self.an"), True, (250,250,250)),(0,55))
+		#adventure_screen.blit(fonts.font2.render ((str(self.super_a_max) + " super a"), True, (250,250,250)),(0,75))
+		#adventure_screen.blit(fonts.font2.render ((str(self.a_max) + " self.a_max"), True, (250,250,250)),(0,95))
+
+
 
 
 
@@ -66,13 +97,14 @@ class Battle ():
 
 	def main_loop (self, hero, monster):
 
-		hero.battle_action_main ()
-		monster.battle_action (hero)
-		self.render_battle_info ()
-		instrumental_screen.blit (monster_screen, (678,8))
-
-		monster_screen.fill ((sea_color))
-		self.render_monster_inf (monster)
+		if hero.status != 'dead':
+			hero.battle_action_main ()
+			monster.battle_action (hero)
+			hero.check_for_death ()
+			self.render_battle_info ()
+			instrumental_screen.blit (monster_screen, (678,8))
+			monster_screen.fill ((sea_color))
+			self.render_monster_inf (monster)
 
 	def render_monster_inf (self, monster):
 		monster_screen.blit(fonts.font3.render (str(self.m1 + str(monster.name)), True, (250,250,250)),(2,0))
@@ -116,12 +148,6 @@ class Battle ():
 		self.b7 = ''
 
 
-		
-	
-
-
-
-
 def create_level (level, battle, control):
 	sprite_group = sprite.Group ()
 	platforms = []
@@ -139,7 +165,7 @@ def create_level (level, battle, control):
 				#chests.append (ch)
 				sprite_group.add (ch)
 			if col == "m":
-				mn = classes.Monster (x/45,y/45,battle, text.zombitext, control, 10,0,10,1)
+				mn = classes.Monster (x/45,y/45,battle, text.zombi1, control, 10,0,10,1)
 				sprite_group.add (mn)
 			x += 45
 		x = 0
@@ -160,47 +186,47 @@ def create_level (level, battle, control):
 #	information_screen.blit(fonts.font2.render (str(s6), True, (250,250,250)),(2,110))
 #	information_screen.blit(fonts.font2.render (str(s7), True, (250,250,250)),(2,132))
 
-def talk (a, n):
-	'''7 strokes'''
-	information_screen.blit(fonts.font2.render (str(n), True, (250,250,250)),(2,0+(22*a)))
+#def talk (a, n):
+#	'''7 strokes'''
+#	information_screen.blit(fonts.font2.render (str(n), True, (250,250,250)),(2,0+(22*a)))
 
 
 
-def render_text (text, control, a, s1):
-	a_max = len(text)//350
+#def render_text (text, control, a, s1):
+#	a_max = len(text)//350
+#
+#	n = a*350
+#
+#	if control.k_n == True:
+#		control.k_n = False
+#		s1 = text[n+0:n+50]
+#		if a < a_max+1:
+#			a = a+1
+##		else:
+##			a = 0
+#
+#	#s1 = text[n+0:n+50]
+#	s1 = a
+#	s2 = a_max
+#	#s2 = text[n+50:n+100]
+#	s3 = text[n+100:n+150]
+#	s4 = text[n+150:n+200]
+#	s5 = text[n+200:n+250]
+#	s6 = text[n+250:n+300]
+#	s7 = text[n+300:n+350]
+##	text = s1, s2, s3
+#	information_screen.blit(fonts.font2.render (str(s1), True, (250,250,250)),(2,0))
+#	information_screen.blit(fonts.font2.render (str(s2), True, (250,250,250)),(2,22))
+#	information_screen.blit(fonts.font2.render (str(s3), True, (250,250,250)),(2,44))
+#	information_screen.blit(fonts.font2.render (str(s4), True, (250,250,250)),(2,66))
+#	information_screen.blit(fonts.font2.render (str(s5), True, (250,250,250)),(2,88))
+#	information_screen.blit(fonts.font2.render (str(s6), True, (250,250,250)),(2,110))
+#	information_screen.blit(fonts.font2.render (str(s7), True, (250,250,250)),(2,132))
 
-	n = a*350
 
-	if control.k_n == True:
-		control.k_n = False
-		s1 = text[n+0:n+50]
-		if a < a_max+1:
-			a = a+1
-#		else:
-#			a = 0
-
-	#s1 = text[n+0:n+50]
-	s1 = a
-	s2 = a_max
-	#s2 = text[n+50:n+100]
-	s3 = text[n+100:n+150]
-	s4 = text[n+150:n+200]
-	s5 = text[n+200:n+250]
-	s6 = text[n+250:n+300]
-	s7 = text[n+300:n+350]
-#	text = s1, s2, s3
-	information_screen.blit(fonts.font2.render (str(s1), True, (250,250,250)),(2,0))
-	information_screen.blit(fonts.font2.render (str(s2), True, (250,250,250)),(2,22))
-	information_screen.blit(fonts.font2.render (str(s3), True, (250,250,250)),(2,44))
-	information_screen.blit(fonts.font2.render (str(s4), True, (250,250,250)),(2,66))
-	information_screen.blit(fonts.font2.render (str(s5), True, (250,250,250)),(2,88))
-	information_screen.blit(fonts.font2.render (str(s6), True, (250,250,250)),(2,110))
-	information_screen.blit(fonts.font2.render (str(s7), True, (250,250,250)),(2,132))
-
-
-def text_split (text):
-	s1 = text[0:50]
-	s2 = text[50:100]
-	s3 = text[100:150]
-	return s1, s2, s3
+#def text_split (text):
+#	s1 = text[0:50]
+#	s2 = text[50:100]
+#	s3 = text[100:150]
+#	return s1, s2, s3
 

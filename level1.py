@@ -33,7 +33,8 @@ class Level ():
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))
 
-		adventure_screen.blit (self.hero.image, self.camera.apply(self.hero))
+		if self.hero.status != 'dead':
+			adventure_screen.blit (self.hero.image, self.camera.apply(self.hero))
 		start_screen.blit(fonts.font1.render (str(self.a), True, (250,250,250)),(0,0))
 
 	def stage_loop (self):
@@ -41,15 +42,20 @@ class Level ():
 		self.a = timer.get_fps()
 		self.render_stage1 ()
 
-		
-		self.hero.update (self.block_group)
-		self.hero.chang ()
+		if self.hero.status == 'dead':
+			self.hero.end_text ()
 
-		if self.hero.add_information == 'war' and self.hero.collide_control == True:
+		if self.hero.status != 'dead':
+			self.hero.update (self.block_group)
+		self.hero.chang ()
+ #self.hero.add_information == 'war' 
+		if self.hero.collide_control == True and self.hero.etwas.agression == True:
 			self.battle.main_loop (self.hero, self.hero.etwas)
 			#self.battle.render_battle_info (self.hero, self.hero.etwas)
-		if self.hero.add_information == 'peace':
-			adventure_screen.blit(fonts.font2.render (str(self.hero.add_information), True, (250,250,250)),(0,15))
+		if self.hero.collide_control == True and self.hero.etwas.add_information == 'next':
+			adventure_screen.blit(fonts.font2.render (str(self.hero.etwas.add_information), True,(250,250,250)),(0,15))
+
+		self.hero.render_information ()
 
 		#functions.render_text (text.text1)
 		self.camera.update(self.hero)

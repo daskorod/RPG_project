@@ -18,7 +18,7 @@ import random
 class Monster(sprite.Sprite):
 	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem):
 		sprite.Sprite.__init__(self)
-		#self.image=image.load(filename)
+		#self.image=image.load('images\zombi.png')
 		#self.image.set_colorkey ((255,255,255))
 		self.image = Surface ((45,45))
 		self.image.fill ((120,30,200))
@@ -38,14 +38,15 @@ class Monster(sprite.Sprite):
 		self.wait_for_next_turn = False
 		self.control = control
 		self.battle = battle
+		self.agression = False
+		self.add_information = "none"
 
 	#def conversation (self):
 		#hero.conversation (text.zombi1)
 
 	def interaction (self):
-		#screens.information_screen.blit(fonts.font1.render ((self.a), True, (250,250,250)),(0,0))
-		#self.conversation ()
-		pass
+		return "dialog"
+
 
 	def battle_action (self, hero):
 		if hero.monster_turn == True:
