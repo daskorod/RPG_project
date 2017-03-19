@@ -23,8 +23,9 @@ class Level ():
 		
 		self.battle = battle
 		self.zomb = classes.Monster (0,0, self.battle, text.zombitext, self.control, 10,0,10,1)
-		self.block_group.add (self.zomb)
 
+		self.block_group.add (self.zomb)
+		self.n = 0
 
 	def render_stage1 (self):
 
@@ -41,23 +42,21 @@ class Level ():
 
 		self.a = timer.get_fps()
 		self.render_stage1 ()
-
+		self.battle.render_battle_info ()
 		if self.hero.status == 'dead':
 			self.hero.end_text ()
 
 		if self.hero.status != 'dead':
 			self.hero.update (self.block_group)
 		self.hero.chang ()
- #self.hero.add_information == 'war' 
+ 
 		if self.hero.collide_control == True and self.hero.etwas.agression == True:
 			self.battle.main_loop (self.hero, self.hero.etwas)
-			#self.battle.render_battle_info (self.hero, self.hero.etwas)
-		if self.hero.collide_control == True and self.hero.etwas.add_information == 'next':
-			adventure_screen.blit(fonts.font2.render (str(self.hero.etwas.add_information), True,(250,250,250)),(0,15))
+
+
 
 		self.hero.render_information ()
 
-		#functions.render_text (text.text1)
 		self.camera.update(self.hero)
 		timer.tick (60)
 

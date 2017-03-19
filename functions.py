@@ -5,10 +5,57 @@ from screens import *
 from constants import *
 import text
 
+class Base_text_render ():
+	def __init__ (self):
+
+
+		self.b1 = ''
+		self.b2 = ''
+		self.b3 = ''
+		self.b4 = ''
+		self.b5 = ''
+		self.b6 = ''
+		self.b7 = ''
+
+	def render_battle_info (self):
+		information_screen.blit(fonts.font2.render (str(self.b1), True, (250,250,250)),(2,0))
+		information_screen.blit(fonts.font2.render (str(self.b2), True, (250,250,250)),(2,22))
+		information_screen.blit(fonts.font2.render (str(self.b3), True, (250,250,250)),(2,44))
+		information_screen.blit(fonts.font2.render (str(self.b4), True, (250,250,250)),(2,66))
+		information_screen.blit(fonts.font2.render (str(self.b5), True, (250,250,250)),(2,88))
+		information_screen.blit(fonts.font2.render (str(self.b6), True, (250,250,250)),(2,110))
+		information_screen.blit(fonts.font2.render (str(self.b7), True, (250,250,250)),(2,132))	
+
+	def change_inf (self, n, a):
+		if n == 1:
+			self.b1 = a
+		if n == 2:
+			self.b2 = a
+		if n == 3:
+			self.b3 = a
+		if n == 4:
+			self.b4 = a
+		if n == 5:
+			self.b5 = a
+		if n == 6:
+			self.b6 = a
+		if n == 7:
+			self.b7 = a
+			
+	def clear_inf (self):
+		self.b1 = ''
+		self.b2 = ''
+		self.b3 = ''
+		self.b4 = ''
+		self.b5 = ''
+		self.b6 = ''
+		self.b7 = ''
+
 def event_go ():
 	c = 0
 
 class Compose_dialog_tree ():
+	
 	def __init__ (self, control):
 		self.a_max = 0
 		self.n = 0
@@ -23,22 +70,25 @@ class Compose_dialog_tree ():
 	def text_splitter (self, text):
 
 		text_splitted = text.split (" ")
+
 		rec = []
 		s = ""
+
 		for i in text_splitted:
-			if len(s + i) < 50:
+			if len(s + i) < 67:
 				s = s + " " +  i
 				continue
 			rec.append (s)
 			s = " " + i
 		rec.append (s)
-		return rec
 
+		return rec
 
 	def render_text (self, text, answer):
 
 		s1 = s2 = s3 = s4 = s5 = s6 = s7 = ''
 		ss = [s1,s2,s3,s4,s5,s6,s7]
+
 		all_strokes = self.text_splitter (text)	
 		all_strokes_ans = self.text_splitter (answer)
 		all_strokes.append (self.empty)
@@ -52,23 +102,16 @@ class Compose_dialog_tree ():
 				self.a = self.a+1
 			else:
 				self.a = 0
-		
-		counter = 0
-		for i in ss:
 
+		counter = 0
+
+		for i in ss:
 			try:
 				ss[counter] = all_strokes [self.n+counter]
+				information_screen.blit(fonts.font2.render (str(ss[counter]), True, (250,250,250)),(2,counter*22))
 				counter = counter + 1
 			except IndexError:
 				pass
-
-		information_screen.blit(fonts.font2.render (str(ss[0]), True, (250,250,250)),(2,0))
-		information_screen.blit(fonts.font2.render (str(ss[1]), True, (250,250,250)),(2,22))
-		information_screen.blit(fonts.font2.render (str(ss[2]), True, (250,250,250)),(2,44))
-		information_screen.blit(fonts.font2.render (str(ss[3]), True, (250,250,250)),(2,66))
-		information_screen.blit(fonts.font2.render (str(ss[4]), True, (250,250,250)),(2,88))
-		information_screen.blit(fonts.font2.render (str(ss[5]), True, (250,250,250)),(2,110))
-		information_screen.blit(fonts.font2.render (str(ss[6]), True, (250,250,250)),(2,132))	
 
 class Battle ():
 	def __init__ (self, control):
@@ -88,11 +131,14 @@ class Battle ():
 
 
 	def main_loop (self, hero, monster):
-
-		if hero.status != 'dead':
+		hero.check_for_death ()
+		monster.death_check (hero)
+		if hero.status != 'dead' or monster_status != 'killed':
+			
 			hero.battle_action_main ()
+			
 			monster.battle_action (hero)
-			hero.check_for_death ()
+		
 			self.render_battle_info ()
 			instrumental_screen.blit (monster_screen, (678,8))
 			monster_screen.fill ((sea_color))

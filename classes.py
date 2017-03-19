@@ -2,6 +2,7 @@ from pygame import sprite
 from pygame import image
 from pygame import Rect
 from pygame import Surface
+import pygame
 import pyganim
 import screens
 import fonts
@@ -40,12 +41,22 @@ class Monster(sprite.Sprite):
 		self.battle = battle
 		self.agression = False
 		self.add_information = "none"
+		self.status = 'alive'
 
-	#def conversation (self):
-		#hero.conversation (text.zombi1)
 
-	def interaction (self):
-		return "dialog"
+	def death_check (self, hero):
+
+		if self.hp <= 0:
+			
+			self.status = 'killed'
+			hero.turn_main = True
+			self.kill ()
+			hero.move = True
+			hero.collide_control = False
+			self.battle.change_inf (1, "Вы убили ужасного монстра!")
+
+	def interaction (self, hero):
+		hero.move = False
 
 
 	def battle_action (self, hero):
@@ -122,5 +133,19 @@ class Chest(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "chest"
+	def interaction (self, hero):
+		hero.move = False
+
+
+class Bar(sprite.Sprite):
+	def __init__(self, xs, ys, color):
+		sprite.Sprite.__init__(self)
+		self.xs = xs
+		self.ys = ys
+		self.image = Surface ((self.xs,self.ys))
+		self.image.fill ((color))
+
 	def interaction (self):
 		pass
+
+		
