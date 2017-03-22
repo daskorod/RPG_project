@@ -14,18 +14,19 @@ pygame.key.get_repeat ()
 
 class Level ():
 
-	def __init__ (self, control, hero, lev, camera, battle):
+	def __init__ (self, control, hero, lev, camera, battle, son):
 
-		self.platforms, self.block_group = functions.create_level (lev, battle, control)
+		self.platforms, self.block_group = functions.create_level (lev, battle, control,son)
 		self.control = control
 		self.hero = hero
 		self.camera = camera
 		
 		self.battle = battle
-		self.zomb = classes.Monster (0,0, self.battle, text.zombitext, self.control, 10,0,10,1)
+		self.zomb = classes.Monster (0,0, self.battle, text.zombitext, self.control, 10,0,10,1, son)
 
 		self.block_group.add (self.zomb)
 		self.n = 0
+		self.son = son
 
 	def render_stage1 (self):
 
@@ -42,7 +43,7 @@ class Level ():
 
 		self.a = timer.get_fps()
 		self.render_stage1 ()
-		self.battle.render_battle_info ()
+		self.battle.render_text ()
 		if self.hero.status == 'dead':
 			self.hero.end_text ()
 
@@ -53,7 +54,8 @@ class Level ():
 		if self.hero.collide_control == True and self.hero.etwas.agression == True:
 			self.battle.main_loop (self.hero, self.hero.etwas)
 
-
+		self.son.render_text ()
+		#self.son.change_text (1, 'cfsfvegr')
 
 		self.hero.render_information ()
 

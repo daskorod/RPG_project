@@ -3,7 +3,6 @@ import pyganim
 import functions
 import screens
 import fonts
-#from functions import self.battle.render_inf
 import random
 import classes
 from screens import *
@@ -16,7 +15,7 @@ svin_anim.play ()
 
 class Hero(pygame.sprite.Sprite):
 
-	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem):
+	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son):
 		pygame.sprite.Sprite.__init__(self)
 
 		#self.image=pygame.image.load(filename)
@@ -58,20 +57,14 @@ class Hero(pygame.sprite.Sprite):
 		self.move = True
 		self.hp_bar = classes.Bar (12,15, red)
 		self.sp_bar = classes.Bar (12,15, blue)
-
-
+		self.son = son
 
 	def conversation (self, tree, interlocutor):
 
-		#try:
-		#if self.n in tree:
 		text_massive, self.etwas.add_information, text_massive_answer = tree[interlocutor.n]
 		
 		self.view.render_text (text_massive, text_massive_answer)
 
-#	except:
-#		self.n = 0
-#		self.s = 1
 		if self.etwas.add_information == 'war' and self.control.k_e == True:
 			self.control.k_e = False
 			self.etwas.agression = True
@@ -83,9 +76,9 @@ class Hero(pygame.sprite.Sprite):
 			self.view.a = 0
 			self.view.an = 0
 			if self.etwas.n not in tree:
-	
 				self.etwas.n = (self.etwas.n-(1*self.etwas.s))
-				self.etwas.s = int(self.etwas.s/10)		
+				self.etwas.s = int(self.etwas.s/10)	
+
 		if self.control.k_2 == True:
 			self.control.k_2 = False
 			self.etwas.s = self.etwas.s*10
@@ -93,9 +86,9 @@ class Hero(pygame.sprite.Sprite):
 			self.view.a = 0
 			self.view.an = 0
 			if self.etwas.n not in tree:
-				#self.s = self.s/10
 				self.etwas.n = (self.etwas.n-(2*self.etwas.s))
-				self.etwas.s = int(self.etwas.s/10)				
+				self.etwas.s = int(self.etwas.s/10)		
+
 		if self.control.k_3 == True:
 			self.control.k_3 = False
 			self.etwas.s = self.etwas.s*10
@@ -103,7 +96,6 @@ class Hero(pygame.sprite.Sprite):
 			self.view.a = 0
 			self.view.an = 0
 			if self.etwas.n not in tree:
-				#self.s = self.s/10
 				self.etwas.n = (self.etwas.n-(3*self.etwas.s))
 				self.etwas.s = int(self.etwas.s/10)
 
@@ -111,23 +103,7 @@ class Hero(pygame.sprite.Sprite):
 			self.move = True
 
 
-	def collide (self, array):
-
-		for entity in array:
-			if pygame.sprite.collide_rect (self, entity):
-				return entity
-
-	def check_for_death (self):
-		if self.hp <= 0:
-			self.death ()
-
 	def render_information (self):
-		#hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
-		#hero_screen.blit(fonts.font3.render ('аt: ' + str(self.at), True, (250,250,250)),(2,15))
-		#hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
-		#hero_screen.blit(fonts.font3.render ('ac:' + str(self.ac), True, (250,250,250)),(2,30))
-		#hero_screen.blit(fonts.font3.render ('hp: ' + str(self.hp), True, (250,250,250)),(2,45))
-		#hero_screen.blit(fonts.font3.render ('dam: ' + str(self.damage), True, (250,250,250)),(2,60))
 
 		n = 0
 
@@ -140,15 +116,24 @@ class Hero(pygame.sprite.Sprite):
 		for i in range (0, self.sp):
 			hero_screen.blit(self.sp_bar.image, (30, 120-n))
 			n = n+15
+
 		hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
 
 
+
+	def collide (self, array):
+
+		for entity in array:
+			if pygame.sprite.collide_rect (self, entity):
+				return entity
+
 	def update (self, array):
 
-
 		if self.collide_control == True and self.etwas.agression == False:
+			self.son.clear_text ()
 			self.conversation(self.etwas.tree, self.etwas)
-			self.battle.clear_inf ()
+
+			self.battle.clear_text ()
 	
 			hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
 			hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
@@ -267,21 +252,22 @@ class Hero(pygame.sprite.Sprite):
 
 	def render (self, surface):
 		surface.blit(self.image, (self.rect.x, self.rect.y))
-		#self.image.fill ((0,0,0))
-		#svin_anim.blit (surface, (self.rect.x,self.rect.y))
+
+
+
+
 
 	# BATTLE OPTIONS
+
+	def check_for_death (self):
+		if self.hp <= 0:
+			self.death ()
 
 	def death (self):
 		self.status = 'dead'
 
 	def end_text (self):
 		pass
-
-
-		#self.view.render_text ("Вы умерли, вы лох!")
-
-
 
 	def dice_rolling (self):
 
@@ -306,24 +292,20 @@ class Hero(pygame.sprite.Sprite):
 			self.dice_fun = False
 			self.dice_value = int((self.mx - 80) / 20)
 			self.attack_roll = True
-
-
-
 		
 	def battle_action_main (self):
 
-
 		if self.turn_main == True:
 			
-			self.battle.change_inf (1, "Что будете делать?")
-			self.battle.change_inf (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
+			self.battle.change_text (1, "Что будете делать?")
+			self.battle.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
 	
 			if self.control.k_1 == True:
 				self.turn_main = False
 				self.control.k_1 = False
 				self.assault = True
 				self.dice_fun = True
-				self.battle.clear_inf ()
+				self.battle.clear_text ()
 	
 			if self.control.k_2 == True:
 				self.turn_main = False
@@ -344,7 +326,6 @@ class Hero(pygame.sprite.Sprite):
 		if self.special == True:
 			self.special_fun ()
 
-
 	def chang (self):
 		pass
 	def special_fun (self):
@@ -357,30 +338,30 @@ class Hero(pygame.sprite.Sprite):
 			self.dice_rolling ()
 
 		if self.attack_roll == True:
-			self.battle.clear_inf ()
+			self.battle.clear_text ()
 
 			a = self.dice_value
 			b = random.randint (1,6)
 			c = self.at + a 
 			d = monster.ac + b
 		
-			self.battle.change_inf (1, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
+			self.battle.change_text (1, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
 			if c >= d:
 				
 				if int(c/d)>1:
 					monster.hp = monster.hp - self.damage*int(c/d)
-					self.battle.change_inf (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
-					self.battle.change_inf (5, 'Критический урон: '+str(self.damage*int(c/d)))
+					self.battle.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
+					self.battle.change_text (5, 'Критический урон: '+str(self.damage*int(c/d)))
 					
 				else:
-					self.battle.change_inf (4, "Вы попали и нанесли сокрушительный удар!")
+					self.battle.change_text (4, "Вы попали и нанесли сокрушительный удар!")
 					monster.hp = monster.hp - self.damage
-					self.battle.change_inf (5, 'Урон: '+str(self.damage))
+					self.battle.change_text (5, 'Урон: '+str(self.damage))
 			elif c<d:
-				self.battle.change_inf (4, 'Вы промазали!')	
+				self.battle.change_text (4, 'Вы промазали!')	
 			self.attack_roll = False
 			self.wait_for_next_turn = True
-			self.battle.change_inf (7, 'Нажмите Е')
+			self.battle.change_text (7, 'Нажмите Е')
 
 		if self.control.k_e == True and self.wait_for_next_turn == True:
 			self.wait_for_next_turn = False

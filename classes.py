@@ -17,7 +17,7 @@ import random
 
 
 class Monster(sprite.Sprite):
-	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem):
+	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son):
 		sprite.Sprite.__init__(self)
 		#self.image=image.load('images\zombi.png')
 		#self.image.set_colorkey ((255,255,255))
@@ -42,7 +42,7 @@ class Monster(sprite.Sprite):
 		self.agression = False
 		self.add_information = "none"
 		self.status = 'alive'
-
+		self.son = son
 
 	def death_check (self, hero):
 
@@ -53,7 +53,8 @@ class Monster(sprite.Sprite):
 			self.kill ()
 			hero.move = True
 			hero.collide_control = False
-			self.battle.change_inf (1, "Вы убили ужасного монстра!")
+			self.son.change_text (2, "Вы убили ужасного монстра!")
+			self.battle.clear_text ()
 
 	def interaction (self, hero):
 		hero.move = False
@@ -61,35 +62,39 @@ class Monster(sprite.Sprite):
 
 	def battle_action (self, hero):
 		if hero.monster_turn == True:
-			self.battle.clear_inf ()
+			self.battle.clear_text ()
 			a = random.randint (1,6)
 			b = random.randint (1,6)
 			c = self.at + a 
 			d = hero.ac + b
 		
-			self.battle.change_inf (1, "Атака монстра: "+str(c) + "  Защита ваша: "+ str(d))
+			self.battle.change_text (1, "Атака монстра: "+str(c) + "  Защита ваша: "+ str(d))
 			if c >= d:
 				
 				if int(c/d)>1:
 					hero.hp = hero.hp - self.damage*int(c/d)
-					self.battle.change_inf (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
-					self.battle.change_inf (5, 'Критический урон: '+str(self.damage*int(c/d)))
+					self.battle.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
+					self.battle.change_text (5, 'Критический урон: '+str(self.damage*int(c/d)))
 					
 				else:
-					self.battle.change_inf (4, "Монстр попал и нанес сокрушительный удар!")
+					self.battle.change_text (4, "Монстр попал и нанес сокрушительный удар!")
 					hero.hp = hero.hp - self.damage
-					self.battle.change_inf (5, 'Урон: '+str(self.damage))
+					self.battle.change_text (5, 'Урон: '+str(self.damage))
 			elif c<d:
-				self.battle.change_inf (4, 'Вы уклонились!')	
+				self.battle.change_text (4, 'Вы уклонились!')	
 		
-			self.battle.change_inf (7, 'Нажмите Е')
+			self.battle.change_text (7, 'Нажмите Е')
 			hero.monster_turn = False
 			self.wait_for_next_turn = True
 
 		if self.control.k_e == True and self.wait_for_next_turn == True:
 			self.control.k_e = False
 			hero.turn_main = True
-			self.battle.clear_inf ()
+			self.battle.clear_text ()
+
+
+
+
 
 
 class Platform(sprite.Sprite):

@@ -53,12 +53,12 @@ class main ():
 
 
 camera = camera.Camera (camera_config, level_width, level_height)
-
+son = functions.Son ()
 control = controller.Holy_Spirit () 
 battle = functions.Battle (control)
 compose_text = functions.Compose_dialog_tree (control)
-hero = character.Hero (45,45, battle, control, compose_text, 6,6,6,1)
-stage1 = level1.Level(control, hero, lev1, camera, battle)
+hero = character.Hero (45,45, battle, control, compose_text, 6,6,6,1, son)
+stage1 = level1.Level(control, hero, lev1, camera, battle, son)
 stage2 = level2.Level(control, hero, lev2)
 game = main (stage1, stage2, control)
 game.main_loop ()
