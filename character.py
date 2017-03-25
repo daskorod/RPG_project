@@ -18,18 +18,18 @@ class Hero(pygame.sprite.Sprite):
 	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son):
 		pygame.sprite.Sprite.__init__(self)
 
-		#self.image=pygame.image.load(filename)
-		#self.image.set_colorkey ((255,255,255))
+		self.image=pygame.image.load('images/sprite2.png')
+		self.image.set_colorkey ((255,255,255))
 		self.control = control
 		self.battle = battle
 		self.name = 'Рихтер'
-		self.image = pygame.Surface ((45,45))
+		#self.image = pygame.Surface ((45,45))
 		#self.image = svin_anim.getImagesFromSpriteSheet()
-		self.image.fill ((100,200,230))
+		#self.image.fill ((100,200,230))
 		self.sp = 2
 		self.rect = pygame.Rect (x,y, 45,45)
-		self.rect.x = x
-		self.rect.y = y
+		self.rect.x = x*45
+		self.rect.y = y*45
 		self.collision = False
 		self.collide_control = False
 		self.n = 0
@@ -43,7 +43,7 @@ class Hero(pygame.sprite.Sprite):
 		self.ac = ac
 		self.hp = hp
 		self.damage = dem
-		self.turn_main = True
+		self.turn_main = False
 		self.attack_roll = False
 		self.wait_for_next_turn = False
 		self.monster_turn = False
@@ -58,24 +58,39 @@ class Hero(pygame.sprite.Sprite):
 		self.hp_bar = classes.Bar (12,15, red)
 		self.sp_bar = classes.Bar (12,15, blue)
 		self.son = son
+		self.press_to_kill = False
+		self.back = False
+		self.branch_do = 'qwd'
+
+
+
 
 	def conversation (self, tree, interlocutor):
+		'''s - порядок десяток в диалоге, он прибавляется после нажатия на клавишу, поэтому должен = 1, чтобы не сводился на ноль постоянно. n - это значение которое растёт - это путсое вместилище, которое передаётся дальше. Растёт оно всегда при помощи s.'''
 
-		text_massive, self.etwas.add_information, text_massive_answer = tree[interlocutor.n]
-		
+
+		text_massive, self.etwas.add_information, *other = tree[interlocutor.branch][interlocutor.n]
+
+		try:
+			text_massive_answer, branch = other
+			self.etwas.branch_do, self.etwas.branch_id = branch
+
+		except:
+			text_massive_answer = other[0]
+
+		self.etwas.dialog_options (self)
+
 		self.view.render_text (text_massive, text_massive_answer)
 
-		if self.etwas.add_information == 'war' and self.control.k_e == True:
-			self.control.k_e = False
-			self.etwas.agression = True
 
 		if self.control.k_1 == True:
 			self.control.k_1 = False
+
 			self.etwas.s = self.etwas.s*10
 			self.etwas.n = (self.etwas.n+(1*self.etwas.s))
 			self.view.a = 0
-			self.view.an = 0
-			if self.etwas.n not in tree:
+
+			if self.etwas.n not in tree[interlocutor.branch]:
 				self.etwas.n = (self.etwas.n-(1*self.etwas.s))
 				self.etwas.s = int(self.etwas.s/10)	
 
@@ -84,8 +99,8 @@ class Hero(pygame.sprite.Sprite):
 			self.etwas.s = self.etwas.s*10
 			self.etwas.n = (self.etwas.n+(2*self.etwas.s))
 			self.view.a = 0
-			self.view.an = 0
-			if self.etwas.n not in tree:
+
+			if self.etwas.n not in tree[interlocutor.branch]:
 				self.etwas.n = (self.etwas.n-(2*self.etwas.s))
 				self.etwas.s = int(self.etwas.s/10)		
 
@@ -94,13 +109,12 @@ class Hero(pygame.sprite.Sprite):
 			self.etwas.s = self.etwas.s*10
 			self.etwas.n = (self.etwas.n+(3*self.etwas.s))
 			self.view.a = 0
-			self.view.an = 0
-			if self.etwas.n not in tree:
+
+			if self.etwas.n not in tree[interlocutor.branch]:
 				self.etwas.n = (self.etwas.n-(3*self.etwas.s))
 				self.etwas.s = int(self.etwas.s/10)
 
-		if self.etwas.add_information == 'end':
-			self.move = True
+
 
 
 	def render_information (self):
@@ -133,7 +147,7 @@ class Hero(pygame.sprite.Sprite):
 			self.son.clear_text ()
 			self.conversation(self.etwas.tree, self.etwas)
 
-			self.battle.clear_text ()
+			self.son.clear_text ()
 	
 			hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
 			hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
@@ -295,27 +309,35 @@ class Hero(pygame.sprite.Sprite):
 		
 	def battle_action_main (self):
 
+		self.press_to_kill_fun ()
+
 		if self.turn_main == True:
+
+
 			
-			self.battle.change_text (1, "Что будете делать?")
-			self.battle.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
+			self.son.change_text (1, "Что будете делать?")
+			self.son.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
 	
 			if self.control.k_1 == True:
 				self.turn_main = False
 				self.control.k_1 = False
 				self.assault = True
 				self.dice_fun = True
-				self.battle.clear_text ()
+				self.son.clear_text ()
 	
 			if self.control.k_2 == True:
 				self.turn_main = False
 				self.control.k_2 = False
 				self.special = True
+				self.son.clear_text ()
+				self.son.change_text (1, "Что будете делать?")
+				self.son.change_text (3, "1 - изгонение нежити; 2 - лечение; 3 - назад")
 
-			if self.control.k_2 == True:
+			if self.control.k_3 == True:
 				self.turn_main = False
-				self.control.k_2 = False
+				self.control.k_3 = False
 				self.flee = True
+				self.son.clear_text ()
 
 		if self.assault == True:
 			self.assault_fun (self.etwas)
@@ -328,40 +350,94 @@ class Hero(pygame.sprite.Sprite):
 
 	def chang (self):
 		pass
+	def press_to_kill_fun (self):
+		if self.press_to_kill == True and self.control.k_e == True:
+			self.press_to_kill = False
+			self.control.k_e = False
+			self.etwas.hp = 0
+
 	def special_fun (self):
-		pass
+
+
+			if self.control.k_1 == True:
+				self.control.k_1 = False
+				self.son.clear_text ()
+
+				if self.etwas.hp <= 10 and self.sp >0:
+					self.sp -= 1
+					self.press_to_kill = True
+					self.son.change_text (1, "Монстры рассылпался в прах!")
+					self.son.change_text (3, "Нажмите Е")
+
+				if self.etwas.hp > 10 or self.sp<=0:
+					self.back = True
+					self.son.change_text (1, "Ничего не произошло.")
+					self.son.change_text (3, "Нажмите Е")
+
+			if self.control.k_e == True and self.back == True:
+				self.turn_main = True
+				self.control.k_e = False
+				self.special = False
+				self.back = False
+
+			if self.control.k_2 == True:
+				self.turn_main = False
+				self.control.k_2 = False
+				self.special = True
+				self.son.clear_text ()
+				if self.sp > 0:
+					self.sp -= 1
+					self.son.change_text (1, "Ваши раны восстановились чудесным образом. +4 ЖС")
+					self.son.change_text (3, "Нажмите Е")
+					self.back = True
+
+				if self.sp <=0:
+					self.back = True
+					self.son.change_text (1, "Ничего не произошло.")
+					self.son.change_text (3, "Нажмите Е")
+
+			if self.control.k_3 == True:
+				self.turn_main = True
+				self.control.k_3 = False
+				self.special = False
+
 	def flee_fun (self):
-		pass
+				self.son.change_text (1, "Вы позорно бежали.")
+				#self.son.change_text (3, "Нажмите Е")		
+				self.collide_control = False
+				self.move = True
+				self.flee = False
+				self.turn_main = True
 
 	def assault_fun (self, monster):
 		if self.dice_fun == True:
 			self.dice_rolling ()
 
 		if self.attack_roll == True:
-			self.battle.clear_text ()
+			self.son.clear_text ()
 
 			a = self.dice_value
 			b = random.randint (1,6)
 			c = self.at + a 
 			d = monster.ac + b
 		
-			self.battle.change_text (1, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
+			self.son.change_text (1, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
 			if c >= d:
 				
 				if int(c/d)>1:
 					monster.hp = monster.hp - self.damage*int(c/d)
-					self.battle.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
-					self.battle.change_text (5, 'Критический урон: '+str(self.damage*int(c/d)))
+					self.son.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
+					self.son.change_text (5, 'Критический урон: '+str(self.damage*int(c/d)))
 					
 				else:
-					self.battle.change_text (4, "Вы попали и нанесли сокрушительный удар!")
+					self.son.change_text (4, "Вы попали и нанесли сокрушительный удар!")
 					monster.hp = monster.hp - self.damage
-					self.battle.change_text (5, 'Урон: '+str(self.damage))
+					self.son.change_text (5, 'Урон: '+str(self.damage))
 			elif c<d:
-				self.battle.change_text (4, 'Вы промазали!')	
+				self.son.change_text (4, 'Вы промазали!')	
 			self.attack_roll = False
 			self.wait_for_next_turn = True
-			self.battle.change_text (7, 'Нажмите Е')
+			self.son.change_text (7, 'Нажмите Е')
 
 		if self.control.k_e == True and self.wait_for_next_turn == True:
 			self.wait_for_next_turn = False

@@ -26,12 +26,15 @@ class Son ():
 			self.strokelist[i] = ''
 
 class Compose_dialog_tree ():
+	'''split text for dialog and render it at dialog screen'''
 	
 	def __init__ (self, control):
+		#Son.__init__ (self)
 		self.n = 0
 		self.a = 0
 		self.control = control
 		self.empty = ''
+		self.stroke_size = 67
 
 	def text_splitter (self, text):
 
@@ -41,7 +44,7 @@ class Compose_dialog_tree ():
 		s = ""
 
 		for i in text_splitted:
-			if len(s + i) < 67:
+			if len(s + i) < self.stroke_size:
 				s = s + " " +  i
 				continue
 			rec.append (s)
@@ -79,9 +82,16 @@ class Compose_dialog_tree ():
 			except IndexError:
 				pass
 
-class Battle (Son):
+#		for i in self.strokelist:
+#			try:
+#				self.strokelist[counter] = all_strokes [self.n+counter]
+#				counter = counter + 1
+#			except IndexError:
+#				pass
+
+class Battle ():
 	def __init__ (self, control):
-		Son.__init__ (self)
+		#Son.__init__ (self)
 		self.conntrol = control
 		self.m1 = ''
 		self.m2 = 'Атака: '
@@ -92,16 +102,15 @@ class Battle (Son):
 
 	def main_loop (self, hero, monster):
 
-		
 		if hero.status != 'dead' or monster_status != 'killed':
 
 			hero.battle_action_main ()
 			monster.death_check (hero)	
 			monster.battle_action (hero)
 			hero.check_for_death ()
-
 			#self.render_text ()
 			self.render_monster_inf (monster)
+			#classes.boltAnim.blit (adventure_screen, (10,10))
 	
 	def render_monster_inf (self, monster):
 
@@ -111,9 +120,6 @@ class Battle (Son):
 	
 		for i in range (5):
 			monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(monsterList2[i])), True, (250,250,250)),(2,15*i))
-	
-
-
 
 def create_level (level, battle, control,son):
 	sprite_group = sprite.Group ()
