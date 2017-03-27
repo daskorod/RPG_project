@@ -61,6 +61,7 @@ class Hero(pygame.sprite.Sprite):
 		self.press_to_kill = False
 		self.back = False
 		self.branch_do = 'qwd'
+		self.hp_max = 7
 
 
 
@@ -149,15 +150,15 @@ class Hero(pygame.sprite.Sprite):
 
 			self.son.clear_text ()
 	
-			hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
-			hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
+		#	hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
+		#	hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
 
 		if self.move == True:
 
 		#RIGHT
 			if self.control.right == True:
 				self.collide_control = False
-				self.control.right = False
+
 	
 				self.rect.x += 1
 	
@@ -167,24 +168,29 @@ class Hero(pygame.sprite.Sprite):
 	
 					if self.etwas.name == "block":
 						self.rect.x -= 1
-						self.etwas.interaction ()
+						self.etwas.interaction (self)
 	
-					if self.etwas.name == "chest":
+					elif self.etwas.name == "chest":
 						self.rect.x -= 1
 						self.rect.x += 45
 						array.remove (self.etwas)
-					if self.etwas.name == "monster":
+
+					elif self.etwas.name == "monster":
 						self.rect.x -= 1
 						self.collide_control = True
 						self.etwas.interaction (self)
-	
+
+					else:
+						self.rect.x -= 1
+						self.etwas.interaction (self)
+
+				self.control.right = False
 				if self.etwas == None: 
 					self.rect.x += 45
 					self.rect.x -= 1
 				
 			#LEFT
 			if self.control.left == True:
-				self.control.left = False
 				self.collide_control = False
 				self.rect.x -= 1
 	
@@ -194,25 +200,28 @@ class Hero(pygame.sprite.Sprite):
 					if self.etwas.name == "block":
 						self.rect.x += 1
 	
-					if self.etwas.name == "chest":
+					elif self.etwas.name == "chest":
 						self.rect.x += 1
 						self.rect.x -= 45
 						array.remove (self.etwas)
 	
-					if self.etwas.name == "monster":
+					elif self.etwas.name == "monster":
 	
 						self.rect.x += 1
 						self.collide_control = True
 						self.etwas.interaction (self)
+
+					else:
+						self.rect.x += 1
+						self.etwas.interaction (self)	
 	
 				if self.etwas == None: 
 					self.rect.x -= 45
 					self.rect.x += 1
-	
+				self.control.left = False
 	
 			#UP
 			if self.control.up == True:
-				self.control.up = False
 				self.collide_control = False
 				self.rect.y -= 1
 	
@@ -223,25 +232,26 @@ class Hero(pygame.sprite.Sprite):
 					if self.etwas.name == "block":
 						self.rect.y += 1
 						
-						self.etwas.interaction ()
-					if self.etwas.name == "chest":
+						self.etwas.interaction (self)
+					elif self.etwas.name == "chest":
 						self.rect.y += 1
 						self.rect.y -= 45
 						array.remove (self.etwas)
 	
-					if self.etwas.name == "monster":
+					elif self.etwas.name == "monster":
 						self.collide_control = True
 						self.etwas.interaction (self)
 						self.rect.y += 1
-	
+					else:
+						self.rect.y += 1
+						self.etwas.interaction (self)		
 				if self.etwas == None: 
 					self.rect.y +=1
 					self.rect.y -=45
 	
-	
+				self.control.up = False
 			#DOWN
 			if self.control.down == True:
-				self.control.down = False
 				self.collide_control = False
 				self.rect.y += 1
 	
@@ -250,19 +260,22 @@ class Hero(pygame.sprite.Sprite):
 					if self.etwas.name == "block":
 						self.rect.y -= 1
 	
-						self.etwas.interaction ()
-					if self.etwas.name == "chest":
+						self.etwas.interaction (self)
+					elif self.etwas.name == "chest":
 						self.rect.y -= 1
 						self.rect.y += 45
 						array.remove (self.etwas)
-					if self.etwas.name == "monster":
+					elif self.etwas.name == "monster":
 						self.rect.y -=1
 						self.collide_control = True
 						self.etwas.interaction (self)
-	
+					else:
+						self.rect.y -= 1
+						self.etwas.interaction (self)		
 				if self.etwas == None: 
 					self.rect.y += 45
 					self.rect.y -= 1
+				self.control.down = False
 
 	def render (self, surface):
 		surface.blit(self.image, (self.rect.x, self.rect.y))
@@ -278,7 +291,12 @@ class Hero(pygame.sprite.Sprite):
 			self.death ()
 
 	def death (self):
+		self.son.clear_text ()
+		self.son.change_text (1, 'Вы умерли.')
+		self.son.change_text (2, 'На ваших костях упыри будут танцевать джигу.')
 		self.status = 'dead'
+		self.kill ()
+
 
 	def end_text (self):
 		pass
@@ -295,10 +313,10 @@ class Hero(pygame.sprite.Sprite):
 		if self.go_left == True:
 			self.mx = self.mx -10
 
-		if self.mx > 430:
+		if self.mx > 550:
 			self.go_left = True
 
-		if self.mx < 80:
+		if self.mx < 40:
 			self.go_left = False
 
 		if self.control.k_e == True:
@@ -348,8 +366,9 @@ class Hero(pygame.sprite.Sprite):
 		if self.special == True:
 			self.special_fun ()
 
-	def chang (self):
-		pass
+#	def chang (self):
+#		pass
+#		
 	def press_to_kill_fun (self):
 		if self.press_to_kill == True and self.control.k_e == True:
 			self.press_to_kill = False
@@ -387,6 +406,9 @@ class Hero(pygame.sprite.Sprite):
 				self.son.clear_text ()
 				if self.sp > 0:
 					self.sp -= 1
+					self.hp += 4
+					if self.hp > self.hp_max:
+						self.hp = self.hp_max
 					self.son.change_text (1, "Ваши раны восстановились чудесным образом. +4 ЖС")
 					self.son.change_text (3, "Нажмите Е")
 					self.back = True

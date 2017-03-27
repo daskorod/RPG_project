@@ -4,7 +4,7 @@ from pygame import display
 from constants import *
 
 window = display.set_mode((834, 634))
-display.set_caption('Svinotest')
+display.set_caption('Giperborea')
 
 start_screen = Surface((814, 614))
 background = image.load ('images/back.png')
@@ -12,7 +12,7 @@ adventure_screen = Surface ((810, 420))
 instrumental_screen = Surface ((818,178))
 hero_screen = Surface ((50,176))
 monster_screen = Surface ((130,158))
-information_screen = Surface ((762,176))
+information_screen = Surface ((764,176))
 roll_screen = Surface ((600, 170))
 
 

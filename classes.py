@@ -1,4 +1,4 @@
-from pygame import sprite
+﻿from pygame import sprite
 from pygame import image
 from pygame import Rect
 from pygame import Surface
@@ -11,30 +11,30 @@ import text
 from screens import *
 from constants import *
 import random
-#from functions import self.battle.render_inf
 
-#boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
-#                                 ('testimages/bolt_strike_0002.png', 0.1),
-#                                 ('testimages/bolt_strike_0003.png', 0.1),
-#                                 ('testimages/bolt_strike_0004.png', 0.1),
-#                                 ('testimages/bolt_strike_0005.png', 0.1),
-#                                 ('testimages/bolt_strike_0006.png', 0.1),
-#                                 ('testimages/bolt_strike_0007.png', 0.1),
-#                                 ('testimages/bolt_strike_0008.png', 0.1),
-#                                 ('testimages/bolt_strike_0009.png', 0.1),
-#                                 ('testimages/bolt_strike_0010.png', 0.1)])
-#boltAnim.rotate (270)
-#boltAnim.play() # there is also a pause() and stop() method
+boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
+                                 ('testimages/bolt_strike_0002.png', 0.1),
+                                 ('testimages/bolt_strike_0003.png', 0.1),
+                                 ('testimages/bolt_strike_0004.png', 0.1),
+                                 ('testimages/bolt_strike_0005.png', 0.1),
+                                 ('testimages/bolt_strike_0006.png', 0.1),
+                                 ('testimages/bolt_strike_0007.png', 0.1),
+                                 ('testimages/bolt_strike_0008.png', 0.1),
+                                 ('testimages/bolt_strike_0009.png', 0.1),
+                                 ('testimages/bolt_strike_0010.png', 0.1)])
+boltAnim.rotate (270)
+boltAnim.play() # there is also a pause() and stop() method
+
 
 
 
 class Monster(sprite.Sprite):
 	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son):
 		sprite.Sprite.__init__(self)
-		#self.image=image.load('images\zombi.png')
-		#self.image.set_colorkey ((255,255,255))
-		self.image = Surface ((45,45))
-		self.image.fill ((120,30,200))
+		self.image=image.load('images/zombi.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((120,30,200))
 		self.a = "Я злобный монстр!"
 		self.rect = Rect (0,0, 45,45)
 		self.rect.x = x*PF_WIDTH
@@ -167,18 +167,6 @@ class Skelet (Monster):
 	pass
 
 
-boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
-                                 ('testimages/bolt_strike_0002.png', 0.1),
-                                 ('testimages/bolt_strike_0003.png', 0.1),
-                                 ('testimages/bolt_strike_0004.png', 0.1),
-                                 ('testimages/bolt_strike_0005.png', 0.1),
-                                 ('testimages/bolt_strike_0006.png', 0.1),
-                                 ('testimages/bolt_strike_0007.png', 0.1),
-                                 ('testimages/bolt_strike_0008.png', 0.1),
-                                 ('testimages/bolt_strike_0009.png', 0.1),
-                                 ('testimages/bolt_strike_0010.png', 0.1)])
-boltAnim.rotate (270)
-boltAnim.play() # there is also a pause() and stop() method
 
 
 class SkeletLord (Monster):
@@ -188,10 +176,14 @@ class SkeletLord (Monster):
 		self.lbolt = False
 		#self.image.fill ((220,130,100))
 		self.ll = False
-		self.image = image.load('images/skeleton.png')
-		self.image.set_colorkey ((255,255,255))
+		self.image = image.load('images/skeleton3.png')
+		self.image.set_colorkey ((254,254,254))
+		
 
 	def battle_action (self, hero):
+
+
+
 		if hero.monster_turn == True:
 			self.son.clear_text ()
 			a = random.randint (1,3)
@@ -231,7 +223,7 @@ class SkeletLord (Monster):
 class Platform(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		self.image = image.load('images\wall.png')
+		self.image = image.load('images/wall.png')
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))
@@ -239,21 +231,78 @@ class Platform(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "block"
-	def interaction (self):
+	def interaction (self,hero):
 		pass
+
+class Door(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = image.load('images/door4.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'open'
+	def interaction (self, hero):
+		if self.status == 'open':
+
+			if hero.control.right == True:
+				hero.rect.x +=45 
+			elif hero.control.left == True:
+				hero.rect.x -=45 
+
+			elif hero.control.up == True:
+				hero.rect.y -=45 
+			elif hero.control.down == True:
+				hero.rect.y +=45 
+
+		else:
+			pass
+
+class Candel(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = image.load('images/candel41.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'open'
+	def interaction (self, hero):
+		if self.status == 'open':
+
+			if hero.control.right == True:
+				hero.rect.x +=45 
+			elif hero.control.left == True:
+				hero.rect.x -=45 
+
+			elif hero.control.up == True:
+				hero.rect.y -=45 
+			elif hero.control.down == True:
+				hero.rect.y +=45 
+
+		else:
+			pass
+
 
 class Marker(sprite.Sprite):
 	def __init__(self,x,y):
 		sprite.Sprite.__init__(self)
-		#self.image=image.load(filename)
-		#self.image.set_colorkey ((255,255,255))
-		self.image = Surface ((25,45))
-		self.image.fill ((150, 150, 150))
+		self.image=image.load('images/sword2.png')
+		self.image.set_colorkey ((238,234,250))
+		#self.image = Surface ((25,45))
+		#self.image.fill ((150, 150, 150))
 		self.rect = Rect (0,0, 45,45)
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "marker"
-	def interaction (self):
+	def interaction (self,hero):
 		pass
 
 
@@ -261,10 +310,10 @@ class Marker(sprite.Sprite):
 class Chest(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		#self.image=image.load(filename)
-		#self.image.set_colorkey ((255,255,255))
-		self.image = Surface ((45,45))
-		self.image.fill ((200,30,70))
+		self.image=image.load('images/chest2.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((200,30,70))
 		self.rect = Rect (0,0, 45,45)
 		self.rect.x = x
 		self.rect.y = y

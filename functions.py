@@ -102,7 +102,7 @@ class Battle ():
 
 	def main_loop (self, hero, monster):
 
-		if hero.status != 'dead' or monster_status != 'killed':
+		if hero.status != 'dead' and monster.status != 'killed':
 
 			hero.battle_action_main ()
 			monster.death_check (hero)	
@@ -133,6 +133,10 @@ def create_level (level, battle, control,son):
 				pf = classes.Platform (x,y)
 				platforms.append (pf)
 				sprite_group.add (pf)
+			if col == "d":
+				door = classes.Door (x,y)
+				#platforms.append (pf)
+				sprite_group.add (door)
 			if col == "c":
 				ch = classes.Chest (x,y)
 				#chests.append (ch)
@@ -140,6 +144,10 @@ def create_level (level, battle, control,son):
 			if col == "m":
 				mn = classes.Monster (x/45,y/45,battle, text.zombi1, control, 10,0,10,1, son)
 				sprite_group.add (mn)
+			if col == "t":
+				tr = classes.Candel (x,y)
+				#chests.append (ch)
+				sprite_group.add (tr)
 			x += 45
 		x = 0
 		y += 45
