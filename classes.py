@@ -11,6 +11,7 @@ import text
 from screens import *
 from constants import *
 import random
+import controller
 
 boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
                                  ('testimages/bolt_strike_0002.png', 0.1),
@@ -23,7 +24,7 @@ boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
                                  ('testimages/bolt_strike_0009.png', 0.1),
                                  ('testimages/bolt_strike_0010.png', 0.1)])
 boltAnim.rotate (270)
-boltAnim.play() # there is also a pause() and stop() method
+#boltAnim.play() # there is also a pause() and stop() method
 
 
 
@@ -58,6 +59,9 @@ class Monster(sprite.Sprite):
 		self.branch = 0
 		self.branch_do = ''
 		self.branch_id = ''
+		self.hp_old = hp
+		self.start_rendering = False
+		self.x_mod = 0
 
 	def death_check (self, hero):
 
@@ -74,6 +78,31 @@ class Monster(sprite.Sprite):
 	def interaction (self, hero):
 		hero.move = False
 
+	def render_hp_mod(self, position):
+
+		if self.hp_old != self.hp:
+			if self.hp_old > self.hp:
+				self.hp_mod = self.hp -self.hp_old
+#				self.color = (208,17,17)
+				self.color = (250,250,250)
+			if self.hp_old < self.hp:
+				self.hp_mod =self.hp - self.hp_old 
+				self.color = (17, 220, 17)
+			self.hp_old = self.hp
+			self.start_rendering = True
+#			except:
+#				pass
+		if self.start_rendering == True:
+
+			self.x_mod += 1
+		#hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
+#			adventure_screen.blit(fonts.font2.render (str(self.hp_mod), True, (self.color)),(self.rect.x, self.rect.y - 30 - self.x_mod))
+			adventure_screen.blit(fonts.font4.render (str(self.hp_mod)+ ' hp', True, (self.color)),(position.x, position.y - 30 - self.x_mod))
+
+			if self.x_mod > 100:
+				self.start_rendering = False
+				self.x_mod = 0
+
 	def dialog_options (self,hero):
 
 		if self.add_information == 'end' and self.control.k_e == True:
@@ -81,16 +110,16 @@ class Monster(sprite.Sprite):
 			self.control.k_e = False
 			hero.collide_control = False
 
-			if self.branch_do == 'random1,2':
-				a = random.randint (1,6)
-				self.branch_do = 'done'
-				self.s = 1
-				self.n = 0
-
-				if a >3:
-					self.branch = 1
-				if a <=3:
-					self.branch = 2
+#			if self.branch_do == 'random1,2':
+#				a = random.randint (1,6)
+#				self.branch_do = 'done'
+#				self.s = 1
+#				self.n = 0
+#
+#				if a >3:
+#					self.branch = 1
+#				if a <=3:
+#					self.branch = 2
 
 			if self.branch_do == 'go':
 				self.branch_do = 'done'
@@ -103,8 +132,8 @@ class Monster(sprite.Sprite):
 			self.agression = True
 			hero.turn_main = True
 
-		if self.branch_do == 'random1,2' and self.control.k_e == True and self.add_information != 'end':
-			self.control.k_e = False
+#		if self.branch_do == 'random1,2' and self.control.k_e == True and self.add_information != 'end':
+#			self.control.k_e = False
 
 			a = random.randint (1,6)
 			self.branch_do = 'done'
@@ -178,11 +207,24 @@ class SkeletLord (Monster):
 		self.ll = False
 		self.image = image.load('images/skeleton3.png')
 		self.image.set_colorkey ((254,254,254))
-		
+		self.g = 1000
 
 	def battle_action (self, hero):
+		self.g += 1
+		if self.lbolt == True:
+			self.g = 185
+
+			self.lbolt = False
 
 
+		if self.g > 190 and self.g< 240:
+			
+#			x_hero.x -=49
+#			x_hero.y -=80
+#			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
+			boltAnim.play ()
+			if self.g==239:
+				boltAnim.stop()
 
 		if hero.monster_turn == True:
 			self.son.clear_text ()
@@ -273,7 +315,7 @@ class Candel(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = ""
-		self.status = 'open'
+		self.status = 'closed'
 	def interaction (self, hero):
 		if self.status == 'open':
 
@@ -321,6 +363,23 @@ class Chest(sprite.Sprite):
 	def interaction (self, hero):
 		hero.move = False
 
+class Portal(sprite.Sprite):
+	def __init__(self, x, y,control):
+		sprite.Sprite.__init__(self)
+		#self.image=image.load('images/chest2.png')
+		#self.image.set_colorkey ((255,255,255))
+		self.image = Surface ((45,45))
+		self.image.fill ((200,30,70))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "portal"
+		self.control = control
+	def interaction (self, hero):
+		self.control.stage1_flag = False
+		self.control.stage2_flag = True
+		hero.rect.x = 0
+		hero.rect.y = 0
 
 class Bar(sprite.Sprite):
 	def __init__(self, xs, ys, color):

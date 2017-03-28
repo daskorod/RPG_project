@@ -35,7 +35,7 @@ class Level ():
 	def render_stage1 (self):
 
 		main_interface ()
-		self.g += 1
+		#self.g += 1
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))
 
@@ -45,21 +45,27 @@ class Level ():
 		#start_screen.blit(fonts.font1.render (str(self.a), True, (250,250,250)),(0,0))
 
 	def stage_loop (self):
-		if self.skeletLord.lbolt == True:
-			self.g = 185
-
-			self.skeletLord.lbolt = False
 
 		
+		
 		x_hero = (self.camera.apply(self.hero))
+		classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
+		self.hero.render_hp_mod(x_hero)
 
-		if self.g > 190 and self.g< 240:
-			classes.boltAnim.play ()
-			x_hero.x -=49
-			x_hero.y -=80
-			classes.boltAnim.blit (adventure_screen, (x_hero))
-			if self.g==239:
-				classes.boltAnim.stop()
+#		if self.skeletLord.lbolt == True:
+#			self.g = 185
+#
+#			self.skeletLord.lbolt = False
+#
+#
+#		if self.g > 190 and self.g< 240:
+#			
+##			x_hero.x -=49
+##			x_hero.y -=80
+##			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
+#			classes.boltAnim.play ()
+#			if self.g==239:
+#				classes.boltAnim.stop()
 
 		self.a = timer.get_fps()
 		self.render_stage1 ()
@@ -69,9 +75,14 @@ class Level ():
 
 		if self.hero.status != 'dead':
 			self.hero.update (self.block_group)
+		try:	
+			x_monster = (self.camera.apply(self.hero.etwas))
+			self.hero.etwas.render_hp_mod(x_monster)
+		except:
+			pass
 
- 
 		if self.hero.collide_control == True and self.hero.etwas.agression == True:
+			
 			self.battle.main_loop (self.hero, self.hero.etwas)
 
 		self.son.render_text ()

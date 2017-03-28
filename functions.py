@@ -91,7 +91,7 @@ class Compose_dialog_tree ():
 
 class Battle ():
 	def __init__ (self, control):
-		#Son.__init__ (self)
+
 		self.conntrol = control
 		self.m1 = ''
 		self.m2 = 'Атака: '
@@ -102,15 +102,16 @@ class Battle ():
 
 	def main_loop (self, hero, monster):
 
+
+
 		if hero.status != 'dead' and monster.status != 'killed':
 
 			hero.battle_action_main ()
 			monster.death_check (hero)	
 			monster.battle_action (hero)
 			hero.check_for_death ()
-			#self.render_text ()
 			self.render_monster_inf (monster)
-			#classes.boltAnim.blit (adventure_screen, (10,10))
+
 	
 	def render_monster_inf (self, monster):
 
@@ -124,7 +125,7 @@ class Battle ():
 def create_level (level, battle, control,son):
 	sprite_group = sprite.Group ()
 	platforms = []
-	#chests = []
+
 	x = 0
 	y = 0
 	for row in level:
@@ -148,6 +149,9 @@ def create_level (level, battle, control,son):
 				tr = classes.Candel (x,y)
 				#chests.append (ch)
 				sprite_group.add (tr)
+			if col == 'p':
+				pr = classes.Portal (x,y, control)
+				sprite_group.add (pr)
 			x += 45
 		x = 0
 		y += 45

@@ -62,9 +62,45 @@ class Hero(pygame.sprite.Sprite):
 		self.back = False
 		self.branch_do = 'qwd'
 		self.hp_max = 7
+		self.hp_old = hp
+		self.x_mod = 0
+		self.start_rendering = False
 
 
 
+#	def take_dem(self):
+#		color = 3
+#		a = 4		
+#
+#
+#		return color, a
+#		#return None
+#
+
+	def render_hp_mod(self, position):
+
+		if self.hp_old != self.hp:
+			if self.hp_old > self.hp:
+				self.hp_mod = self.hp -self.hp_old
+#				self.color = (208,17,17)
+				self.color = red
+			if self.hp_old < self.hp:
+				self.hp_mod =self.hp - self.hp_old 
+				self.color = (17, 220, 17)
+			self.hp_old = self.hp
+			self.start_rendering = True
+#			except:
+#				pass
+		if self.start_rendering == True:
+
+			self.x_mod += 1
+		#hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
+#			adventure_screen.blit(fonts.font2.render (str(self.hp_mod), True, (self.color)),(self.rect.x, self.rect.y - 30 - self.x_mod))
+			adventure_screen.blit(fonts.font4.render (str(self.hp_mod)+ ' hp', True, (self.color)),(position.x, position.y - 30 - self.x_mod))
+
+			if self.x_mod > 100:
+				self.start_rendering = False
+				self.x_mod = 0
 
 	def conversation (self, tree, interlocutor):
 		'''s - порядок десяток в диалоге, он прибавляется после нажатия на клавишу, поэтому должен = 1, чтобы не сводился на ноль постоянно. n - это значение которое растёт - это путсое вместилище, которое передаётся дальше. Растёт оно всегда при помощи s.'''
