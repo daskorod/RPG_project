@@ -46,6 +46,7 @@ class Hero(pygame.sprite.Sprite):
 		self.turn_main = False
 		self.attack_roll = False
 		self.wait_for_next_turn = False
+		self.gold = 0
 		self.monster_turn = False
 		self.mx = 50
 		self.my = 50		
@@ -65,32 +66,23 @@ class Hero(pygame.sprite.Sprite):
 		self.hp_old = hp
 		self.x_mod = 0
 		self.start_rendering = False
-
-
-
-#	def take_dem(self):
-#		color = 3
-#		a = 4		
-#
-#
-#		return color, a
-#		#return None
-#
+		self.start_conv = True
+		self.conv_stop = True
 
 	def render_hp_mod(self, position):
 
 		if self.hp_old != self.hp:
 			if self.hp_old > self.hp:
 				self.hp_mod = self.hp -self.hp_old
-#				self.color = (208,17,17)
+
 				self.color = red
 			if self.hp_old < self.hp:
 				self.hp_mod =self.hp - self.hp_old 
 				self.color = (17, 220, 17)
+
 			self.hp_old = self.hp
 			self.start_rendering = True
-#			except:
-#				pass
+
 		if self.start_rendering == True:
 
 			self.x_mod += 1
@@ -115,13 +107,16 @@ class Hero(pygame.sprite.Sprite):
 		except:
 			text_massive_answer = other[0]
 
+
+
+
+		self.son.change_text_tree(self.view.render_text (text_massive, text_massive_answer))
+
 		self.etwas.dialog_options (self)
-
-		self.view.render_text (text_massive, text_massive_answer)
-
 
 		if self.control.k_1 == True:
 			self.control.k_1 = False
+			self.son.clear_text ()
 
 			self.etwas.s = self.etwas.s*10
 			self.etwas.n = (self.etwas.n+(1*self.etwas.s))
@@ -133,6 +128,7 @@ class Hero(pygame.sprite.Sprite):
 
 		if self.control.k_2 == True:
 			self.control.k_2 = False
+			self.son.clear_text ()
 			self.etwas.s = self.etwas.s*10
 			self.etwas.n = (self.etwas.n+(2*self.etwas.s))
 			self.view.a = 0
@@ -143,6 +139,7 @@ class Hero(pygame.sprite.Sprite):
 
 		if self.control.k_3 == True:
 			self.control.k_3 = False
+			self.son.clear_text ()
 			self.etwas.s = self.etwas.s*10
 			self.etwas.n = (self.etwas.n+(3*self.etwas.s))
 			self.view.a = 0
@@ -180,14 +177,28 @@ class Hero(pygame.sprite.Sprite):
 
 	def update (self, array):
 
-		if self.collide_control == True and self.etwas.agression == False:
-			self.son.clear_text ()
-			self.conversation(self.etwas.tree, self.etwas)
 
-			self.son.clear_text ()
+
+		if self.collide_control == True and self.etwas.agression == False:
+			#self.son.clear_text ()
+			if self.conv_stop == True:
+				self.son.clear_text ()
+				self.conv_stop = False
+
+			self.conversation(self.etwas.tree, self.etwas)
+			
+		#		self.son.clear_text ()
 	
-		#	hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
-		#	hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
+			hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
+			hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
+		#	if self.start_conv == True:
+		#		self.son.clear_text ()
+		#		self.start_conv = False
+
+
+
+		if self.collide_control == False or self.etwas.agression == True:
+			self.conv_stop = True
 
 		if self.move == True:
 
@@ -362,7 +373,7 @@ class Hero(pygame.sprite.Sprite):
 			self.attack_roll = True
 		
 	def battle_action_main (self):
-
+		#self.son.change_text (7, 'Вы получили 20 монет')
 		self.press_to_kill_fun ()
 
 		if self.turn_main == True:

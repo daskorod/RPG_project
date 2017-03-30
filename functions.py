@@ -11,13 +11,14 @@ class Son ():
 	def __init__ (self):
 		self.b1 = self.b2 = self.b3 = self.b4 = self.b5 = self.b6 = self.b7 = ''
 		self.strokelist = [self.b1, self.b2, self.b3, self.b4, self.b5, self.b6, self.b7]
-
+		self.all_strokes = []
+		self.n = 0
 	def render_text (self):
 		n = 0
+
 		for i in self.strokelist:
 			information_screen.blit(fonts.font2.render (str(i), True, (250,250,250)),(2,22*n))
 			n += 1
-
 	def change_text (self, n, a):
 		self.strokelist[n-1] = str(a)
 
@@ -25,16 +26,32 @@ class Son ():
 		for i in range (len(self.strokelist)):
 			self.strokelist[i] = ''
 
+	def change_text_tree (self, x):
+		self.clear_text ()
+		text_tree, n = x
+		self.n = n
+		self.all_strokes = text_tree
+
+		counter = 0
+		for i in self.strokelist:
+			try:
+				self.strokelist[counter] = self.all_strokes [self.n+counter]
+#			information_screen.blit(fonts.font2.render (str(self.strokelist[counter]), True, (250,250,250)),(2,counter*22))
+				counter = counter + 1
+			except IndexError:
+				pass
+
 class Compose_dialog_tree ():
 	'''split text for dialog and render it at dialog screen'''
 	
-	def __init__ (self, control):
+	def __init__ (self, control,son):
 		#Son.__init__ (self)
 		self.n = 0
 		self.a = 0
 		self.control = control
 		self.empty = ''
-		self.stroke_size = 67
+		self.stroke_size = 47
+		self.son = son
 
 	def text_splitter (self, text):
 
@@ -67,20 +84,24 @@ class Compose_dialog_tree ():
 
 		if self.control.k_n == True:
 			self.control.k_n = False
+
 			if self.a < int((len(all_strokes)) // 7):
 				self.a = self.a+1
 			else:
 				self.a = 0
 
-		counter = 0
 
-		for i in ss:
-			try:
-				ss[counter] = all_strokes [self.n+counter]
-				information_screen.blit(fonts.font2.render (str(ss[counter]), True, (250,250,250)),(2,counter*22))
-				counter = counter + 1
-			except IndexError:
-				pass
+		return all_strokes, self.n
+#		counter = 0
+#
+#		for i in ss:
+#			try:
+#				ss[counter] = all_strokes [self.n+counter]
+#				information_screen.blit(fonts.font2.render (str(ss[counter]), True, (250,250,250)),(2,counter*22))
+#				counter = counter + 1
+#			except IndexError:
+#				pass
+#
 
 #		for i in self.strokelist:
 #			try:

@@ -31,7 +31,7 @@ class Level ():
 		self.son = son
 		self.g = 1200
 		son.change_text (1, 'Вы в мрачном подземелье.')
-
+		
 	def render_stage1 (self):
 
 		main_interface ()

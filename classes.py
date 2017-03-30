@@ -83,15 +83,12 @@ class Monster(sprite.Sprite):
 		if self.hp_old != self.hp:
 			if self.hp_old > self.hp:
 				self.hp_mod = self.hp -self.hp_old
-#				self.color = (208,17,17)
 				self.color = (250,250,250)
 			if self.hp_old < self.hp:
 				self.hp_mod =self.hp - self.hp_old 
 				self.color = (17, 220, 17)
 			self.hp_old = self.hp
 			self.start_rendering = True
-#			except:
-#				pass
 		if self.start_rendering == True:
 
 			self.x_mod += 1
@@ -103,12 +100,18 @@ class Monster(sprite.Sprite):
 				self.start_rendering = False
 				self.x_mod = 0
 
+	def dialog_special (self, hero):
+		pass
 	def dialog_options (self,hero):
+		self.dialog_special (hero)
 
 		if self.add_information == 'end' and self.control.k_e == True:
+
 			hero.move = True
 			self.control.k_e = False
 			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
 
 #			if self.branch_do == 'random1,2':
 #				a = random.randint (1,6)
@@ -126,11 +129,14 @@ class Monster(sprite.Sprite):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+				
 
 		if self.add_information == 'war' and self.control.k_e == True:
 			self.control.k_e = False
 			self.agression = True
 			hero.turn_main = True
+			hero.start_conv = True
+			hero.view.a = 0
 
 #		if self.branch_do == 'random1,2' and self.control.k_e == True and self.add_information != 'end':
 #			self.control.k_e = False
@@ -146,12 +152,12 @@ class Monster(sprite.Sprite):
 				self.branch = 2
 
 
-		if self.branch_do == 'go' and self.control.k_e == True and self.add_information != 'end':
-			self.control.k_e = False
-			self.branch_do = 'done'
-			self.branch = self.branch_id
-			self.s = 1
-			self.n = 0
+#		if self.branch_do == 'go' and self.control.k_e == True and self.add_information != 'end':
+#			self.control.k_e = False
+#			self.branch_do = 'done'
+#			self.branch = self.branch_id
+#			self.s = 1
+#			self.n = 0
 
 
 
@@ -209,6 +215,24 @@ class SkeletLord (Monster):
 		self.image.set_colorkey ((254,254,254))
 		self.g = 1000
 
+	def dialog_special (self, hero):
+		if self.add_information == 'gold' and self.control.k_e == True:
+			hero.move = True
+			hero.gold += 20
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (4, 'Вы получили 20 монет')
+			hero.son.change_text (5, 'Ваши деньги: '+str(hero.gold))
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
 	def battle_action (self, hero):
 		self.g += 1
 		if self.lbolt == True:
@@ -233,14 +257,9 @@ class SkeletLord (Monster):
 		
 			self.son.change_text (1, "В руках скелета заплясали электрические разряды...")
 			self.son.change_text (3, 'Нажмите Е')
-
-			
+		
 			self.lbolt = True
 			self.ll = True
-
-			
-			
-
 
 		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
 			self.ll = False
