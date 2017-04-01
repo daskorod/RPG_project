@@ -1,4 +1,4 @@
-
+#! /usr/bin/env python3
 import pygame
 import level1
 import level2
