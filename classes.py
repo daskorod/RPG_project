@@ -132,6 +132,7 @@ class Monster(sprite.Sprite):
 				
 
 		if self.add_information == 'war' and self.control.k_e == True:
+			self.son.clear_text ()
 			self.control.k_e = False
 			self.agression = True
 			hero.turn_main = True
@@ -307,6 +308,10 @@ class Door(sprite.Sprite):
 		self.rect.y = y
 		self.name = ""
 		self.status = 'open'
+		self.tree = text.door
+		self.branch = 0
+		self.n = 0
+
 	def interaction (self, hero):
 		if self.status == 'open':
 
@@ -321,12 +326,20 @@ class Door(sprite.Sprite):
 				hero.rect.y +=45 
 
 		else:
-			pass
+			hero.door_interaction = True
+			hero.move = False
+
+
+#	def door_event (self, hero):
+#		hero.conversation (self.tree, self)
+
+
+
 
 class Candel(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		self.image = image.load('images/candel41.png')
+		self.image = image.load('images/candel4.png')
 		self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))

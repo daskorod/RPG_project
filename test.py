@@ -2,9 +2,35 @@
 
 
 
+a = 'bolivar'
 
-def a (*args):
-	for arg in args:
-		print (arg)
+#def string_reverse (string):
+#	le = len(string)
+#	t = ''
+#	for i in range (0, le):
+#			b = string[le-1-i]
+#			t =  t+ b
+#	return t
 
-a (1,2)
+def string_reverse (string):
+	le = string[::-1]
+	print (le)
+	t = ''
+#	for i in range (0, le):
+#			b = string[le-1-i]
+#			t =  t+ b
+	return t
+
+print (string_reverse(a))
+
+#def q (string):
+#	le = len(string)
+#	t = ''
+#	for i in range (0, le+):
+#		print (i)
+#
+#	print (le)
+#
+#
+#q(a)
+#print (string_reverse(a))

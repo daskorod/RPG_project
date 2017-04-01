@@ -34,10 +34,11 @@ class Level ():
 		self.son = son
 		self.g = 1200
 		son.change_text (1, 'Вы в мрачном подземелье.')
+		self.name = '- - - Этаж 2 - - -'
 
 	def render_stage1 (self):
 
-		main_interface ()
+		main_interface (self)
 		#self.g += 1
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))

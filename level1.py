@@ -31,10 +31,11 @@ class Level ():
 		self.son = son
 		self.g = 1200
 		son.change_text (1, 'Вы в мрачном подземелье.')
+		self.name = '- - - Неизвестное подземелье - - -'
 		
 	def render_stage1 (self):
-
-		main_interface ()
+		
+		main_interface (self)
 		#self.g += 1
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))
@@ -52,20 +53,7 @@ class Level ():
 		classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
 		self.hero.render_hp_mod(x_hero)
 
-#		if self.skeletLord.lbolt == True:
-#			self.g = 185
-#
-#			self.skeletLord.lbolt = False
-#
-#
-#		if self.g > 190 and self.g< 240:
-#			
-##			x_hero.x -=49
-##			x_hero.y -=80
-##			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
-#			classes.boltAnim.play ()
-#			if self.g==239:
-#				classes.boltAnim.stop()
+
 
 		self.a = timer.get_fps()
 		self.render_stage1 ()

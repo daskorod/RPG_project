@@ -68,6 +68,7 @@ class Hero(pygame.sprite.Sprite):
 		self.start_rendering = False
 		self.start_conv = True
 		self.conv_stop = True
+		self.door_interaction = False
 
 	def render_hp_mod(self, position):
 
@@ -168,6 +169,13 @@ class Hero(pygame.sprite.Sprite):
 		hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
 
 
+		high_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(10,0))
+		high_screen.blit(fonts.font5.render ('ат '+str(self.at), True, (250,250,250)),(80,0))
+		high_screen.blit(fonts.font5.render ('зщ '+str(self.ac), True, (250,250,250)),(130,0))
+		high_screen.blit(fonts.font5.render ('жз '+str(self.hp), True, (250,250,250)),(180,0))
+		high_screen.blit(fonts.font5.render ('мн '+str(self.sp), True, (250,250,250)),(230,0))
+		high_screen.blit(fonts.font5.render ('ур '+str(self.damage), True, (250,250,250)),(280,0))
+
 
 	def collide (self, array):
 
@@ -189,12 +197,13 @@ class Hero(pygame.sprite.Sprite):
 			
 		#		self.son.clear_text ()
 	
-			hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
-			hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
+		#	hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
+		#	hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
 		#	if self.start_conv == True:
 		#		self.son.clear_text ()
 		#		self.start_conv = False
-
+		if self.door_interaction == True:
+			self.etwas.door_event (self)
 
 
 		if self.collide_control == False or self.etwas.agression == True:

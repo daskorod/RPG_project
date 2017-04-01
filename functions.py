@@ -17,7 +17,7 @@ class Son ():
 		n = 0
 
 		for i in self.strokelist:
-			information_screen.blit(fonts.font2.render (str(i), True, (250,250,250)),(2,22*n))
+			information_screen.blit(fonts.font5.render (str(i), True, (green)),(2,22*n))
 			n += 1
 	def change_text (self, n, a):
 		self.strokelist[n-1] = str(a)
@@ -50,8 +50,11 @@ class Compose_dialog_tree ():
 		self.a = 0
 		self.control = control
 		self.empty = ''
-		self.stroke_size = 47
+		self.stroke_size = 50
 		self.son = son
+		self.arrowUp = image.load('images/arrow2.png')
+		self.arrowDw = image.load('images/arrow.png')
+
 
 	def text_splitter (self, text):
 
@@ -82,14 +85,21 @@ class Compose_dialog_tree ():
 
 		self.n = (self.a * 7)
 
-		if self.control.k_n == True:
-			self.control.k_n = False
+		if self.control.down == True and self.a < int((len(all_strokes)) // 7):
+			self.control.down = False
+			self.a = self.a+1
 
-			if self.a < int((len(all_strokes)) // 7):
-				self.a = self.a+1
-			else:
-				self.a = 0
+		if self.control.up == True and self.a > 0:
+			self.control.up = False
+			self.a = self.a-1
 
+#			else:
+#				self.a = 0
+#
+		if self.a < int((len(all_strokes)) // 7):
+			information_screen.blit (self.arrowDw, (720, 70))
+		if self.a !=0:
+			information_screen.blit (self.arrowUp, (720, 0))
 
 		return all_strokes, self.n
 #		counter = 0
