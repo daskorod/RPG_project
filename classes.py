@@ -28,6 +28,18 @@ boltAnim.rotate (270)
 
 
 
+class Bar(sprite.Sprite):
+	def __init__(self, xs, ys, color):
+		sprite.Sprite.__init__(self)
+		self.xs = xs
+		self.ys = ys
+		self.image = Surface ((self.xs,self.ys))
+		self.image.fill ((color))
+
+	def interaction (self):
+		pass
+
+		
 
 class Monster(sprite.Sprite):
 	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son):
@@ -41,6 +53,7 @@ class Monster(sprite.Sprite):
 		self.rect.x = x*PF_WIDTH
 		self.rect.y = y*PF_HEIGHT
 		self.name = "monster"
+		self.mname = '     Зомби'
 		self.textus = text
 		self.n = 0
 		self.s = 1
@@ -62,6 +75,57 @@ class Monster(sprite.Sprite):
 		self.hp_old = hp
 		self.start_rendering = False
 		self.x_mod = 0
+		self.monsterList2 = [self.at, self.ac, self.hp, self.damage]
+		self.m1 = ''
+		self.m2 = 'А:'
+		self.m3 = 'З:'
+		self.m4 = 'Ж:'
+		self.m5 = 'У:'
+		self.monsterList = [self.m2, self.m3, self.m4, self.m5]
+		self.icon = pygame.image.load ('images/zombi_icon.png')
+		self.hp_bar =Bar (12,15, red)
+		self.at_ic = pygame.image.load ('images/at.png')
+		self.ac_ic = pygame.image.load ('images/ac.png')
+
+	def render_monster_inf (self):
+
+		instrumental_screen.blit (monster_screen, (678,15))
+		monster_screen.fill ((black))
+		monster_screen.blit (self.icon, (15,30))
+
+		monster_screen.blit(fonts.font3.render (str(self.mname), True, (250,250,250)),(0, 0))
+		
+
+		n = 0
+
+		for i in range (0, self.hp):
+			monster_screen.blit(self.hp_bar.image, (135, 120- n))
+			n = n+15
+		monster_screen.blit(fonts.font2.render (str(self.hp), True, (250,250,250)),(130,140))
+
+
+		monster_screen.blit(fonts.font5.render (str(self.at) +'/'+str(self.damage) , True, (250,250,250)),(25,140))
+		monster_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(90,140))
+		monster_screen.blit(self.at_ic,(5,145))
+		monster_screen.blit(self.ac_ic,(75,145))
+		
+
+
+
+
+#		i = 0
+#		monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(self.monsterList2[i])), True, #(250,250,250)),(40*i, 130))
+#		i = 1
+#		monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(self.monsterList2[i])), True, #(250,250,250)),(40*i, 130))
+	
+#		for i in range (4):
+#			if i <3:
+#				monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(self.monsterList2[i])), True, (250,250,250)),(40*i, 130))
+#			if i>=2:
+#				monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(self.monsterList2[i])), True, (250,250,250)),(((40*i)-80), 150))
+
+
+
 
 	def death_check (self, hero):
 
@@ -210,6 +274,7 @@ class SkeletLord (Monster):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son)
 		self.tree = text.lord
 		self.lbolt = False
+		self.mname = 'Скелет Лорд'
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/skeleton3.png')
@@ -285,7 +350,7 @@ class SkeletLord (Monster):
 class Platform(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		self.image = image.load('images/wall.png')
+		self.image = image.load('images/ground.png')
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))
@@ -293,6 +358,20 @@ class Platform(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "block"
+	def interaction (self,hero):
+		pass
+
+class Pavestone(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = image.load('images/wall.png')
+		#self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect(0,0,45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "no"
 	def interaction (self,hero):
 		pass
 
@@ -339,7 +418,7 @@ class Door(sprite.Sprite):
 class Candel(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		self.image = image.load('images/candel4.png')
+		self.image = image.load('images/candel3.png')
 		self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))

@@ -17,7 +17,7 @@ class Son ():
 		n = 0
 
 		for i in self.strokelist:
-			information_screen.blit(fonts.font5.render (str(i), True, (green)),(2,22*n))
+			information_screen.blit(fonts.font5.render (str(i), True, (250,250,250)),(2,22*n))
 			n += 1
 	def change_text (self, n, a):
 		self.strokelist[n-1] = str(a)
@@ -97,9 +97,9 @@ class Compose_dialog_tree ():
 #				self.a = 0
 #
 		if self.a < int((len(all_strokes)) // 7):
-			information_screen.blit (self.arrowDw, (720, 70))
+			information_screen.blit (self.arrowDw, (600, 70))
 		if self.a !=0:
-			information_screen.blit (self.arrowUp, (720, 0))
+			information_screen.blit (self.arrowUp, (600, 0))
 
 		return all_strokes, self.n
 #		counter = 0
@@ -124,12 +124,7 @@ class Battle ():
 	def __init__ (self, control):
 
 		self.conntrol = control
-		self.m1 = ''
-		self.m2 = 'Атака: '
-		self.m3 = 'Защита: '
-		self.m4 = 'Жизни: '
-		self.m5 = 'Урон: '
-		self.monsterList = [self.m1, self.m2, self.m3, self.m4, self.m5]
+
 
 	def main_loop (self, hero, monster):
 
@@ -141,26 +136,30 @@ class Battle ():
 			monster.death_check (hero)	
 			monster.battle_action (hero)
 			hero.check_for_death ()
-			self.render_monster_inf (monster)
+			monster.render_monster_inf ()
 
 	
-	def render_monster_inf (self, monster):
+#	def render_monster_inf (self, monster):
+#
+#		instrumental_screen.blit (monster_screen, (678,8))
+#		monster_screen.fill ((sea_color))
+#		monsterList2 = [monster.name, monster.at, monster.ac, monster.hp, monster.damage]
+#	
+#		for i in range (5):
+#			monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(monsterList2[i])), True, (250,250,250)),(2,15*i))
 
-		instrumental_screen.blit (monster_screen, (678,8))
-		monster_screen.fill ((sea_color))
-		monsterList2 = [monster.name, monster.at, monster.ac, monster.hp, monster.damage]
-	
-		for i in range (5):
-			monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(monsterList2[i])), True, (250,250,250)),(2,15*i))
-
-def create_level (level, battle, control,son):
+def create_level (level, battle, control,son, grType):
 	sprite_group = sprite.Group ()
 	platforms = []
-
+	ground = sprite.Group()
 	x = 0
 	y = 0
+	grrr = grType
 	for row in level:
 		for col in row:
+			
+			gr = grrr (x,y)
+			ground.add (gr)
 			if col == "-":
 				pf = classes.Platform (x,y)
 				platforms.append (pf)
@@ -188,7 +187,7 @@ def create_level (level, battle, control,son):
 		y += 45
 	x = 0
 	y = 0
-	return  platforms, sprite_group
+	return  platforms, sprite_group, ground
 
 
 

@@ -16,7 +16,7 @@ class Level ():
 
 	def __init__ (self, control, hero, lev, camera, battle, son):
 
-		self.platforms, self.block_group = functions.create_level (lev, battle, control,son)
+		self.platforms, self.block_group, self.background = functions.create_level (lev, battle, control,son, classes.Pavestone)
 		self.control = control
 		self.hero = hero
 		self.camera = camera
@@ -37,6 +37,8 @@ class Level ():
 		
 		main_interface (self)
 		#self.g += 1
+#		for b in self.background:
+#			adventure_screen.blit(b.image, self.camera.apply (b))
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))
 

@@ -5,8 +5,8 @@ class Holy_Spirit ():
 	def __init__ (self):
 
 		self.k_space = False
-		self.stage1_flag = True
-		self.stage2_flag = False
+		self.stage1_flag = False
+		self.stage2_flag = True
 		self.flag = 0
 		self.left = False
 		self.right = False

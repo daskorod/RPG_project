@@ -1,4 +1,4 @@
-import pygame
+﻿import pygame
 import pyganim
 import functions
 import screens
@@ -18,7 +18,7 @@ class Hero(pygame.sprite.Sprite):
 	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son):
 		pygame.sprite.Sprite.__init__(self)
 
-		self.image=pygame.image.load('images/sprite2.png')
+		self.image=pygame.image.load('images/hero2.png')
 		self.image.set_colorkey ((255,255,255))
 		self.control = control
 		self.battle = battle
@@ -69,6 +69,9 @@ class Hero(pygame.sprite.Sprite):
 		self.start_conv = True
 		self.conv_stop = True
 		self.door_interaction = False
+		self.at_ic = pygame.image.load ('images/at.png')
+		self.ac_ic = pygame.image.load ('images/ac.png')
+		self.icon = image.load ('images/icon.png')
 
 	def render_hp_mod(self, position):
 
@@ -94,6 +97,37 @@ class Hero(pygame.sprite.Sprite):
 			if self.x_mod > 100:
 				self.start_rendering = False
 				self.x_mod = 0
+
+	def render_information (self):
+
+		n = 0
+
+		for i in range (0, self.hp):
+			hero_screen.blit(self.hp_bar.image, (10, 120- n))
+			n = n+15
+		hero_screen.blit(fonts.font2.render (str(self.hp), True, (250,250,250)),(10,140))
+
+		n = 0
+		for i in range (0, self.sp):
+			hero_screen.blit(self.sp_bar.image, (30, 120-n))
+			n = n+15
+
+		hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
+
+
+#		high_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(10,0))
+#		high_screen.blit(fonts.font5.render ('ат '+str(self.at), True, (250,250,250)),(80,0))
+#		high_screen.blit(fonts.font5.render ('зщ '+str(self.ac), True, (250,250,250)),(130,0))
+#		high_screen.blit(fonts.font5.render ('жз '+str(self.hp), True, (250,250,250)),(180,0))
+#		high_screen.blit(fonts.font5.render ('мн '+str(self.sp), True, (250,250,250)),(230,0))
+#		high_screen.blit(fonts.font5.render ('ур '+str(self.damage), True, (250,250,250)),(280,0))
+		
+		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(70,0))
+		hero_screen.blit(fonts.font5.render (str(self.at) +'/'+str(self.damage) , True, (250,250,250)),(80,155))
+		hero_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(130,155))
+		hero_screen.blit(self.at_ic,(65,160))
+		hero_screen.blit(self.ac_ic,(115,160))
+		hero_screen.blit (self.icon, (50,35))
 
 	def conversation (self, tree, interlocutor):
 		'''s - порядок десяток в диалоге, он прибавляется после нажатия на клавишу, поэтому должен = 1, чтобы не сводился на ноль постоянно. n - это значение которое растёт - это путсое вместилище, которое передаётся дальше. Растёт оно всегда при помощи s.'''
@@ -152,29 +186,7 @@ class Hero(pygame.sprite.Sprite):
 
 
 
-	def render_information (self):
 
-		n = 0
-
-		for i in range (0, self.hp):
-			hero_screen.blit(self.hp_bar.image, (10, 120- n))
-			n = n+15
-		hero_screen.blit(fonts.font2.render (str(self.hp), True, (250,250,250)),(10,140))
-
-		n = 0
-		for i in range (0, self.sp):
-			hero_screen.blit(self.sp_bar.image, (30, 120-n))
-			n = n+15
-
-		hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
-
-
-		high_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(10,0))
-		high_screen.blit(fonts.font5.render ('ат '+str(self.at), True, (250,250,250)),(80,0))
-		high_screen.blit(fonts.font5.render ('зщ '+str(self.ac), True, (250,250,250)),(130,0))
-		high_screen.blit(fonts.font5.render ('жз '+str(self.hp), True, (250,250,250)),(180,0))
-		high_screen.blit(fonts.font5.render ('мн '+str(self.sp), True, (250,250,250)),(230,0))
-		high_screen.blit(fonts.font5.render ('ур '+str(self.damage), True, (250,250,250)),(280,0))
 
 
 	def collide (self, array):

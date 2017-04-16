@@ -4,18 +4,19 @@ from pygame import display
 from constants import *
 import fonts
 
-window = display.set_mode((834, 634))
+window = display.set_mode((860, 634))
 display.set_caption('Giperborea')
 
-start_screen = Surface((814, 614))
+start_screen = Surface((830, 630))
 background = image.load ('images/back.png')
 adventure_screen = Surface ((810, 420))
-instrumental_screen = Surface ((818,178))
-hero_screen = Surface ((50,176))
-monster_screen = Surface ((130,158))
-information_screen = Surface ((764,176))
+instrumental_screen = Surface ((880,190))
+hero_screen = Surface ((180,190))
+monster_screen = Surface ((190,200))
+information_screen = Surface ((680,190))
 roll_screen = Surface ((600, 170))
 high_screen = Surface ((810, 22))
+
 
 
 def main_interface (level):
@@ -30,6 +31,7 @@ def main_interface (level):
 	instrumental_screen.fill ((black))
 	instrumental_screen.blit (hero_screen, (0,2))
 	hero_screen.fill ((black))
-	instrumental_screen.blit (information_screen, (60,10))
+
+	instrumental_screen.blit (information_screen, (180,10))
 	information_screen.fill ((black))
 	high_screen.blit(fonts.font5.render (level.name, True, (250,250,250)),(500,0))
