@@ -130,7 +130,9 @@ class Hero(pygame.sprite.Sprite):
 		hero_screen.blit (self.icon, (50,35))
 
 	def conversation (self, tree, interlocutor):
-		'''s - порядок десяток в диалоге, он прибавляется после нажатия на клавишу, поэтому должен = 1, чтобы не сводился на ноль постоянно. n - это значение которое растёт - это путсое вместилище, которое передаётся дальше. Растёт оно всегда при помощи s.'''
+		'''s - порядок десяток в диалоге, он прибавляется после нажатия на клавишу, поэтому должен = 1,
+		 чтобы не сводился на ноль постоянно. n - это значение которое растёт - это путсое вместилище,
+		  которое передаётся дальше. Растёт оно всегда при помощи s.'''
 
 
 		text_massive, self.etwas.add_information, *other = tree[interlocutor.branch][interlocutor.n]
@@ -141,9 +143,6 @@ class Hero(pygame.sprite.Sprite):
 
 		except:
 			text_massive_answer = other[0]
-
-
-
 
 		self.son.change_text_tree(self.view.render_text (text_massive, text_massive_answer))
 
@@ -183,173 +182,81 @@ class Hero(pygame.sprite.Sprite):
 				self.etwas.n = (self.etwas.n-(3*self.etwas.s))
 				self.etwas.s = int(self.etwas.s/10)
 
-
-
-
-
-
-
 	def collide (self, array):
 
 		for entity in array:
 			if pygame.sprite.collide_rect (self, entity):
 				return entity
 
-	def update (self, array):
-
-
-
+	def conversation_control (self):
 		if self.collide_control == True and self.etwas.agression == False:
-			#self.son.clear_text ()
+
+		
 			if self.conv_stop == True:
 				self.son.clear_text ()
 				self.conv_stop = False
 
 			self.conversation(self.etwas.tree, self.etwas)
-			
-		#		self.son.clear_text ()
-	
-		#	hero_screen.blit(fonts.font3.render (str(self.etwas.s), True, (250,250,250)),(2,0))
-		#	hero_screen.blit(fonts.font3.render (str(self.etwas.n), True, (250,250,250)),(2,15))
-		#	if self.start_conv == True:
-		#		self.son.clear_text ()
-		#		self.start_conv = False
-		if self.door_interaction == True:
-			self.etwas.door_event (self)
-
 
 		if self.collide_control == False or self.etwas.agression == True:
 			self.conv_stop = True
 
+
+	def update (self, array):
+		self.conversation_control ()
+
 		if self.move == True:
 
-		#RIGHT
 			if self.control.right == True:
-				self.collide_control = False
-
-	
 				self.rect.x += 1
-	
 				self.etwas = self.collide(array)
 	
 				if self.etwas != None:
+					self.etwas.interaction(self)
 	
-					if self.etwas.name == "block":
-						self.rect.x -= 1
-						self.etwas.interaction (self)
+				else:
+					self.rect.x += 44
 	
-					elif self.etwas.name == "chest":
-						self.rect.x -= 1
-						self.rect.x += 45
-						array.remove (self.etwas)
-
-					elif self.etwas.name == "monster":
-						self.rect.x -= 1
-						self.collide_control = True
-						self.etwas.interaction (self)
-
-					else:
-						self.rect.x -= 1
-						self.etwas.interaction (self)
-
 				self.control.right = False
-				if self.etwas == None: 
-					self.rect.x += 45
-					self.rect.x -= 1
-				
-			#LEFT
+	
 			if self.control.left == True:
-				self.collide_control = False
 				self.rect.x -= 1
-	
 				self.etwas = self.collide(array)
+	
 				if self.etwas != None:
+					self.etwas.interaction(self)
 	
-					if self.etwas.name == "block":
-						self.rect.x += 1
+				else:
+					self.rect.x -= 44
 	
-					elif self.etwas.name == "chest":
-						self.rect.x += 1
-						self.rect.x -= 45
-						array.remove (self.etwas)
-	
-					elif self.etwas.name == "monster":
-	
-						self.rect.x += 1
-						self.collide_control = True
-						self.etwas.interaction (self)
-
-					else:
-						self.rect.x += 1
-						self.etwas.interaction (self)	
-	
-				if self.etwas == None: 
-					self.rect.x -= 45
-					self.rect.x += 1
 				self.control.left = False
 	
-			#UP
 			if self.control.up == True:
-				self.collide_control = False
 				self.rect.y -= 1
-	
 				self.etwas = self.collide(array)
-	
+
 				if self.etwas != None:
+					self.etwas.interaction(self)
 	
-					if self.etwas.name == "block":
-						self.rect.y += 1
-						
-						self.etwas.interaction (self)
-					elif self.etwas.name == "chest":
-						self.rect.y += 1
-						self.rect.y -= 45
-						array.remove (self.etwas)
-	
-					elif self.etwas.name == "monster":
-						self.collide_control = True
-						self.etwas.interaction (self)
-						self.rect.y += 1
-					else:
-						self.rect.y += 1
-						self.etwas.interaction (self)		
-				if self.etwas == None: 
-					self.rect.y +=1
-					self.rect.y -=45
+				else:
+					self.rect.y -= 44
 	
 				self.control.up = False
-			#DOWN
+	
 			if self.control.down == True:
-				self.collide_control = False
 				self.rect.y += 1
-	
 				self.etwas = self.collide(array)
+
 				if self.etwas != None:
-					if self.etwas.name == "block":
-						self.rect.y -= 1
+					self.etwas.interaction(self)
 	
-						self.etwas.interaction (self)
-					elif self.etwas.name == "chest":
-						self.rect.y -= 1
-						self.rect.y += 45
-						array.remove (self.etwas)
-					elif self.etwas.name == "monster":
-						self.rect.y -=1
-						self.collide_control = True
-						self.etwas.interaction (self)
-					else:
-						self.rect.y -= 1
-						self.etwas.interaction (self)		
-				if self.etwas == None: 
-					self.rect.y += 45
-					self.rect.y -= 1
+				else:
+					self.rect.y += 44
+	
 				self.control.down = False
 
-	def render (self, surface):
-		surface.blit(self.image, (self.rect.x, self.rect.y))
-
-
-
+#	def render (self, surface):
+#		surface.blit(self.image, (self.rect.x, self.rect.y))
 
 
 	# BATTLE OPTIONS

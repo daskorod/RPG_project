@@ -17,6 +17,12 @@ class Holy_Spirit ():
 		self.k_3 = False
 		self.k_n = False
 		self.k_e = False
+		self.k_i = False
+#		R = False
+#		L = False
+#		U = False
+#		D = False
+#		self.direction = [R,L,U,D]
 		
 	def control (self):
 			for e in pygame.event.get ():
@@ -75,6 +81,10 @@ class Holy_Spirit ():
 						self.k_n = True
 					if e.key == pygame.K_e:
 						self.k_e = True
+
+					if e.key == pygame.K_i:
+						self.k_i = True
+
 				if e.type == pygame.KEYUP:
 					if e.key == pygame.K_1:
 						self.k_1 = False
@@ -88,3 +98,5 @@ class Holy_Spirit ():
 						self.k_n = False
 					if e.key == pygame.K_e:
 						self.k_e = False
+					if e.key == pygame.K_i:
+						self.k_i = False

@@ -182,6 +182,10 @@ def create_level (level, battle, control,son, grType):
 			if col == 'p':
 				pr = classes.Portal (x,y, control)
 				sprite_group.add (pr)
+
+			if col == 'z':
+				pr = classes.Portal2 (x,y, control)
+				sprite_group.add (pr)
 			x += 45
 		x = 0
 		y += 45

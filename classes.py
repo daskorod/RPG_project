@@ -44,37 +44,47 @@ class Bar(sprite.Sprite):
 class Monster(sprite.Sprite):
 	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son):
 		sprite.Sprite.__init__(self)
-		self.image=image.load('images/zombi.png')
-		self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((120,30,200))
-		self.a = "Я злобный монстр!"
+
+		#BASE DATA
+		self.image=image.load('images/zombi.png')
+		self.image.set_colorkey ((255,255,255))
 		self.rect = Rect (0,0, 45,45)
 		self.rect.x = x*PF_WIDTH
 		self.rect.y = y*PF_HEIGHT
-		self.name = "monster"
+		self.control = control
+		self.son = son
+
+		#CHAR DATA
 		self.mname = '     Зомби'
-		self.textus = text
-		self.n = 0
-		self.s = 1
-		self.tree = text.zombi1
 		self.at = at
 		self.ac = ac
 		self.hp = hp
 		self.damage = dem
-		self.wait_for_next_turn = False
-		self.control = control
-		self.battle = battle
-		self.agression = False
+
+		#conversation data
+		self.tree = text.zombi1
+		self.n = 0
+		self.s = 1
 		self.add_information = "none"
-		self.status = 'alive'
-		self.son = son
+		self.agression = False
 		self.branch = 0
 		self.branch_do = ''
 		self.branch_id = ''
-		self.hp_old = hp
+
+		#battle data
+
+		self.wait_for_next_turn = False
+		self.battle = battle
+
+		#TECH DATA
+		self.hp_old = hp	
 		self.start_rendering = False
 		self.x_mod = 0
+		self.status = 'alive'
+
+		#RENDER BATTLE INTERFACE DATA
 		self.monsterList2 = [self.at, self.ac, self.hp, self.damage]
 		self.m1 = ''
 		self.m2 = 'А:'
@@ -108,24 +118,6 @@ class Monster(sprite.Sprite):
 		monster_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(90,140))
 		monster_screen.blit(self.at_ic,(5,145))
 		monster_screen.blit(self.ac_ic,(75,145))
-		
-
-
-
-
-#		i = 0
-#		monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(self.monsterList2[i])), True, #(250,250,250)),(40*i, 130))
-#		i = 1
-#		monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(self.monsterList2[i])), True, #(250,250,250)),(40*i, 130))
-	
-#		for i in range (4):
-#			if i <3:
-#				monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(self.monsterList2[i])), True, (250,250,250)),(40*i, 130))
-#			if i>=2:
-#				monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(self.monsterList2[i])), True, (250,250,250)),(((40*i)-80), 150))
-
-
-
 
 	def death_check (self, hero):
 
@@ -140,7 +132,16 @@ class Monster(sprite.Sprite):
 			self.son.clear_text ()
 
 	def interaction (self, hero):
+		if hero.control.right == True:
+			hero.rect.x -= 1
+		elif hero.control.left == True:
+			hero.rect.x += 1
+		elif hero.control.up == True:
+			hero.rect.y += 1
+		elif hero.control.down == True:
+			hero.rect.y -= 1
 		hero.move = False
+		hero.collide_control = True
 
 	def render_hp_mod(self, position):
 
@@ -164,8 +165,16 @@ class Monster(sprite.Sprite):
 				self.start_rendering = False
 				self.x_mod = 0
 
+
+
+	# DIALOG METHODS
+
+
 	def dialog_special (self, hero):
 		pass
+
+
+
 	def dialog_options (self,hero):
 		self.dialog_special (hero)
 
@@ -358,8 +367,16 @@ class Platform(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "block"
+
 	def interaction (self,hero):
-		pass
+		if hero.control.right == True:
+			hero.rect.x -= 1
+		elif hero.control.left == True:
+			hero.rect.x += 1
+		elif hero.control.up == True:
+			hero.rect.y += 1
+		elif hero.control.down == True:
+			hero.rect.y -= 1
 
 class Pavestone(sprite.Sprite):
 	def __init__(self, x, y):
@@ -386,38 +403,63 @@ class Door(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = ""
-		self.status = 'open'
+		self.status = 'closed'
+
+		#conversation data
 		self.tree = text.door
-		self.branch = 0
 		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
 
 	def interaction (self, hero):
-		if self.status == 'open':
 
-			if hero.control.right == True:
-				hero.rect.x +=45 
-			elif hero.control.left == True:
-				hero.rect.x -=45 
+		if hero.control.right == True:
+			hero.rect.x -= 1
+		elif hero.control.left == True:
+			hero.rect.x += 1
+		elif hero.control.up == True:
+			hero.rect.y += 1
+		elif hero.control.down == True:
+			hero.rect.y -= 1
 
-			elif hero.control.up == True:
-				hero.rect.y -=45 
-			elif hero.control.down == True:
-				hero.rect.y +=45 
-
-		else:
-			hero.door_interaction = True
-			hero.move = False
+		hero.move = False
+		hero.collide_control = True
 
 
-#	def door_event (self, hero):
-#		hero.conversation (self.tree, self)
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		self.dialog_special (hero)
+		if self.add_information == 'open' and hero.control.k_e == True:
+			hero.move = True
+			hero.control.k_e = False
+			hero.son.clear_text ()
+			hero.son.change_text (4, 'Дверь скрипит!')
+			self.kill ()
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'end' and hero.control.k_e == True:
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+			self.branch = 0
 
 
-
-
-class Candel(sprite.Sprite):
+class Candel(Platform):
 	def __init__(self, x, y):
-		sprite.Sprite.__init__(self)
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
 		self.image = image.load('images/candel3.png')
 		self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
@@ -427,21 +469,6 @@ class Candel(sprite.Sprite):
 		self.rect.y = y
 		self.name = ""
 		self.status = 'closed'
-	def interaction (self, hero):
-		if self.status == 'open':
-
-			if hero.control.right == True:
-				hero.rect.x +=45 
-			elif hero.control.left == True:
-				hero.rect.x -=45 
-
-			elif hero.control.up == True:
-				hero.rect.y -=45 
-			elif hero.control.down == True:
-				hero.rect.y +=45 
-
-		else:
-			pass
 
 
 class Marker(sprite.Sprite):
@@ -471,16 +498,67 @@ class Chest(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "chest"
-	def interaction (self, hero):
-		hero.move = False
 
-class Portal(sprite.Sprite):
+		#conversation data
+		self.tree = text.chest
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= 1
+		elif hero.control.left == True:
+			hero.rect.x += 1
+		elif hero.control.up == True:
+			hero.rect.y += 1
+		elif hero.control.down == True:
+			hero.rect.y -= 1
+		hero.move = False
+		hero.collide_control = True
+
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		self.dialog_special (hero)
+		if self.add_information == 'end_chest' and hero.control.k_e == True:
+			hero.move = True
+			hero.gold += 20
+			hero.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (4, 'Вы получили 10 монет')
+			hero.son.change_text (5, 'Ваши деньги: '+str(hero.gold))
+			self.kill ()
+
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'end' and hero.control.k_e == True:
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+			self.branch = 0
+
+
+class Portal2(sprite.Sprite):
 	def __init__(self, x, y,control):
 		sprite.Sprite.__init__(self)
-		#self.image=image.load('images/chest2.png')
+		self.image=image.load('images/portal.png')
 		#self.image.set_colorkey ((255,255,255))
-		self.image = Surface ((45,45))
-		self.image.fill ((200,30,70))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((200,30,70))
 		self.rect = Rect (0,0, 45,45)
 		self.rect.x = x
 		self.rect.y = y
@@ -489,8 +567,26 @@ class Portal(sprite.Sprite):
 	def interaction (self, hero):
 		self.control.stage1_flag = False
 		self.control.stage2_flag = True
-		hero.rect.x = 0
-		hero.rect.y = 0
+		hero.rect.x = 630
+		hero.rect.y = 180
+
+class Portal (sprite.Sprite):
+	def __init__(self, x, y,control):
+		sprite.Sprite.__init__(self)
+		self.image=image.load('images/portal.png')
+		#self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((200,30,70))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "portal"
+		self.control = control
+	def interaction (self, hero):
+		self.control.stage2_flag = False
+		self.control.stage1_flag = True
+		hero.rect.x = 45
+		hero.rect.y = 45
 
 class Bar(sprite.Sprite):
 	def __init__(self, xs, ys, color):
