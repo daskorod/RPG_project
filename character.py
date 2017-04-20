@@ -72,6 +72,33 @@ class Hero(pygame.sprite.Sprite):
 		self.at_ic = pygame.image.load ('images/at.png')
 		self.ac_ic = pygame.image.load ('images/ac.png')
 		self.icon = image.load ('images/icon.png')
+		self.inventory_flag = False
+		self.inv = ['Короткий меч (урон 1)',2,3,4,5,6,7,8]
+
+
+
+	def inventory_manage (self):
+
+		if self.control.k_i == True and self.inventory_flag == False:
+			self.move = False
+			self.inventory_flag = True
+			self.control.k_i = False
+
+		if self.control.k_i == True and self.inventory_flag == True:
+			self.control.k_i = False
+			self.move = True
+			self.inventory_flag = False
+
+		if self.inventory_flag == True:
+			adventure_screen.blit (inventory_screen, (200,10))
+			inventory_screen.fill (black)
+			a = 0
+			for i in self.inv:
+				inventory_screen.blit(fonts.font2.render ('Инвентарь', True, (250,250,250)),(90,10))
+				inventory_screen.blit(fonts.font2.render (str(i), True, (250,250,250)),(10,50+(a*30)))
+				a +=1
+
+
 
 	def render_hp_mod(self, position):
 
@@ -204,6 +231,7 @@ class Hero(pygame.sprite.Sprite):
 
 	def update (self, array):
 		self.conversation_control ()
+		self.inventory_manage ()
 
 		if self.move == True:
 
