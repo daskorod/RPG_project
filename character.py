@@ -7,6 +7,7 @@ import random
 import classes
 from screens import *
 from constants import *
+import items
 
 svin_anim_list = [('images/svin_motion.png',0.5),('images/svin_motion2.png',0.3),('images/svin_motion3.png',0.2)]
 svin_anim = pyganim.PygAnimation(svin_anim_list)
@@ -39,10 +40,10 @@ class Hero(pygame.sprite.Sprite):
 		self.assault = False
 		self.flee = False
 		self.special = False
-		self.at = at
+		self.at = at 
 		self.ac = ac
 		self.hp = hp
-		self.damage = dem
+
 		self.turn_main = False
 		self.attack_roll = False
 		self.wait_for_next_turn = False
@@ -73,10 +74,18 @@ class Hero(pygame.sprite.Sprite):
 		self.ac_ic = pygame.image.load ('images/ac.png')
 		self.icon = image.load ('images/icon.png')
 		self.inventory_flag = False
-		self.inv = ['Короткий меч (урон 1)',2,3,4,5,6,7,8]
-
-
-
+		self.exp = 0
+		self.weapon = items.short_sword
+		self.weapon.status = 'экипировано'
+		self.no_item = items.no_item
+		self.inv = [self.weapon, items.long_sword,self.no_item,items.bouquet,self.no_item,self.no_item,self.no_item,self.no_item,self.no_item]
+		self.inv_index_pos = 0
+		
+		self.first = items.first
+		#self.at += self.weapon.at_mod
+		self.damage = self.weapon.dem
+		self.level = 1
+		self.inv_question = False
 	def inventory_manage (self):
 
 		if self.control.k_i == True and self.inventory_flag == False:
@@ -88,15 +97,77 @@ class Hero(pygame.sprite.Sprite):
 			self.control.k_i = False
 			self.move = True
 			self.inventory_flag = False
+			self.son.clear_text ()
 
 		if self.inventory_flag == True:
 			adventure_screen.blit (inventory_screen, (200,10))
-			inventory_screen.fill (black)
+			inventory_screen.fill (sea_color)
 			a = 0
 			for i in self.inv:
 				inventory_screen.blit(fonts.font2.render ('Инвентарь', True, (250,250,250)),(90,10))
-				inventory_screen.blit(fonts.font2.render (str(i), True, (250,250,250)),(10,50+(a*30)))
+				inventory_screen.blit(fonts.font2.render (str(i.name)+' ( '+ i.status + ' )', True, (250,250,250)),(40,50+(a*30)))
 				a +=1
+
+			
+
+			if self.inv_question == False:
+				self.inv_index()
+				self.son.change_text_tree (self.view.render_text (self.inv[self.inv_index_pos].name+ '. ' + self.inv[self.inv_index_pos].description, self.inv[self.inv_index_pos].use_description))
+
+			if self.inv_question == False:
+
+				if self.control.k_1 == True:
+					self.control.k_1 = False
+					if self.inv[self.inv_index_pos].status == 'в рюкзаке':
+						for i in self.inv:
+							if i.species == 'оружие' and i.status == 'экипировано':
+								i.status = "в рюкзаке"
+						self.inv[self.inv_index_pos].status = 'экипировано'
+						if self.inv[self.inv_index_pos].species == 'оружие':
+							self.weapon = self.inv[self.inv_index_pos]
+							self.at += self.weapon.at_mod
+							self.damage = self.weapon.dem
+					elif self.inv[self.inv_index_pos].status == 'экипировано':
+						self.inv[self.inv_index_pos].status = 'в рюкзаке'
+	
+						if self.inv[self.inv_index_pos].species == 'оружие':
+							self.weapon = self.first
+							#self.at += self.weapon.at_mod
+							self.damage = self.weapon.dem
+	
+				if self.control.k_2 == True:
+					self.inv_question = True
+					self.control.k_2 = False
+					self.son.clear_text ()
+					self.son.change_text (1, 'Вы уверены, что хотите выбросить ' +self.inv[self.inv_index_pos].name+ ' на фиг!' )
+					self.son.change_text (3, '1 - Да, 2 - Нет')
+
+			if self.inv_question == True:
+				if self.control.k_1 == True:
+					self.control.k_1 = False
+
+					if self.inv[self.inv_index_pos].status == 'экипировано':
+						if self.inv[self.inv_index_pos].species == 'оружие':
+							self.weapon = self.first
+							#self.at += self.weapon.at_mod
+							self.damage = self.weapon.dem
+					self.inv.pop (self.inv_index_pos)
+					self.inv.insert (self.inv_index_pos, items.no_item)
+					self.inv_question = False
+
+				if self.control.k_2 == True:
+					self.control.k_2 = False
+					self.inv_question = False
+
+	def inv_index (self):
+		inventory_screen.blit(self.at_ic, (13,53+(self.inv_index_pos*30)))
+
+		if self.control.down == True and self.inv_index_pos <8:
+			self.control.down = False
+			self.inv_index_pos += 1
+		if self.control.up == True and self.inv_index_pos >0:
+			self.control.up = False
+			self.inv_index_pos -= 1
 
 
 
@@ -143,14 +214,14 @@ class Hero(pygame.sprite.Sprite):
 
 
 #		high_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(10,0))
-#		high_screen.blit(fonts.font5.render ('ат '+str(self.at), True, (250,250,250)),(80,0))
-#		high_screen.blit(fonts.font5.render ('зщ '+str(self.ac), True, (250,250,250)),(130,0))
-#		high_screen.blit(fonts.font5.render ('жз '+str(self.hp), True, (250,250,250)),(180,0))
+		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
+		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
+		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
 #		high_screen.blit(fonts.font5.render ('мн '+str(self.sp), True, (250,250,250)),(230,0))
 #		high_screen.blit(fonts.font5.render ('ур '+str(self.damage), True, (250,250,250)),(280,0))
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(70,0))
-		hero_screen.blit(fonts.font5.render (str(self.at) +'/'+str(self.damage) , True, (250,250,250)),(80,155))
+		hero_screen.blit(fonts.font5.render (str((self.at+self.weapon.at_mod)) +'/'+str(self.damage) , True, (250,250,250)),(80,155))
 		hero_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(130,155))
 		hero_screen.blit(self.at_ic,(65,160))
 		hero_screen.blit(self.ac_ic,(115,160))
@@ -443,7 +514,7 @@ class Hero(pygame.sprite.Sprite):
 
 			a = self.dice_value
 			b = random.randint (1,6)
-			c = self.at + a 
+			c = self.at + a + self.weapon.at_mod
 			d = monster.ac + b
 		
 			self.son.change_text (1, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
