@@ -86,6 +86,7 @@ class Hero(pygame.sprite.Sprite):
 		self.damage = self.weapon.dem
 		self.level = 1
 		self.inv_question = False
+		
 	def inventory_manage (self):
 
 		if self.control.k_i == True and self.inventory_flag == False:

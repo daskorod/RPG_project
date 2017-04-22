@@ -569,6 +569,7 @@ class Portal2(sprite.Sprite):
 		self.control.stage2_flag = True
 		hero.rect.x = 630
 		hero.rect.y = 180
+		#hero.son.change_text (1, self.description)
 
 class Portal (sprite.Sprite):
 	def __init__(self, x, y,control):

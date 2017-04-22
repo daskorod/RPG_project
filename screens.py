@@ -7,9 +7,9 @@ import fonts
 window = display.set_mode((860, 634))
 display.set_caption('Giperborea')
 
-start_screen = Surface((830, 630))
+start_screen = Surface((840, 630))
 background = image.load ('images/back.png')
-adventure_screen = Surface ((810, 420))
+adventure_screen = Surface ((840, 420))
 instrumental_screen = Surface ((880,190))
 hero_screen = Surface ((180,190))
 monster_screen = Surface ((190,200))

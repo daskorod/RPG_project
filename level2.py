@@ -11,30 +11,24 @@ import camera
 
 timer = pygame.time.Clock  ()
 
-svin_anim_list = [('images/svin_motion.png',0.5),('images/svin_motion2.png',0.3),('images/svin_motion3.png',0.2)]
-svin_anim = pyganim.PygAnimation(svin_anim_list)
-svin_anim.play ()
-
 
 class Level ():
-	def __init__ (self, control, hero, lev, camera, battle, son):
+	def __init__ (self, control, hero, lev, battle, son):
 
 		self.platforms, self.block_group, self.background = functions.create_level (lev, battle, control,son, classes.Pavestone)
 		self.control = control
 		self.hero = hero
 		self.camera = camera
-		
+		self.level_width = len(lev[0])*PF_WIDTH
+		self.level_height = len(lev)*PF_HEIGHT
 		self.battle = battle
-		#self.skeletLord = classes.SkeletLord (19,5, self.battle, text.zombitext, self.control, 10,10,10,1, son)
-		#self.zomb = classes.Monster (0,0, self.battle, text.zombitext, self.control, 10,0,10,1, son)
-
-		#self.block_group.add (self.zomb)
-		#self.block_group.add (self.skeletLord)
 		self.n = 0
 		self.son = son
 		self.g = 1200
-		son.change_text (1, 'Вы в мрачном подземелье.')
-		self.name = '- - - Этаж 2 - - -'
+		son.change_text (1, 'Хороший город')
+		self.description = 'Хороший город'
+		self.name = '- - - Окраины города - - -'
+		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 
 	def render_stage1 (self):
 
@@ -61,20 +55,6 @@ class Level ():
 		classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
 		self.hero.render_hp_mod(x_hero)
 
-#		if self.skeletLord.lbolt == True:
-#			self.g = 185
-#
-#			self.skeletLord.lbolt = False
-#
-#
-#		if self.g > 190 and self.g< 240:
-#			
-##			x_hero.x -=49
-##			x_hero.y -=80
-##			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
-#			classes.boltAnim.play ()
-#			if self.g==239:
-#				classes.boltAnim.stop()
 
 		self.a = timer.get_fps()
 		self.render_stage1 ()
@@ -104,19 +84,3 @@ class Level ():
 		if self.control.k_space == True:
 			self.control.stage2_flag = False
 			self.control.stage1_flag = True
-
-
-#	def stage_loop (self):
-#
-#		self.a = timer.get_fps()
-#		self.render_stage ()
-#		svin_anim.blit (adventure_screen, (10,10))
-#		#self.hero.render (adventure_screen)
-#		self.hero.update (self.block_group)	
-#
-#		if self.control.k_space == True:
-#			self.control.stage2_flag = False
-#			self.control.stage1_flag = True
-#
-#		timer.tick (30)
-#	#
