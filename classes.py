@@ -377,6 +377,8 @@ class Platform(sprite.Sprite):
 			hero.rect.y += 1
 		elif hero.control.down == True:
 			hero.rect.y -= 1
+		hero.son.clear_text ()
+		hero.son.change_text (1, 'Холодная мрачная стена, напоминает о смерти.')
 
 class Pavestone(sprite.Sprite):
 	def __init__(self, x, y):
@@ -435,16 +437,16 @@ class Door(sprite.Sprite):
 
 	def dialog_options (self,hero):
 		self.dialog_special (hero)
-		if self.add_information == 'open' and hero.control.k_e == True:
+		if self.add_information == 'open':
 			hero.move = True
 			hero.control.k_e = False
 			hero.son.clear_text ()
-			hero.son.change_text (4, 'Дверь скрипит!')
+			hero.son.change_text (1, 'Вы открыли эту никчёмную дверь!')
 			self.kill ()
 			hero.collide_control = False
 			hero.start_conv = True
 
-		if self.add_information == 'end' and hero.control.k_e == True:
+		if self.add_information == 'end':
 
 			hero.move = True
 			hero.control.k_e = False
@@ -469,6 +471,11 @@ class Candel(Platform):
 		self.rect.y = y
 		self.name = ""
 		self.status = 'closed'
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, 'Крутой подсвечник. Да и свечи ничего')
+
+
 
 
 class Marker(sprite.Sprite):

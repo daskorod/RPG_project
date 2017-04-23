@@ -18,6 +18,7 @@ class Holy_Spirit ():
 		self.k_n = False
 		self.k_e = False
 		self.k_i = False
+		self.k_c = False
 #		R = False
 #		L = False
 #		U = False
@@ -84,7 +85,8 @@ class Holy_Spirit ():
 
 					if e.key == pygame.K_i:
 						self.k_i = True
-
+					if e.key == pygame.K_c:
+						self.k_c = True
 				if e.type == pygame.KEYUP:
 					if e.key == pygame.K_1:
 						self.k_1 = False
@@ -100,3 +102,5 @@ class Holy_Spirit ():
 						self.k_e = False
 					if e.key == pygame.K_i:
 						self.k_i = False
+					if e.key == pygame.K_c:
+						self.k_c = False

@@ -9,15 +9,12 @@ from screens import *
 from constants import *
 import items
 
-svin_anim_list = [('images/svin_motion.png',0.5),('images/svin_motion2.png',0.3),('images/svin_motion3.png',0.2)]
-svin_anim = pyganim.PygAnimation(svin_anim_list)
-svin_anim.play ()
-
-
 class Hero(pygame.sprite.Sprite):
 
 	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son):
 		pygame.sprite.Sprite.__init__(self)
+
+		#BASE
 
 		self.image=pygame.image.load('images/hero2.png')
 		self.image.set_colorkey ((255,255,255))
@@ -25,68 +22,185 @@ class Hero(pygame.sprite.Sprite):
 		self.battle = battle
 		self.name = 'Рихтер'
 		#self.image = pygame.Surface ((45,45))
-		#self.image = svin_anim.getImagesFromSpriteSheet()
 		#self.image.fill ((100,200,230))
-		self.sp = 2
 		self.rect = pygame.Rect (x,y, 45,45)
 		self.rect.x = x*45
-		self.rect.y = y*45
-		self.collision = False
-		self.collide_control = False
-		self.n = 0
-		self.s = 1
-		self.view = compose_text
-		self.add_information = 'nothing'
-		self.assault = False
-		self.flee = False
-		self.special = False
+		self.rect.y = y*45	
+		self.view = compose_text	
+		self.son = son
+		self.icon = image.load ('images/icon.png')
+
+		#CHARACTERSTICS
+		self.level = 1
+		self.sp = 2
 		self.at = at 
 		self.ac = ac
 		self.hp = hp
+		self.gold = 0
+		self.mx = 50
+		self.my = 50
+		self.exp = 0
+		self.hp_max = 7
+		self.hp_old = hp
+		self.x_mod = 0	
 
+		#DIALOG
+
+		self.start_conv = True
+		self.conv_stop = True
+
+		#BATTLE
+
+		self.collision = False
+		self.collide_control = False
+		self.back = False # В бою обратно идти в меню
+		self.assault = False
+		self.flee = False
+		self.special = False
 		self.turn_main = False
 		self.attack_roll = False
 		self.wait_for_next_turn = False
-		self.gold = 0
-		self.monster_turn = False
-		self.mx = 50
-		self.my = 50		
-		self.marker = classes.Marker (self.mx,self.my)
-		self.go_left = False
 		self.dice_fun = False
 		self.dice_value = 0
+		self.monster_turn = False
+		self.press_to_kill = False
+		self.go_left = False # В бою движение меча
+
+		#TECH
+		self.marker = classes.Marker (self.mx,self.my)
 		self.status = "alive"
 		self.move = True
-		self.hp_bar = classes.Bar (12,15, red)
-		self.sp_bar = classes.Bar (12,15, blue)
-		self.son = son
-		self.press_to_kill = False
-		self.back = False
-		self.branch_do = 'qwd'
-		self.hp_max = 7
-		self.hp_old = hp
-		self.x_mod = 0
-		self.start_rendering = False
-		self.start_conv = True
-		self.conv_stop = True
-		self.door_interaction = False
+		self.start_rendering = False # переключатель для отображения изменения HP
+
+		#BAR LIFE MANA
 		self.at_ic = pygame.image.load ('images/at.png')
 		self.ac_ic = pygame.image.load ('images/ac.png')
-		self.icon = image.load ('images/icon.png')
+		self.hp_bar = classes.Bar (12,15, red)
+		self.sp_bar = classes.Bar (12,15, blue)
+
+		#INVENTORY
+
 		self.inventory_flag = False
-		self.exp = 0
 		self.weapon = items.short_sword
 		self.weapon.status = 'экипировано'
 		self.no_item = items.no_item
 		self.inv = [self.weapon, items.long_sword,self.no_item,items.bouquet,self.no_item,self.no_item,self.no_item,self.no_item,self.no_item]
 		self.inv_index_pos = 0
-		
 		self.first = items.first
-		#self.at += self.weapon.at_mod
 		self.damage = self.weapon.dem
-		self.level = 1
 		self.inv_question = False
 		
+		#ChAr options
+		self.char_flag = False
+		self.char_point = 1
+		self.d = 'Е - повысить параметр'
+
+		self.char_value ={'lvl':1,'exp':0,'at':6,'ac':6,'hp':7,'sp':2,'points':1}
+
+
+		self.char = [
+
+#0
+		('Уровень', self.char_value['lvl'], 'Каждый уровень вы получаете одно очко для распределения', '','lvl'),
+#1
+		 ('Опыт',self.char_value['exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
+#2
+		  ('Атака',self.char_value['at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери', self.d,'at'),
+#3
+		   ('Защита',self.char_value['ac'], 'Ваши навыки обороны', self.d),
+#4
+		    ('Жизни',self.char_value['hp'], 'Сколько ударов вы можете держать', self.d),
+#5
+		     ('Вера',self.char_value['sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
+#6
+		      ('Очки на распределение', self.char_value['points'], 'За одно очко можно повысить один параметр', '')
+
+		      ]
+		#self.char = {level: 1, exp: 0, at:, self.ac, self.hp_max, self.sp, self.char_point}
+		#
+
+
+
+	def char_options (self):
+
+		self.char = [
+
+#0
+		('Уровень', self.char_value['lvl'], 'Каждый уровень вы получаете одно очко для распределения', '','lvl'),
+#1
+		 ('Опыт',self.char_value['exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
+#2
+		  ('Атака',self.char_value['at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери', self.d,'at'),
+#3
+		   ('Защита',self.char_value['ac'], 'Ваши навыки обороны', self.d),
+#4
+		    ('Жизни',self.char_value['hp'], 'Сколько ударов вы можете держать', self.d),
+#5
+		     ('Вера',self.char_value['sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
+#6
+		      ('Очки на распределение', self.char_value['points'], 'За одно очко можно повысить один параметр', '')
+
+		      ]
+
+
+
+
+
+		if self.control.k_c == True and self.char_flag ==False:
+			self.move = False
+			self.char_flag = True
+			self.control.k_c = False
+
+		if self.char_flag == True:
+
+			if self.control.k_c == True:
+				self.control.k_c = False
+				self.char_flag = False
+				self.move = True
+
+
+
+			adventure_screen.blit (char_screen, (200,10))
+			char_screen.fill (swamp)
+			
+			#self.char = [self.level, self.exp, self.at, self.ac, self.hp_max, self.sp]
+			a = 0
+			for i in range(len(self.char)):
+
+				char_screen.blit(fonts.font2.render ('Характеристики', True, (250,250,250)),(90,10))
+				char_screen.blit(fonts.font2.render (str(self.char[i][0])+': '+ str(self.char[i][1]), True, (250,250,250)),(40,50+(a*30)))
+				a +=1
+			self.char_index ()
+
+			if self.char[6][1] > 0:
+
+				try:
+					self.son.change_text_tree (self.view.render_text (self.char[self.inv_index_pos][0]+ '. ' + self.char[self.inv_index_pos][2], self.char[self.inv_index_pos][3]))
+				except:
+					pass
+
+				if self.inv_index_pos > 1 and self.inv_index_pos <6 and self.control.k_e == True:
+					self.char_value['at'] +=1
+					self.char_value['points'] -=1
+					self.control.k_e = False
+			else:
+
+				try:
+					self.son.change_text_tree (self.view.render_text (self.char[self.inv_index_pos][0]+ '. ' + self.char[self.inv_index_pos][2], ''))
+				except:
+					pass
+
+
+	def char_index (self):
+		char_screen.blit(self.at_ic, (13,53+(self.inv_index_pos*30)))
+
+		if self.control.down == True and self.inv_index_pos <8:
+			self.control.down = False
+			self.inv_index_pos += 1
+		if self.control.up == True and self.inv_index_pos >0:
+			self.control.up = False
+			self.inv_index_pos -= 1		
+
 	def inventory_manage (self):
 
 		if self.control.k_i == True and self.inventory_flag == False:
@@ -108,8 +222,6 @@ class Hero(pygame.sprite.Sprite):
 				inventory_screen.blit(fonts.font2.render ('Инвентарь', True, (250,250,250)),(90,10))
 				inventory_screen.blit(fonts.font2.render (str(i.name)+' ( '+ i.status + ' )', True, (250,250,250)),(40,50+(a*30)))
 				a +=1
-
-			
 
 			if self.inv_question == False:
 				self.inv_index()
@@ -214,18 +326,17 @@ class Hero(pygame.sprite.Sprite):
 		hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
 
 
-#		high_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(10,0))
+
 		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
 		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
 		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
-#		high_screen.blit(fonts.font5.render ('мн '+str(self.sp), True, (250,250,250)),(230,0))
-#		high_screen.blit(fonts.font5.render ('ур '+str(self.damage), True, (250,250,250)),(280,0))
+
 		
-		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(70,0))
-		hero_screen.blit(fonts.font5.render (str((self.at+self.weapon.at_mod)) +'/'+str(self.damage) , True, (250,250,250)),(80,155))
-		hero_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(130,155))
-		hero_screen.blit(self.at_ic,(65,160))
-		hero_screen.blit(self.ac_ic,(115,160))
+		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
+		hero_screen.blit(fonts.font5.render (str((self.at+self.weapon.at_mod)) +'/'+str(self.damage) , True, (250,250,250)),(60,155))
+		hero_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(120,155))
+		hero_screen.blit(self.at_ic,(45,160))
+		hero_screen.blit(self.ac_ic,(100,160))
 		hero_screen.blit (self.icon, (50,35))
 
 	def conversation (self, tree, interlocutor):
@@ -303,7 +414,10 @@ class Hero(pygame.sprite.Sprite):
 
 	def update (self, array):
 		self.conversation_control ()
-		self.inventory_manage ()
+		if self.char_flag == False:
+			self.inventory_manage ()
+		if self.inventory_flag == False:
+			self.char_options ()
 
 		if self.move == True:
 
@@ -388,7 +502,7 @@ class Hero(pygame.sprite.Sprite):
 		if self.go_left == True:
 			self.mx = self.mx -10
 
-		if self.mx > 550:
+		if self.mx > 350:
 			self.go_left = True
 
 		if self.mx < 40:
@@ -406,8 +520,6 @@ class Hero(pygame.sprite.Sprite):
 
 		if self.turn_main == True:
 
-
-			
 			self.son.change_text (1, "Что будете делать?")
 			self.son.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
 	

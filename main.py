@@ -40,7 +40,6 @@ class main ():
 			pygame.display.update()
 
 
-#camera = camera.Camera (camera_config, level_width, level_height)
 son = functions.Son ()
 control = controller.Holy_Spirit () 
 battle = functions.Battle (control)

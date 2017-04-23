@@ -17,7 +17,7 @@ information_screen = Surface ((680,190))
 roll_screen = Surface ((600, 170))
 high_screen = Surface ((810, 22))
 inventory_screen = Surface ((380,350))
-
+char_screen = Surface ((380,350))
 
 def main_interface (level):
 	window.blit(start_screen, (10, 10))
