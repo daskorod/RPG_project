@@ -9,6 +9,13 @@ from screens import *
 from constants import *
 import items
 
+
+heroAnim = pyganim.PygAnimation([('images/anim/d1.png', 0.3),
+								('images/anim/d2.png', 0.3)])
+heroAnim.play ()
+#heroAnim.blit (adventure_screen, (self.rect.x, self.rect.y))
+#self.camera.apply(self.hero)
+#heroAnim.blit (adventure_screen, (self.camera.apply(self.hero)))
 class Hero(pygame.sprite.Sprite):
 
 	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son):
@@ -16,13 +23,18 @@ class Hero(pygame.sprite.Sprite):
 
 		#BASE
 
-		self.image=pygame.image.load('images/hero2.png')
-		self.image.set_colorkey ((255,255,255))
+		#self.image=pygame.image.load('images/hero2.png')
+		#self.image = heroAnim
+		#self.image.set_colorkey ((255,255,255))
+		#self.image = heroAnim.getImagesFromSpriteSheet()
+		self.stand = pygame.image.load ('images/anim/stand.png')
 		self.control = control
 		self.battle = battle
 		self.name = 'Рихтер'
-		#self.image = pygame.Surface ((45,45))
-		#self.image.fill ((100,200,230))
+		self.anima = heroAnim
+		self.image = pygame.Surface ((45,45))
+		self.image.fill ((100,200,230))
+		self.image.set_colorkey ((100,200,230))		
 		self.rect = pygame.Rect (x,y, 45,45)
 		self.rect.x = x*45
 		self.rect.y = y*45	
@@ -413,6 +425,12 @@ class Hero(pygame.sprite.Sprite):
 
 
 	def update (self, array):
+
+		
+		if self.move == False:
+			heroAnim.stop ()
+
+
 		self.conversation_control ()
 		if self.char_flag == False:
 			self.inventory_manage ()
@@ -420,7 +438,7 @@ class Hero(pygame.sprite.Sprite):
 			self.char_options ()
 
 		if self.move == True:
-
+			heroAnim.play ()
 			if self.control.right == True:
 				self.rect.x += 1
 				self.etwas = self.collide(array)

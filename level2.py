@@ -32,6 +32,7 @@ class Level ():
 
 	def render_stage1 (self):
 
+
 		main_interface (self)
 		#self.g += 1
 		for b in self.background:
@@ -41,10 +42,14 @@ class Level ():
 			adventure_screen.blit(b.image, self.camera.apply (b))
 
 
-
 		if self.hero.status != 'dead':
 
 			adventure_screen.blit (self.hero.image, self.camera.apply(self.hero))
+			self.hero.anima.blit (adventure_screen, (self.camera.apply(self.hero)))
+
+			if self.hero.move == False:
+				adventure_screen.blit (self.hero.stand, self.camera.apply(self.hero))
+
 		#start_screen.blit(fonts.font1.render (str(self.a), True, (250,250,250)),(0,0))
 
 	def stage_loop (self):

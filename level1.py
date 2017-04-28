@@ -42,8 +42,9 @@ class Level ():
 
 		if self.hero.status != 'dead':
 			adventure_screen.blit (self.hero.image, self.camera.apply(self.hero))
-
-
+			self.hero.anima.blit (adventure_screen, (self.camera.apply(self.hero)))
+			if self.hero.move == False:
+				adventure_screen.blit (self.hero.stand, self.camera.apply(self.hero))
 	def stage_loop (self):
 
 		x_hero = (self.camera.apply(self.hero))
