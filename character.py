@@ -41,6 +41,7 @@ class Hero(pygame.sprite.Sprite):
 		self.view = compose_text	
 		self.son = son
 		self.icon = image.load ('images/icon.png')
+		self.location = ''
 
 		#CHARACTERSTICS
 		self.level = 1
@@ -426,6 +427,7 @@ class Hero(pygame.sprite.Sprite):
 
 	def update (self, array):
 
+		#self.location.stage_loop ()
 		
 		if self.move == False:
 			heroAnim.stop ()

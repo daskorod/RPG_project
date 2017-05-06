@@ -24,6 +24,7 @@ class Holy_Spirit ():
 #		U = False
 #		D = False
 #		self.direction = [R,L,U,D]
+		self.current_location = ''
 		
 	def control (self):
 			for e in pygame.event.get ():
