@@ -25,37 +25,18 @@ class main ():
 		while True:
 
 			self.control.control ()
-
-			#self.control.current_location.stage_loop ()
-
-			#self.current 
-			if self.control.stage1_flag == True:
-				if self.control.flag == 1:
-					self.control.k_space = False
-					self.control.flag = 0
-				self.stage1.stage_loop ()
-
-			if self.control.stage2_flag == True:
-				if self.control.flag == 0:
-					self.control.k_space = False
-					self.control.flag = 1
-				self.stage2.stage_loop ()
-	
+			self.hero.transcendental_apperception ()
 			pygame.display.update()
-
+			
 
 son = functions.Son ()
 control = controller.Holy_Spirit () 
 battle = functions.Battle (control)
 compose_text = functions.Compose_dialog_tree (control,son)
-hero = character.Hero (2,2, battle, control, compose_text, 6,6,6,1, son)
-
-stage1 = levels.Level1(control, hero, lev1, battle, son)
-stage2 = levels.Level2(control, hero, lev2, battle, son)
-
+stage1 = levels.Level1(control, lev1, battle, son)
+stage2 = levels.Level2(control, lev2, battle, son)
 levels_list = [stage1, stage2]
-
-
+hero = character.Hero (2,2, battle, control, compose_text, 6,6,6,1, son, levels_list)
 game = main (stage1, stage2, control, hero)
 game.main_loop ()
 

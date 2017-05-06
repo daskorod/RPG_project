@@ -572,8 +572,9 @@ class Portal2(sprite.Sprite):
 		self.name = "portal"
 		self.control = control
 	def interaction (self, hero):
-		self.control.stage1_flag = False
-		self.control.stage2_flag = True
+		#self.control.stage1_flag = False
+		#self.control.stage2_flag = True
+		hero.location = hero.location_list[1]
 		hero.rect.x = 630
 		hero.rect.y = 180
 		#hero.son.change_text (1, self.description)
@@ -591,10 +592,13 @@ class Portal (sprite.Sprite):
 		self.name = "portal"
 		self.control = control
 	def interaction (self, hero):
-		self.control.stage2_flag = False
-		self.control.stage1_flag = True
+		#self.control.stage2_flag = False
+		#self.control.stage1_flag = True
+		hero.location = hero.location_list[0]
 		hero.rect.x = 45
 		hero.rect.y = 45
+
+
 
 class Bar(sprite.Sprite):
 	def __init__(self, xs, ys, color):

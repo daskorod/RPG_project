@@ -18,7 +18,7 @@ heroAnim.play ()
 #heroAnim.blit (adventure_screen, (self.camera.apply(self.hero)))
 class Hero(pygame.sprite.Sprite):
 
-	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son):
+	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son, location_list):
 		pygame.sprite.Sprite.__init__(self)
 
 		#BASE
@@ -41,7 +41,9 @@ class Hero(pygame.sprite.Sprite):
 		self.view = compose_text	
 		self.son = son
 		self.icon = image.load ('images/icon.png')
-		self.location = ''
+		self.location_list = location_list
+		self.location = location_list[0]
+		self.level_mark = 0
 
 		#CHARACTERSTICS
 		self.level = 1
@@ -489,8 +491,22 @@ class Hero(pygame.sprite.Sprite):
 	
 				self.control.down = False
 
-#	def render (self, surface):
-#		surface.blit(self.image, (self.rect.x, self.rect.y))
+
+
+	def transcendental_apperception (self):
+		
+		if self.control.k_space == True:
+			self.control.k_space = False
+			self.level_mark +=1
+			try:
+				self.location = self.location_list[self.level_mark]
+			except:
+				self.location = self.location_list[0]
+				self.level_mark = 0
+
+		self.update (self.location.block_group)
+		self.location.stage_loop (self)
+		
 
 
 	# BATTLE OPTIONS
