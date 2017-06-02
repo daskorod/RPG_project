@@ -7,24 +7,31 @@ from constants import *
 import fonts
 import text
 import camera
-	
+
+#functions.create_level
 timer = pygame.time.Clock  ()
 
 class SuperLevel ():
 	def __init__ (self, control, lev, battle, son):
 
-		self.platforms, self.block_group, self.background = functions.create_level (lev, battle, control,son, classes.Pavestone)
-		self.control = control
-	#	self.hero = hero
-		self.level_width = len(lev[0])*PF_WIDTH
-		self.level_height = len(lev)*PF_HEIGHT
+		#self.create = create
+		self.lev = lev
 		self.battle = battle
 		self.description = ''
 		self.son = son
 		self.name = 'location`s name'
+		self.control = control		
+		self.platforms, self.block_group, self.background = self.create ()
+
+		self.level_width = len(lev[0])*PF_WIDTH
+		self.level_height = len(lev)*PF_HEIGHT
 		self.camera = camera.Camera (self.level_width, self.level_height, 840, 420)
 	#	self.x_hero = (self.camera.apply(self.hero))
 		self.back = False
+
+	def create (self):
+		a, b, c = functions.create_level (self.lev, self.battle, self.control,self.son, classes.Pavestone)
+		return a,b,c
 
 	def render_stage (self, hero):
 		
@@ -123,7 +130,26 @@ class Level2 (SuperLevel):
 			self.control.stage2_flag = False
 			self.control.stage1_flag = True
 
+class Platz (SuperLevel):
+	def __init__ (self, control, lev, battle, son):
+		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.back = True
+		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
+		self.name = '- - - Главная площадь - - -'
 
+	def stage_content (self, hero):
 
+		pass
+
+class Tavern (SuperLevel):
+	def __init__ (self, control, lev, battle, son):
+		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.back = False
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
+		self.name = '- - - Таверна - - -'
+
+	def stage_content (self, hero):
+
+		pass
 
 

@@ -598,7 +598,39 @@ class Portal (sprite.Sprite):
 		hero.rect.x = 45
 		hero.rect.y = 45
 
+class PortalS (sprite.Sprite):
+	def __init__(self, x, y, loc):
+		sprite.Sprite.__init__(self)
+		self.image=image.load('images/portal.png')
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "portal"
+		self.loc_num = loc
+	def interaction (self, hero):
+		#self.control.stage2_flag = False
+		#self.control.stage1_flag = True
+		hero.location = hero.location_list[loc_num]
+		hero.rect.x = 45
+		hero.rect.y = 45
 
+class IndexS (Platform):
+	def __init__(self, x, y, text):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		#self.image = image.load('images/candel3.png')
+		#self.image.set_colorkey ((255,255,255))
+		self.image = Surface ((45,45))
+		self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.text = text
+
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, self.text)
 
 class Bar(sprite.Sprite):
 	def __init__(self, xs, ys, color):

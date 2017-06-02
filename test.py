@@ -1,13 +1,27 @@
 # -*- coding: utf-8 -*-
 
 class svin ():
-	z = 10
+	def __init__ (self):
+	
+		self.a = self.act ()
+	def act(self):
+		return 5
+	def pr (self):
+		print (self.a)
 
-def test (a, *b):
-	*f = *b
-	print (a, f)
+class borov (svin):
+	def __init__ (self):
+		svin.__init__ (self)
+	def act (self):
+		return 10
 
-test (1,2)
+a = svin ()
+a.pr ()
+
+b = borov ()
+b.pr ()
+
+
 
 #	def update (self, array):
 #

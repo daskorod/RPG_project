@@ -121,33 +121,23 @@ class Compose_dialog_tree ():
 #				pass
 
 class Battle ():
-	def __init__ (self, control):
-
-		self.conntrol = control
-
-
 	def main_loop (self, hero, monster):
-
-
-
 		if hero.status != 'dead' and monster.status != 'killed':
-
 			hero.battle_action_main ()
 			monster.death_check (hero)	
 			monster.battle_action (hero)
 			hero.check_for_death ()
 			monster.render_monster_inf ()
 
-	
-#	def render_monster_inf (self, monster):
-#
-#		instrumental_screen.blit (monster_screen, (678,8))
-#		monster_screen.fill ((sea_color))
-#		monsterList2 = [monster.name, monster.at, monster.ac, monster.hp, monster.damage]
-#	
-#		for i in range (5):
-#			monster_screen.blit(fonts.font3.render (str(self.monsterList[i] + str(monsterList2[i])), True, (250,250,250)),(2,15*i))
+def combat (hero, monster):
+	if hero.status != 'dead' and monster.status != 'killed':
+		hero.battle_action_main ()
+		monster.death_check (hero)	
+		monster.battle_action (hero)
+		hero.check_for_death ()
+		monster.render_monster_inf ()
 
+		
 def create_level (level, battle, control,son, grType):
 	sprite_group = sprite.Group ()
 	platforms = []
@@ -183,6 +173,9 @@ def create_level (level, battle, control,son, grType):
 				pr = classes.Portal (x,y, control)
 				sprite_group.add (pr)
 
+			if col == 'z':
+				pr = classes.Portal2 (x,y, control)
+				sprite_group.add (pr)
 			if col == 'z':
 				pr = classes.Portal2 (x,y, control)
 				sprite_group.add (pr)

@@ -31,11 +31,13 @@ class main ():
 
 son = functions.Son ()
 control = controller.Holy_Spirit () 
-battle = functions.Battle (control)
+battle = functions.Battle ()
 compose_text = functions.Compose_dialog_tree (control,son)
 stage1 = levels.Level1(control, lev1, battle, son)
 stage2 = levels.Level2(control, lev2, battle, son)
-levels_list = [stage1, stage2]
+mainplatz = levels.Platz (control, platz, battle, son)
+tavern_loc = levels.Tavern (control, tavern, battle, son)
+levels_list = [stage1,tavern_loc, stage2, mainplatz]
 hero = character.Hero (2,2, battle, control, compose_text, 6,6,6,1, son, levels_list)
 game = main (stage1, stage2, control, hero)
 game.main_loop ()

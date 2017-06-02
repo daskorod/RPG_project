@@ -10,9 +10,33 @@ from constants import *
 import items
 
 
-heroAnim = pyganim.PygAnimation([('images/anim/d1.png', 0.3),
+heroAnim = pyganim.PygAnimation([('images/anim/stand.png', 0.3),
+								('images/anim/d1.png', 0.3),
+								('images/anim/stand.png', 0.3),
 								('images/anim/d2.png', 0.3)])
+
+heroAnim_l = pyganim.PygAnimation([('images/anim/l1.png', 0.3),
+								('images/anim/l2.png', 0.3),
+								('images/anim/l3.png', 0.3),
+								('images/anim/l4.png', 0.3)])
+
+heroAnim_r = pyganim.PygAnimation([('images/anim/r13.png', 0.3),
+								('images/anim/r2.png', 0.3),
+								('images/anim/r13.png', 0.3),
+								('images/anim/r4.png', 0.3)])
+
+heroAnim_u = pyganim.PygAnimation([('images/anim/u13.png', 0.3),
+								('images/anim/u2.png', 0.3),
+								('images/anim/u13.png', 0.3),
+								('images/anim/u4.png', 0.3)])
+
 heroAnim.play ()
+heroAnim_l.play()
+heroAnim_r.play()
+heroAnim_u.play()
+
+animlist = [heroAnim, heroAnim_l, heroAnim_r, heroAnim_u]
+
 #heroAnim.blit (adventure_screen, (self.rect.x, self.rect.y))
 #self.camera.apply(self.hero)
 #heroAnim.blit (adventure_screen, (self.camera.apply(self.hero)))
@@ -31,7 +55,9 @@ class Hero(pygame.sprite.Sprite):
 		self.control = control
 		self.battle = battle
 		self.name = 'Рихтер'
-		self.anima = heroAnim
+		self.velo = 10
+		self.direction = 1
+		self.anima = animlist[self.direction]
 		self.image = pygame.Surface ((45,45))
 		self.image.fill ((100,200,230))
 		self.image.set_colorkey ((100,200,230))		
@@ -432,7 +458,7 @@ class Hero(pygame.sprite.Sprite):
 		#self.location.stage_loop ()
 		
 		if self.move == False:
-			heroAnim.stop ()
+			self.anima.stop ()
 
 
 		self.conversation_control ()
@@ -442,8 +468,11 @@ class Hero(pygame.sprite.Sprite):
 			self.char_options ()
 
 		if self.move == True:
-			heroAnim.play ()
+
+			self.anima.play ()
 			if self.control.right == True:
+#animlist = [heroAnim, heroAnim_l, heroAnim_r, heroAnim_u]
+				self.direction = 2
 				self.rect.x += 1
 				self.etwas = self.collide(array)
 	
@@ -456,6 +485,7 @@ class Hero(pygame.sprite.Sprite):
 				self.control.right = False
 	
 			if self.control.left == True:
+				self.direction = 1
 				self.rect.x -= 1
 				self.etwas = self.collide(array)
 	
@@ -468,6 +498,7 @@ class Hero(pygame.sprite.Sprite):
 				self.control.left = False
 	
 			if self.control.up == True:
+				self.direction = 3
 				self.rect.y -= 1
 				self.etwas = self.collide(array)
 
@@ -480,6 +511,7 @@ class Hero(pygame.sprite.Sprite):
 				self.control.up = False
 	
 			if self.control.down == True:
+				self.direction = 0
 				self.rect.y += 1
 				self.etwas = self.collide(array)
 
@@ -490,7 +522,7 @@ class Hero(pygame.sprite.Sprite):
 					self.rect.y += 44
 	
 				self.control.down = False
-
+			self.anima = animlist[self.direction]
 
 
 	def transcendental_apperception (self):
