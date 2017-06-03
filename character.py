@@ -9,26 +9,45 @@ from screens import *
 from constants import *
 import items
 
+time = 0.2
 
-heroAnim = pyganim.PygAnimation([('images/anim/stand.png', 0.3),
-								('images/anim/d1.png', 0.3),
-								('images/anim/stand.png', 0.3),
-								('images/anim/d2.png', 0.3)])
+heroAnim = pyganim.PygAnimation([
+								('images/anim/d1.png', time),
+								('images/anim/stand.png', time),
+								('images/anim/d2.png', time),
+('images/anim/stand.png', time)
+								])
 
-heroAnim_l = pyganim.PygAnimation([('images/anim/l1.png', 0.3),
-								('images/anim/l2.png', 0.3),
-								('images/anim/l3.png', 0.3),
-								('images/anim/l4.png', 0.3)])
+heroAnim_l = pyganim.PygAnimation([
+	#('images/anim/l1.png', time),
+								('images/anim/l2.png', time),
+								('images/anim/l3.png', time),
+								('images/anim/l4.png', time),
+('images/anim/l1.png', time)
+								])
 
-heroAnim_r = pyganim.PygAnimation([('images/anim/r13.png', 0.3),
-								('images/anim/r2.png', 0.3),
-								('images/anim/r13.png', 0.3),
-								('images/anim/r4.png', 0.3)])
+heroAnim_r = pyganim.PygAnimation([
+	#('images/anim/r13.png', time),
+								('images/anim/r2.png', time),
+								('images/anim/r13.png', time),
+								('images/anim/r4.png', time),
+('images/anim/r13.png', time)
+								])
 
-heroAnim_u = pyganim.PygAnimation([('images/anim/u13.png', 0.3),
-								('images/anim/u2.png', 0.3),
-								('images/anim/u13.png', 0.3),
-								('images/anim/u4.png', 0.3)])
+heroAnim_u = pyganim.PygAnimation([
+	#('images/anim/u13.png', time),
+								('images/anim/u2.png', time),
+								('images/anim/u13.png', time),
+								('images/anim/u4.png', time),
+('images/anim/u13.png', time)
+								])
+
+standd = pygame.image.load('images/anim/stand.png')
+standr = pygame.image.load('images/anim/r13.png')
+standl = pygame.image.load('images/anim/l1.png')
+standu = pygame.image.load('images/anim/u13.png')
+
+dirlist = [standd, standl, standr, standu]
 
 heroAnim.play ()
 heroAnim_l.play()
@@ -51,13 +70,13 @@ class Hero(pygame.sprite.Sprite):
 		#self.image = heroAnim
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = heroAnim.getImagesFromSpriteSheet()
-		self.stand = pygame.image.load ('images/anim/stand.png')
+		self.standlist = [standd, standl, standr, standu]
+		#pygame.image.load ('images/anim/stand.png')
 		self.control = control
 		self.battle = battle
 		self.name = 'Рихтер'
-		self.velo = 10
-		self.direction = 1
-		self.anima = animlist[self.direction]
+
+		
 		self.image = pygame.Surface ((45,45))
 		self.image.fill ((100,200,230))
 		self.image.set_colorkey ((100,200,230))		
@@ -68,8 +87,14 @@ class Hero(pygame.sprite.Sprite):
 		self.son = son
 		self.icon = image.load ('images/icon.png')
 		self.location_list = location_list
-		self.location = location_list[0]
+		self.location = location_list[2]
 		self.level_mark = 0
+
+		#move
+		self.velo = 4
+		self.direction = 1
+		self.back_move = 1		
+		self.anima = animlist[self.direction]
 
 		#CHARACTERSTICS
 		self.level = 1
@@ -467,59 +492,69 @@ class Hero(pygame.sprite.Sprite):
 		if self.inventory_flag == False:
 			self.char_options ()
 
+		#if self.control.move_cntrl == True and self.move == True:
+			#self.anima.play ()
+#
+		#if self.control.move_cntrl == False:
+		#	self.anima.stop()
+
+		if self.move == True:
+			self.anima.play ()
+
+
 		if self.move == True:
 
-			self.anima.play ()
+			#self.anima.play ()			
 			if self.control.right == True:
 #animlist = [heroAnim, heroAnim_l, heroAnim_r, heroAnim_u]
 				self.direction = 2
-				self.rect.x += 1
+				self.rect.x += self.back_move
 				self.etwas = self.collide(array)
 	
 				if self.etwas != None:
 					self.etwas.interaction(self)
 	
 				else:
-					self.rect.x += 44
+					self.rect.x += self.velo
 	
 				self.control.right = False
 	
 			if self.control.left == True:
 				self.direction = 1
-				self.rect.x -= 1
+				self.rect.x -= self.back_move
 				self.etwas = self.collide(array)
 	
 				if self.etwas != None:
 					self.etwas.interaction(self)
 	
 				else:
-					self.rect.x -= 44
+					self.rect.x -= self.velo
 	
 				self.control.left = False
 	
 			if self.control.up == True:
 				self.direction = 3
-				self.rect.y -= 1
+				self.rect.y -= self.back_move
 				self.etwas = self.collide(array)
 
 				if self.etwas != None:
 					self.etwas.interaction(self)
 	
 				else:
-					self.rect.y -= 44
+					self.rect.y -= self.velo
 	
 				self.control.up = False
 	
 			if self.control.down == True:
 				self.direction = 0
-				self.rect.y += 1
+				self.rect.y += self.back_move
 				self.etwas = self.collide(array)
 
 				if self.etwas != None:
 					self.etwas.interaction(self)
 	
 				else:
-					self.rect.y += 44
+					self.rect.y += self.velo
 	
 				self.control.down = False
 			self.anima = animlist[self.direction]

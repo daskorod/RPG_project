@@ -25,6 +25,7 @@ class Holy_Spirit ():
 #		D = False
 #		self.direction = [R,L,U,D]
 		self.current_location = ''
+		self.move_cntrl = False
 		
 	def control (self):
 			for e in pygame.event.get ():
@@ -45,13 +46,17 @@ class Holy_Spirit ():
 				if e.type == pygame.KEYDOWN:
 					if e.key == pygame.K_LEFT:
 						self.left = True
+						self.move_cntrl = True
 
 					if e.key == pygame.K_RIGHT:
 						self.right = True
+						self.move_cntrl = True
 
 				if e.type == pygame.KEYDOWN:
+					self.move_cntrl = True
 					if e.key == pygame.K_UP:
 						self.up = True
+						
 
 					if e.key == pygame.K_DOWN:
 						self.down = True
@@ -59,11 +64,14 @@ class Holy_Spirit ():
 				if e.type == pygame.KEYUP:
 					if e.key == pygame.K_LEFT:
 						self.left = False
+						self.move_cntrl = False
 
 					if e.key == pygame.K_RIGHT:
 						self.right = False
+						self.move_cntrl = False
 
 				if e.type == pygame.KEYUP:
+					self.move_cntrl = False
 					if e.key == pygame.K_UP:
 						self.up = False
 

@@ -370,13 +370,13 @@ class Platform(sprite.Sprite):
 
 	def interaction (self,hero):
 		if hero.control.right == True:
-			hero.rect.x -= 1
+			hero.rect.x -= hero.back_move
 		elif hero.control.left == True:
-			hero.rect.x += 1
+			hero.rect.x += hero.back_move
 		elif hero.control.up == True:
-			hero.rect.y += 1
+			hero.rect.y += hero.back_move
 		elif hero.control.down == True:
-			hero.rect.y -= 1
+			hero.rect.y -= hero.back_move
 		hero.son.clear_text ()
 		hero.son.change_text (1, 'Холодная мрачная стена, напоминает о смерти.')
 
@@ -420,13 +420,13 @@ class Door(sprite.Sprite):
 	def interaction (self, hero):
 
 		if hero.control.right == True:
-			hero.rect.x -= 1
+			hero.rect.x -= hero.back_move
 		elif hero.control.left == True:
-			hero.rect.x += 1
+			hero.rect.x += hero.back_move
 		elif hero.control.up == True:
-			hero.rect.y += 1
+			hero.rect.y += hero.back_move
 		elif hero.control.down == True:
-			hero.rect.y -= 1
+			hero.rect.y -= hero.back_move
 
 		hero.move = False
 		hero.collide_control = True

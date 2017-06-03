@@ -50,7 +50,8 @@ class SuperLevel ():
 			adventure_screen.blit (hero.image, self.camera.apply(hero))
 			hero.anima.blit (adventure_screen, (self.camera.apply(hero)))
 			if hero.move == False:
-				adventure_screen.blit (hero.stand, self.camera.apply(hero))
+			# or self.control.move_cntrl == False:
+				adventure_screen.blit (hero.standlist[hero.direction], self.camera.apply(hero))
 
 		#render text_information
 		self.son.render_text ()
