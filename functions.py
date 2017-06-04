@@ -4,6 +4,7 @@ import fonts
 from screens import *
 from constants import *
 import text
+#import npc
 
 class Son ():
 	'''render text information'''
@@ -138,53 +139,131 @@ def combat (hero, monster):
 		monster.render_monster_inf ()
 
 		
-def create_level (level, battle, control,son, grType):
-	sprite_group = sprite.Group ()
-	platforms = []
+def create_level_dungeon (level, battle, control, son):
+
+       sprite_group = sprite.Group ()
+
+       x = 0
+       y = 0
+
+       for row in level:
+
+              for col in row:
+                           
+                     if col == "m":
+                            mn = classes.Monster (x/45,y/45,battle, text.zombi1, control, 10,0,10,1, son)
+                            sprite_group.add (mn)
+
+                     if col == 'p':
+                            pr = classes.Portal (x,y, control)
+                            sprite_group.add (pr)
+
+                     if col == 'z':
+                            pr = classes.Portal2 (x,y, control)
+                            sprite_group.add (pr)
+
+                     x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+       return sprite_group
+
+def create_interior_standart (level, grType):
+
+       interior =[]
+       ground = []
+
+       x = 0
+       y = 0
+
+       for row in level:
+              for col in row:
+
+                    ground.append (grType (x,y))
+                    
+                    if col == "-":
+                            pf = classes.Platform (x,y)
+                            interior.append (pf)
+
+                    if col == "d":
+                            door = classes.Door (x,y)
+                            interior.append (door)
+
+                    if col == "c":
+                            ch = classes.Chest (x,y)
+                            interior.append (ch)
+
+                    if col == "t":
+                            tr = classes.Candel (x,y)
+                            interior.append (tr)
+
+                    x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+
+       return  interior, ground
+
+
+def create_level_city (level, battle, control, son):
+       sprite_group = sprite.Group ()
+
+       x = 0
+       y = 0
+
+       for row in level:
+
+              for col in row:
+                           
+                     if col == "m":
+                            mn = classes.Monk (x/45,y/45,battle, text.monk, control, 10,0,10,1, son)
+                            sprite_group.add (mn)
+# exit from temple
+                     if col == 'p':
+                            pr = classes.PortalS (x,y,'platz', (11,1))
+                            sprite_group.add (pr)
+#enter into temple
+                     if col == 'e':
+                            pr = classes.PortalS (x,y,'temple', (10,4))
+                            sprite_group.add (pr)
+
+#path to end of the city
+                     if col == 'o':
+                            pr = classes.PortalS (x,y,'end', (1,4))
+                            sprite_group.add (pr)
+#from end to platz
+                     if col == 'q':
+                            pr = classes.PortalS (x,y,'platz', (21,4))
+                            sprite_group.add (pr)
+#from end to dung
+                     if col == 'w':
+                            pr = classes.Portal (x,y, control)
+                            sprite_group.add (pr)
+
+                     x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+       return sprite_group
+
+def create_background (grType, level):
+
 	ground = sprite.Group()
 	x = 0
 	y = 0
-	grrr = grType
 	for row in level:
 		for col in row:
-			
-			gr = grrr (x,y)
-			ground.add (gr)
-			if col == "-":
-				pf = classes.Platform (x,y)
-				platforms.append (pf)
-				sprite_group.add (pf)
-			if col == "d":
-				door = classes.Door (x,y)
-				#platforms.append (pf)
-				sprite_group.add (door)
-			if col == "c":
-				ch = classes.Chest (x,y)
-				#chests.append (ch)
-				sprite_group.add (ch)
-			if col == "m":
-				mn = classes.Monster (x/45,y/45,battle, text.zombi1, control, 10,0,10,1, son)
-				sprite_group.add (mn)
-			if col == "t":
-				tr = classes.Candel (x,y)
-				#chests.append (ch)
-				sprite_group.add (tr)
-			if col == 'p':
-				pr = classes.Portal (x,y, control)
-				sprite_group.add (pr)
 
-			if col == 'z':
-				pr = classes.Portal2 (x,y, control)
-				sprite_group.add (pr)
-			if col == 'z':
-				pr = classes.Portal2 (x,y, control)
-				sprite_group.add (pr)
+			gr = grType (x,y)
+			ground.add (gr)
+
 			x += 45
 		x = 0
 		y += 45
 	x = 0
 	y = 0
-	return  platforms, sprite_group, ground
 
-
-
+	return  ground

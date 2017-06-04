@@ -21,7 +21,8 @@ class SuperLevel ():
 		self.son = son
 		self.name = 'location`s name'
 		self.control = control		
-		self.platforms, self.block_group, self.background = self.create ()
+		
+		self.block_group, self.background = self.create ()
 
 		self.level_width = len(lev[0])*PF_WIDTH
 		self.level_height = len(lev)*PF_HEIGHT
@@ -29,13 +30,20 @@ class SuperLevel ():
 	#	self.x_hero = (self.camera.apply(self.hero))
 		self.back = False
 
-	def create (self):
-		a, b, c = functions.create_level (self.lev, self.battle, self.control,self.son, classes.Pavestone)
-		return a,b,c
+	def create (self, create_level = functions.create_level_dungeon, create_interior = functions.create_interior_standart):
+		sprites = create_level (self.lev, self.battle, self.control,self.son)
+		interior, ground = create_interior (self.lev, classes.Pavestone)
+
+		for i in interior:
+			sprites.add (i)
+
+		return sprites, ground
 
 	def render_stage (self, hero):
 		
 		main_interface (self)
+
+		#render background
 		if self.back == True:
 
 			for b in self.background:
@@ -79,8 +87,9 @@ class SuperLevel ():
 		hero.render_hp_mod(self.x_hero)
 
 		#activation of a battle loop
-		if hero.collide_control == True and hero.etwas.agression == True:	
-			self.battle.main_loop (hero, hero.etwas)
+		if hero.collide_control == True and hero.etwas.agression == True:
+			functions.combat (hero, hero.etwas)	
+			#self.battle.main_loop (hero, hero.etwas)
 
 		#camera
 		self.camera.update(hero)
@@ -105,11 +114,12 @@ class Level1 (SuperLevel):
 		SuperLevel.__init__ (self, control, lev, battle, son)
 		self.skeletLord = classes.SkeletLord (19,5, self.battle, text.zombitext, self.control, 10,10,10,1, son)
 		self.block_group.add (self.skeletLord)
+
 		self.name = '- - - Неизвестное подземелье - - -'
 
 	def stage_content (self, hero):
 
-		#classes.boltAnim.blit (adventure_screen, (self.x_hero.x - 49, self.x_hero.y - 80))
+		classes.boltAnim.blit (adventure_screen, (self.x_hero.x - 49, self.x_hero.y - 80))
 
 		if self.control.k_space == True:
 			self.control.stage1_flag = False
@@ -121,6 +131,7 @@ class Level1 (SuperLevel):
 class Level2 (SuperLevel):
 	def __init__ (self, control, lev, battle, son):
 		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.block_group, self.background = self.create (create_level = functions.create_level_city)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.name = '- - - Окраины города - - -'
@@ -131,9 +142,11 @@ class Level2 (SuperLevel):
 			self.control.stage2_flag = False
 			self.control.stage1_flag = True
 
+
 class Platz (SuperLevel):
 	def __init__ (self, control, lev, battle, son):
 		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.block_group, self.background = self.create (create_level = functions.create_level_city)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.name = '- - - Главная площадь - - -'
@@ -154,3 +167,14 @@ class Tavern (SuperLevel):
 		pass
 
 
+class Temple (SuperLevel):
+	def __init__ (self, control, lev, battle, son):
+		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.block_group, self.background = self.create (create_level = functions.create_level_city)
+		self.back = False
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
+		self.name = '- - - Храм Единого - - -'
+
+	def stage_content (self, hero):
+
+		pass

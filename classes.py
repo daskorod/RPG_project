@@ -41,7 +41,7 @@ class Bar(sprite.Sprite):
 
 		
 
-class Monster(sprite.Sprite):
+class Monster (sprite.Sprite):
 	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son):
 		sprite.Sprite.__init__(self)
 		#self.image = Surface ((45,45))
@@ -53,8 +53,10 @@ class Monster(sprite.Sprite):
 		self.rect = Rect (0,0, 45,45)
 		self.rect.x = x*PF_WIDTH
 		self.rect.y = y*PF_HEIGHT
+
 		self.control = control
 		self.son = son
+		self.battle = battle
 
 		#CHAR DATA
 		self.mname = '     Зомби'
@@ -76,7 +78,7 @@ class Monster(sprite.Sprite):
 		#battle data
 
 		self.wait_for_next_turn = False
-		self.battle = battle
+
 
 		#TECH DATA
 		self.hp_old = hp	
@@ -574,8 +576,8 @@ class Portal2(sprite.Sprite):
 	def interaction (self, hero):
 		#self.control.stage1_flag = False
 		#self.control.stage2_flag = True
-		hero.location = hero.location_list[1]
-		hero.rect.x = 630
+		hero.location = hero.locations_dict['end']
+		hero.rect.x = 675
 		hero.rect.y = 180
 		#hero.son.change_text (1, self.description)
 
@@ -594,12 +596,12 @@ class Portal (sprite.Sprite):
 	def interaction (self, hero):
 		#self.control.stage2_flag = False
 		#self.control.stage1_flag = True
-		hero.location = hero.location_list[0]
+		hero.location = hero.locations_dict['1']
 		hero.rect.x = 45
 		hero.rect.y = 45
 
 class PortalS (sprite.Sprite):
-	def __init__(self, x, y, loc):
+	def __init__(self, x, y, loc, coordinates):
 		sprite.Sprite.__init__(self)
 		self.image=image.load('images/portal.png')
 		self.rect = Rect (0,0, 45,45)
@@ -607,12 +609,13 @@ class PortalS (sprite.Sprite):
 		self.rect.y = y
 		self.name = "portal"
 		self.loc_num = loc
+		self.px, self.py = coordinates
+
 	def interaction (self, hero):
 		#self.control.stage2_flag = False
 		#self.control.stage1_flag = True
-		hero.location = hero.location_list[loc_num]
-		hero.rect.x = 45
-		hero.rect.y = 45
+		hero.location = hero.locations_dict[self.loc_num]
+		hero.rect.x, hero.rect.y = self.px*45, self.py*45
 
 class IndexS (Platform):
 	def __init__(self, x, y, text):
@@ -643,4 +646,80 @@ class Bar(sprite.Sprite):
 	def interaction (self):
 		pass
 
+class Monk (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son)
+		self.tree = text.monk
+		self.lbolt = False
+		self.mname = 'Отец Изольд'
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/priest.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		self.image.set_colorkey ((254,254,254))
+		self.g = 1000
+
+	def dialog_special (self, hero):
+		if self.add_information == 'gold' and self.control.k_e == True:
+			hero.move = True
+			hero.gold += 20
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (4, 'Вы получили 20 монет')
+			hero.son.change_text (5, 'Ваши деньги: '+str(hero.gold))
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+	def battle_action (self, hero):
+		self.g += 1
+		if self.lbolt == True:
+			self.g = 185
+
+			self.lbolt = False
+
+
+		if self.g > 190 and self.g< 240:
+			
+#			x_hero.x -=49
+#			x_hero.y -=80
+#			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
+			boltAnim.play ()
+			if self.g==239:
+				boltAnim.stop()
+
+		if hero.monster_turn == True:
+			self.son.clear_text ()
+			a = random.randint (1,3)
+			#boltAnim.blit (adventure_screen, (100, 100))
 		
+			self.son.change_text (1, "В руках скелета заплясали электрические разряды...")
+			self.son.change_text (3, 'Нажмите Е')
+		
+			self.lbolt = True
+			self.ll = True
+
+		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
+			self.ll = False
+			self.lbolt = False
+			self.son.clear_text ()
+			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
+			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
+			hero.hp -= a
+			self.son.change_text (4, 'Нажмите Е')
+			self.wait_for_next_turn = True
+			hero.monster_turn = False
+			self.control.k_e = False
+
+		if self.control.k_e == True and self.wait_for_next_turn == True:
+			
+			self.wait_for_next_turn = False
+			self.control.k_e = False
+			hero.turn_main = True
+			self.son.clear_text ()

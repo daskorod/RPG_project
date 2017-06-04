@@ -21,6 +21,51 @@ a.pr ()
 b = borov ()
 b.pr ()
 
+def create_level (level, battle, control,son, grType):
+	sprite_group = sprite.Group ()
+	platforms = []
+	ground = sprite.Group()
+	x = 0
+	y = 0
+	grrr = grType
+	for row in level:
+		for col in row:
+			
+			gr = grrr (x,y)
+			ground.add (gr)
+			if col == "-":
+				#pf = classes.Platform (x,y)
+				platforms.append (classes.Platform (x,y))
+				sprite_group.add (classes.Platform (x,y))
+			if col == "d":
+				door = classes.Door (x,y)
+				#platforms.append (pf)
+				sprite_group.add (door)
+			if col == "c":
+				ch = classes.Chest (x,y)
+				#chests.append (ch)
+				sprite_group.add (ch)
+			if col == "m":
+				mn = classes.Monster (x/45,y/45,battle, text.zombi1, control, 10,0,10,1, son)
+				sprite_group.add (mn)
+			if col == "t":
+				tr = classes.Candel (x,y)
+				#chests.append (ch)
+				sprite_group.add (tr)
+			if col == 'p':
+				pr = classes.Portal (x,y, control)
+				sprite_group.add (pr)
+
+			if col == 'z':
+				pr = classes.Portal2 (x,y, control)
+				sprite_group.add (pr)
+
+			x += 45
+		x = 0
+		y += 45
+	x = 0
+	y = 0
+	return  platforms, sprite_group, ground
 
 
 #	def update (self, array):

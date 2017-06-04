@@ -61,7 +61,7 @@ animlist = [heroAnim, heroAnim_l, heroAnim_r, heroAnim_u]
 #heroAnim.blit (adventure_screen, (self.camera.apply(self.hero)))
 class Hero(pygame.sprite.Sprite):
 
-	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son, location_list):
+	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son, location_list, locations_dict):
 		pygame.sprite.Sprite.__init__(self)
 
 		#BASE
@@ -86,12 +86,15 @@ class Hero(pygame.sprite.Sprite):
 		self.view = compose_text	
 		self.son = son
 		self.icon = image.load ('images/icon.png')
+
+		#map
 		self.location_list = location_list
-		self.location = location_list[2]
+		self.locations_dict = locations_dict
+		self.location = locations_dict['1']
 		self.level_mark = 0
 
 		#move
-		self.velo = 4
+		self.velo = 44
 		self.direction = 1
 		self.back_move = 1		
 		self.anima = animlist[self.direction]
