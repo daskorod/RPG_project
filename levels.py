@@ -108,11 +108,11 @@ class SuperLevel ():
 
 
 
-
+#DUNGEON
 class Level1 (SuperLevel):
 	def __init__ (self, control, lev, battle, son):
 		SuperLevel.__init__ (self, control, lev, battle, son)
-		self.skeletLord = classes.SkeletLord (19,5, self.battle, text.zombitext, self.control, 10,10,10,1, son)
+		self.skeletLord = classes.SkeletLord (19,5, self.battle, text.zombitext, self.control, 3,6,8,1, son)
 		self.block_group.add (self.skeletLord)
 
 		self.name = '- - - Неизвестное подземелье - - -'

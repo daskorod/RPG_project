@@ -461,6 +461,17 @@ class Hero(pygame.sprite.Sprite):
 				self.etwas.n = (self.etwas.n-(3*self.etwas.s))
 				self.etwas.s = int(self.etwas.s/10)
 
+		if self.control.k_4 == True:
+			self.control.k_4 = False
+			self.son.clear_text ()
+			self.etwas.s = self.etwas.s*10
+			self.etwas.n = (self.etwas.n+(4*self.etwas.s))
+			self.view.a = 0
+
+			if self.etwas.n not in tree[interlocutor.branch]:
+				self.etwas.n = (self.etwas.n-(4*self.etwas.s))
+				self.etwas.s = int(self.etwas.s/10)
+
 	def collide (self, array):
 
 		for entity in array:

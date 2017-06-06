@@ -218,7 +218,7 @@ def create_level_city (level, battle, control, son):
               for col in row:
                            
                      if col == "m":
-                            mn = classes.Monk (x/45,y/45,battle, text.monk, control, 10,0,10,1, son)
+                            mn = classes.Monk (x/45,y/45,battle, text.monk, control, 4,5,7,1, son)
                             sprite_group.add (mn)
 # exit from temple
                      if col == 'p':

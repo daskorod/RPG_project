@@ -699,9 +699,10 @@ class Monk (Monster):
 			a = random.randint (1,3)
 			#boltAnim.blit (adventure_screen, (100, 100))
 		
-			self.son.change_text (1, "В руках скелета заплясали электрические разряды...")
-			self.son.change_text (3, 'Нажмите Е')
-		
+			self.son.change_text (1, 'Священник шепчет слова молитвы:')
+			self.son.change_text (2, '"Возврати меч твой в его место, ибо')
+			self.son.change_text (3, 'все, взявшие меч, мечом погибнут." ... ')
+			self.son.change_text (5, 'Нажмите Е')
 			self.lbolt = True
 			self.ll = True
 
@@ -709,7 +710,7 @@ class Monk (Monster):
 			self.ll = False
 			self.lbolt = False
 			self.son.clear_text ()
-			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
+			self.son.change_text (1, "... вас охватывает пламя.")
 			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
 			hero.hp -= a
 			self.son.change_text (4, 'Нажмите Е')
