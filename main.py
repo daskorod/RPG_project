@@ -9,24 +9,18 @@ from constants import *
 import camera
 import functions
 
-#settings
+#global settings
 pygame.key.set_repeat(100,100)
 pygame.key.get_repeat ()
 
-#main
+#main function
 
-class main ():
-	def __init__ (self, control, hero):
-		self.control = control
-		self.hero = hero
-		
-	def main_loop (self):
-		while True:
-
-			self.control.control ()
-			self.hero.transcendental_apperception ()
-			pygame.display.update()
-			
+def main_loop():
+	while True:
+		control.control () #control loop, control of events, key press
+		hero.transcendental_apperception () #construct and render all the world from the character itself
+		pygame.display.update() #update the screen
+	
 #create objects (cosmic forces)
 
 son = functions.Son ()
@@ -34,22 +28,23 @@ control = controller.Holy_Spirit ()
 battle = functions.Battle () #delet
 compose_text = functions.Compose_dialog_tree (control,son)
 
-#locations
+#create locations
 stage1 = levels.Level1(control, lev1, battle, son)
 stage2 = levels.Level2(control, lev2, battle, son)
 mainplatz = levels.Platz (control, platz, battle, son)
 tavern_loc = levels.Tavern (control, tavern, battle, son)
 temple_loc = levels.Temple (control, temple, battle, son)
+dungeon1_loc = levels.dungeon (control, dungeon1, battle, son)
 
-levels_list = [stage1,temple_loc, stage2, mainplatz]
-levels_dict = {'1':stage1, 'end':stage2, 'temple':temple_loc, "tavern":tavern_loc, "platz":mainplatz}
-#hero
-hero = character.Hero (2,2, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
+#list of locations
+levels_list = [dungeon1_loc, stage1,temple_loc, stage2, mainplatz]
+levels_dict = {'dung1' : dungeon1_loc, '1':stage1, 'end':stage2, 'temple':temple_loc, "tavern":tavern_loc, "platz":mainplatz}
 
 
-#game
-game = main (control, hero)
-game.main_loop ()
+#create hero
+hero = character.Hero (2,3, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
 
+#start game
+main_loop ()
 
 

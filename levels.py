@@ -125,6 +125,14 @@ class Level1 (SuperLevel):
 			self.control.stage1_flag = False
 			self.control.stage2_flag = True
 
+class dungeon (SuperLevel):
+	def __init__ (self, control, lev, battle, son):
+		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.block_group, self.background = self.create (create_level = functions.create_dungeon1)
+		self.name = '- - - Подземелье под церковью этаж 1 - - -'
+
+	def stage_content (self, hero):
+		pass
 
 
 

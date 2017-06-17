@@ -51,7 +51,7 @@ class Compose_dialog_tree ():
 		self.a = 0
 		self.control = control
 		self.empty = ''
-		self.stroke_size = 50
+		self.stroke_size = 60
 		self.son = son
 		self.arrowUp = image.load('images/arrow2.png')
 		self.arrowDw = image.load('images/arrow.png')
@@ -161,6 +161,36 @@ def create_level_dungeon (level, battle, control, son):
                      if col == 'z':
                             pr = classes.Portal2 (x,y, control)
                             sprite_group.add (pr)
+
+                     x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+       return sprite_group
+
+def create_dungeon1 (level, battle, control, son):
+
+       sprite_group = sprite.Group ()
+
+       x = 0
+       y = 0
+
+       for row in level:
+
+              for col in row:
+                           
+                     if col == "z":
+                            z = classes.Monster (x/45,y/45,battle, text.zombipeasant, control, 10,0,10,1, son, special_opt = True)
+                            sprite_group.add (z)
+
+                     if col == 'e':
+                            e = classes.PortalS (x,y, 'end', (1,4))
+                            sprite_group.add (e)
+
+                     if col == 's':
+                            s = classes.Chest (x,y)
+                            sprite_group.add (s)
 
                      x += 45
               x = 0

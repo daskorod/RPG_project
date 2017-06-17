@@ -90,12 +90,12 @@ class Hero(pygame.sprite.Sprite):
 		#map
 		self.location_list = location_list
 		self.locations_dict = locations_dict
-		self.location = locations_dict['1']
+		self.location = locations_dict['dung1']
 		self.level_mark = 0
 
 		#move
 		self.velo = 44
-		self.direction = 1
+		self.direction = 0
 		self.back_move = 1		
 		self.anima = animlist[self.direction]
 

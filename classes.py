@@ -42,7 +42,7 @@ class Bar(sprite.Sprite):
 		
 
 class Monster (sprite.Sprite):
-	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son):
+	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son, special_opt = False):
 		sprite.Sprite.__init__(self)
 		#self.image = Surface ((45,45))
 		#self.image.fill ((120,30,200))
@@ -66,7 +66,11 @@ class Monster (sprite.Sprite):
 		self.damage = dem
 
 		#conversation data
+		
+		
 		self.tree = text.zombi1
+		if special_opt == True:
+			self.tree = textus
 		self.n = 0
 		self.s = 1
 		self.add_information = "none"
@@ -180,7 +184,7 @@ class Monster (sprite.Sprite):
 	def dialog_options (self,hero):
 		self.dialog_special (hero)
 
-		if self.add_information == 'end' and self.control.k_e == True:
+		if self.add_information == 'end'  and hero.control.k_e == True:
 
 			hero.move = True
 			self.control.k_e = False
