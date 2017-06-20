@@ -184,7 +184,7 @@ class Monster (sprite.Sprite):
 	def dialog_options (self,hero):
 		self.dialog_special (hero)
 
-		if self.add_information == 'end'  and hero.control.k_e == True:
+		if self.add_information == 'end':
 
 			hero.move = True
 			self.control.k_e = False
@@ -772,7 +772,7 @@ class Bar(sprite.Sprite):
 class Monk (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son)
-		self.tree = text.monk
+		self.tree = textus
 		self.lbolt = False
 		self.mname = 'Отец Изольд'
 		#self.image.fill ((220,130,100))

@@ -5,6 +5,7 @@ from screens import *
 from constants import *
 import text
 import items
+import text_data.zombisad, text_data.monk
 #import npc
 
 class Son ():
@@ -182,7 +183,7 @@ def create_dungeon1 (level, battle, control, son):
               for col in row:
                            
                      if col == "z":
-                            z = classes.Monster (x/45,y/45,battle, text.zombipeasant, control, 10,0,10,1, son, special_opt = True)
+                            z = classes.Monster (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son, special_opt = True)
                             sprite_group.add (z)
 
                      if col == 'e':
@@ -249,7 +250,7 @@ def create_level_city (level, battle, control, son):
               for col in row:
                            
                      if col == "m":
-                            mn = classes.Monk (x/45,y/45,battle, text.monk, control, 4,5,7,1, son)
+                            mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son)
                             sprite_group.add (mn)
 # exit from temple
                      if col == 'p':
