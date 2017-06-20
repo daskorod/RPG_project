@@ -102,6 +102,7 @@ class Hero(pygame.sprite.Sprite):
 		#CHARACTERSTICS
 		self.level = 1
 		self.sp = 2
+		self.sp_max = 2
 		self.at = at 
 		self.ac = ac
 		self.hp = hp
@@ -112,6 +113,7 @@ class Hero(pygame.sprite.Sprite):
 		self.hp_max = 7
 		self.hp_old = hp
 		self.x_mod = 0	
+
 
 		#DIALOG
 
@@ -158,31 +160,33 @@ class Hero(pygame.sprite.Sprite):
 		self.first = items.first
 		self.damage = self.weapon.dem
 		self.inv_question = False
-		
+		self.inv_quit = False
+
 		#ChAr options
 		self.char_flag = False
 		self.char_point = 1
 		self.d = 'Е - повысить параметр'
+		self.char_quit = False
 
-		self.char_value ={'lvl':1,'exp':0,'at':6,'ac':6,'hp':7,'sp':2,'points':1}
+		self.char_value ={'1lvl':1,'2exp':0,'3at':6,'4ac':6,'5hp':7,'6sp':2,'7points':1}
 
-
+		self.sorted_char_value_keys = sorted(self.char_value.keys())
 		self.char = [
 
 #0
-		('Уровень', self.char_value['lvl'], 'Каждый уровень вы получаете одно очко для распределения', '','lvl'),
+		('Уровень', self.char_value['1lvl'], 'Каждый уровень вы получаете одно очко для распределения', '','lvl'),
 #1
-		 ('Опыт',self.char_value['exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
+		 ('Опыт',self.char_value['2exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
 #2
-		  ('Атака',self.char_value['at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери', self.d,'at'),
+		  ('Атака',self.char_value['3at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери', self.d,'at'),
 #3
-		   ('Защита',self.char_value['ac'], 'Ваши навыки обороны', self.d),
+		   ('Защита',self.char_value['4ac'], 'Ваши навыки обороны', self.d),
 #4
-		    ('Жизни',self.char_value['hp'], 'Сколько ударов вы можете держать', self.d),
+		    ('Жизни',self.char_value['5hp'], 'Сколько ударов вы можете держать', self.d),
 #5
-		     ('Вера',self.char_value['sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
+		     ('Вера',self.char_value['6sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
 #6
-		      ('Очки на распределение', self.char_value['points'], 'За одно очко можно повысить один параметр', '')
+		      ('Очки на распределение', self.char_value['7points'], 'За одно очко можно повысить один параметр', '')
 
 		      ]
 		#self.char = {level: 1, exp: 0, at:, self.ac, self.hp_max, self.sp, self.char_point}
@@ -195,19 +199,19 @@ class Hero(pygame.sprite.Sprite):
 		self.char = [
 
 #0
-		('Уровень', self.char_value['lvl'], 'Каждый уровень вы получаете одно очко для распределения', '','lvl'),
+		('Уровень', self.char_value['1lvl'], 'Каждый уровень вы получаете одно очко для распределения', '','lvl'),
 #1
-		 ('Опыт',self.char_value['exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
+		 ('Опыт',self.char_value['2exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
 #2
-		  ('Атака',self.char_value['at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери', self.d,'at'),
+		  ('Атака',self.char_value['3at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери', self.d,'at'),
 #3
-		   ('Защита',self.char_value['ac'], 'Ваши навыки обороны', self.d),
+		   ('Защита',self.char_value['4ac'], 'Ваши навыки обороны', self.d),
 #4
-		    ('Жизни',self.char_value['hp'], 'Сколько ударов вы можете держать', self.d),
+		    ('Жизни',self.char_value['5hp'], 'Сколько ударов вы можете держать', self.d),
 #5
-		     ('Вера',self.char_value['sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
+		     ('Вера',self.char_value['6sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
 #6
-		      ('Очки на распределение', self.char_value['points'], 'За одно очко можно повысить один параметр', '')
+		      ('Очки на распределение', self.char_value['7points'], 'За одно очко можно повысить один параметр', '')
 
 		      ]
 
@@ -233,42 +237,81 @@ class Hero(pygame.sprite.Sprite):
 			char_screen.fill (swamp)
 			
 			#self.char = [self.level, self.exp, self.at, self.ac, self.hp_max, self.sp]
+			char_screen.blit(fonts.font2.render ('Характеристики', True, (250,250,250)),(90,10))
+			char_screen.blit(fonts.font2.render ('Выйти', True, (250,250,250)),(90,350))
+
 			a = 0
 			for i in range(len(self.char)):
 
-				char_screen.blit(fonts.font2.render ('Характеристики', True, (250,250,250)),(90,10))
+				
 				char_screen.blit(fonts.font2.render (str(self.char[i][0])+': '+ str(self.char[i][1]), True, (250,250,250)),(40,50+(a*30)))
 				a +=1
+
 			self.char_index ()
 
-			if self.char[6][1] > 0:
+			if self.char_quit == False:
+				
+				
+	
+				if self.char[6][1] > 0:
+	
+					try:
+						self.son.change_text_tree (self.view.render_text (self.char[self.inv_index_pos][0]+ '. ' + self.char[self.inv_index_pos][2], self.char[self.inv_index_pos][3]))
+					except:
+						pass
+	
+					if self.inv_index_pos > 1 and self.inv_index_pos <6 and self.control.k_e == True:
+						self.char_value[self.sorted_char_value_keys[self.inv_index_pos]] +=1
+						self.char_value['7points'] -=1
+						self.control.k_e = False
+				else:
+	
+					try:
+						self.son.change_text_tree (self.view.render_text (self.char[self.inv_index_pos][0]+ '. ' + self.char[self.inv_index_pos][2], ''))
+					except:
+						pass
+			if self.char_quit == True:
 
-				try:
-					self.son.change_text_tree (self.view.render_text (self.char[self.inv_index_pos][0]+ '. ' + self.char[self.inv_index_pos][2], self.char[self.inv_index_pos][3]))
-				except:
-					pass
+				self.son.clear_text ()
+				information_screen.blit(fonts.font2.render ('Выйти? Нажмите E', True, (250,250,250)),(10,10))
 
-				if self.inv_index_pos > 1 and self.inv_index_pos <6 and self.control.k_e == True:
-					self.char_value['at'] +=1
-					self.char_value['points'] -=1
+				if self.control.k_e == True:
 					self.control.k_e = False
-			else:
+					self.move = True
+					self.char_flag = False
+					self.inv_index_pos = 0
+					self.char_quit = False
 
-				try:
-					self.son.change_text_tree (self.view.render_text (self.char[self.inv_index_pos][0]+ '. ' + self.char[self.inv_index_pos][2], ''))
-				except:
-					pass
-
+	def update_char(self):
+		self.sp_max = self.char_value['6sp']
+		self.hp_max = self.char_value['5hp']
+		self.at = self.char_value['3at']
+		self.ac = self.char_value['4ac']
+		self.level = self.char_value['1lvl']
+		self.exp = self.char_value ['2exp']	
 
 	def char_index (self):
-		char_screen.blit(self.at_ic, (13,53+(self.inv_index_pos*30)))
+		if self.char_quit == False:
 
-		if self.control.down == True and self.inv_index_pos <8:
-			self.control.down = False
-			self.inv_index_pos += 1
-		if self.control.up == True and self.inv_index_pos >0:
-			self.control.up = False
-			self.inv_index_pos -= 1		
+			char_screen.blit(self.at_ic, (13,53+(self.inv_index_pos*30)))
+	
+			if self.control.down == True and self.inv_index_pos <6:
+				self.control.down = False
+				self.inv_index_pos += 1
+			if self.control.up == True and self.inv_index_pos >0:
+				self.control.up = False
+				self.inv_index_pos -= 1		
+	
+			if self.control.down == True and self.inv_index_pos == 6:
+				self.control.down = False
+				self.char_quit = True
+	
+		if self.char_quit == True:
+
+			char_screen.blit(self.at_ic, (70, 353))
+			if self.control.up == True:
+				self.control.up = False
+				self.char_quit = False	
 
 	def inventory_manage (self):
 
@@ -287,71 +330,101 @@ class Hero(pygame.sprite.Sprite):
 			adventure_screen.blit (inventory_screen, (200,10))
 			inventory_screen.fill (sea_color)
 			a = 0
+			inventory_screen.blit(fonts.font2.render ('Инвентарь', True, (250,250,250)),(90,10))
+			inventory_screen.blit(fonts.font2.render ('Выйти', True, (250,250,250)),(90,350))
 			for i in self.inv:
-				inventory_screen.blit(fonts.font2.render ('Инвентарь', True, (250,250,250)),(90,10))
+				
 				inventory_screen.blit(fonts.font2.render (str(i.name)+' ( '+ i.status + ' )', True, (250,250,250)),(40,50+(a*30)))
 				a +=1
 
+			
+
 			if self.inv_question == False:
 				self.inv_index()
-				self.son.change_text_tree (self.view.render_text (self.inv[self.inv_index_pos].name+ '. ' + self.inv[self.inv_index_pos].description, self.inv[self.inv_index_pos].use_description))
 
-			if self.inv_question == False:
+				if self.inv_quit == False:
+					self.son.change_text_tree (self.view.render_text (self.inv[self.inv_index_pos].name+ '. ' + self.inv[self.inv_index_pos].description, self.inv[self.inv_index_pos].use_description))
 
-				if self.control.k_1 == True:
-					self.control.k_1 = False
-					if self.inv[self.inv_index_pos].status == 'в рюкзаке':
-						for i in self.inv:
-							if i.species == 'оружие' and i.status == 'экипировано':
-								i.status = "в рюкзаке"
-						self.inv[self.inv_index_pos].status = 'экипировано'
-						if self.inv[self.inv_index_pos].species == 'оружие':
-							self.weapon = self.inv[self.inv_index_pos]
-							self.at += self.weapon.at_mod
-							self.damage = self.weapon.dem
-					elif self.inv[self.inv_index_pos].status == 'экипировано':
-						self.inv[self.inv_index_pos].status = 'в рюкзаке'
-	
-						if self.inv[self.inv_index_pos].species == 'оружие':
-							self.weapon = self.first
-							#self.at += self.weapon.at_mod
-							self.damage = self.weapon.dem
-	
-				if self.control.k_2 == True:
-					self.inv_question = True
-					self.control.k_2 = False
-					self.son.clear_text ()
-					self.son.change_text (1, 'Вы уверены, что хотите выбросить ' +self.inv[self.inv_index_pos].name+ ' на фиг!' )
-					self.son.change_text (3, '1 - Да, 2 - Нет')
+			if self.inv_quit == True:
+				self.son.clear_text ()
+				information_screen.blit(fonts.font2.render ('Выйти? Нажмите E', True, (250,250,250)),(10,10))
 
-			if self.inv_question == True:
-				if self.control.k_1 == True:
-					self.control.k_1 = False
+				if self.control.k_e == True:
+					self.control.k_e = False
+					self.move = True
+					self.inventory_flag = False
+					self.inv_index_pos = 0
+					self.inv_quit = False
 
-					if self.inv[self.inv_index_pos].status == 'экипировано':
-						if self.inv[self.inv_index_pos].species == 'оружие':
-							self.weapon = self.first
-							#self.at += self.weapon.at_mod
-							self.damage = self.weapon.dem
-					self.inv.pop (self.inv_index_pos)
-					self.inv.insert (self.inv_index_pos, items.no_item)
-					self.inv_question = False
+			if self.inv_quit == False:
 
-				if self.control.k_2 == True:
-					self.control.k_2 = False
-					self.inv_question = False
+				if self.inv_question == False:
+
+					if self.control.k_1 == True:
+						self.control.k_1 = False
+						if self.inv[self.inv_index_pos].status == 'в рюкзаке':
+							for i in self.inv:
+								if i.species == 'оружие' and i.status == 'экипировано':
+									i.status = "в рюкзаке"
+							self.inv[self.inv_index_pos].status = 'экипировано'
+							if self.inv[self.inv_index_pos].species == 'оружие':
+								self.weapon = self.inv[self.inv_index_pos]
+								self.at += self.weapon.at_mod
+								self.damage = self.weapon.dem
+						elif self.inv[self.inv_index_pos].status == 'экипировано':
+							self.inv[self.inv_index_pos].status = 'в рюкзаке'
+		
+							if self.inv[self.inv_index_pos].species == 'оружие':
+								self.weapon = self.first
+								#self.at += self.weapon.at_mod
+								self.damage = self.weapon.dem
+		
+					if self.control.k_2 == True:
+						self.inv_question = True
+						self.control.k_2 = False
+						self.son.clear_text ()
+						self.son.change_text (1, 'Вы уверены, что хотите выбросить ' +self.inv[self.inv_index_pos].name+ ' на фиг!' )
+						self.son.change_text (3, '1 - Да, 2 - Нет')
+
+				if self.inv_question == True:
+					if self.control.k_1 == True:
+						self.control.k_1 = False
+
+						if self.inv[self.inv_index_pos].status == 'экипировано':
+							if self.inv[self.inv_index_pos].species == 'оружие':
+								self.weapon = self.first
+								#self.at += self.weapon.at_mod
+								self.damage = self.weapon.dem
+						self.inv.pop (self.inv_index_pos)
+						self.inv.insert (self.inv_index_pos, items.no_item)
+						self.inv_question = False
+
+					if self.control.k_2 == True:
+						self.control.k_2 = False
+						self.inv_question = False
 
 	def inv_index (self):
-		inventory_screen.blit(self.at_ic, (13,53+(self.inv_index_pos*30)))
+		if self.inv_quit == False:
 
-		if self.control.down == True and self.inv_index_pos <8:
-			self.control.down = False
-			self.inv_index_pos += 1
-		if self.control.up == True and self.inv_index_pos >0:
-			self.control.up = False
-			self.inv_index_pos -= 1
+			inventory_screen.blit(self.at_ic, (13,53+(self.inv_index_pos*30)))
 
+			if self.control.down == True and self.inv_index_pos <8:
+				self.control.down = False
+				self.inv_index_pos += 1
+			if self.control.up == True and self.inv_index_pos >0:
+				self.control.up = False
+				self.inv_index_pos -= 1
 
+			if self.control.down == True and self.inv_index_pos == 8:
+				self.control.down = False
+				self.inv_quit = True
+
+		if self.inv_quit == True:
+			inventory_screen.blit(self.at_ic, (70, 353))
+
+			if self.control.up == True:
+				self.control.up = False
+				self.inv_quit = False	
 
 	def render_hp_mod(self, position):
 
@@ -492,8 +565,9 @@ class Hero(pygame.sprite.Sprite):
 			self.conv_stop = True
 
 
-	def update (self, array):
 
+	def update (self, array):
+		self.update_char()
 		#self.location.stage_loop ()
 		
 		if self.move == False:

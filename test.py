@@ -1,27 +1,11 @@
 # -*- coding: utf-8 -*-
 
-class svin ():
-	def __init__ (self):
-	
-		self.a = self.act ()
-	def act(self):
-		return 5
-	def pr (self):
-		print (self.a)
+a={'1lvl':1,'2exp':0,'3at':6,'4ac':6,'5hp':7,'6sp':2,'7points':1}
 
-class borov (svin):
-	def __init__ (self):
-		svin.__init__ (self)
-	def act (self):
-		return 10
+b = sorted(a.keys())
+print (b)
 
-a = svin ()
-a.pr ()
-
-b = borov ()
-b.pr ()
-
-def create_level (level, battle, control,son, grType):
+'''def create_level (level, battle, control,son, grType):
 	sprite_group = sprite.Group ()
 	platforms = []
 	ground = sprite.Group()
@@ -65,7 +49,7 @@ def create_level (level, battle, control,son, grType):
 		y += 45
 	x = 0
 	y = 0
-	return  platforms, sprite_group, ground
+	return  platforms, sprite_group, ground'''
 
 
 #	def update (self, array):
