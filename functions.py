@@ -4,6 +4,7 @@ import fonts
 from screens import *
 from constants import *
 import text
+import items
 #import npc
 
 class Son ():
@@ -189,7 +190,7 @@ def create_dungeon1 (level, battle, control, son):
                             sprite_group.add (e)
 
                      if col == 's':
-                            s = classes.Chest (x,y)
+                            s = classes.MinorChest (x,y, 'open', items.long_sword )
                             sprite_group.add (s)
 
                      x += 45

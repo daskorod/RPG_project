@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
 
-a={'1lvl':1,'2exp':0,'3at':6,'4ac':6,'5hp':7,'6sp':2,'7points':1}
+class a ():
+	def __init__ (self, *f):
+		self.b = []
+		for i in f:
+			self.b.append(i)
 
+	def print (self):
+		print (self.b)
+
+d = a (1,2,3)
+d.print ()
+
+
+'''a={'1lvl':1,'2exp':0,'3at':6,'4ac':6,'5hp':7,'6sp':2,'7points':1}
+
+self.char_value ={'1lvl':1,'2exp':0,'3at':6,'4ac':6,'5hp':7,'6sp':2,'7points':1}
 b = sorted(a.keys())
 print (b)
 
-'''def create_level (level, battle, control,son, grType):
+def create_level (level, battle, control,son, grType):
 	sprite_group = sprite.Group ()
 	platforms = []
 	ground = sprite.Group()
