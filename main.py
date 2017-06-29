@@ -42,7 +42,7 @@ levels_dict = {'dung1' : dungeon1_loc, '1':stage1, 'end':stage2, 'temple':temple
 
 
 #create hero
-hero = character.Hero (2,3, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
+hero = character.Hero (2,4, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
 
 #start game
 main_loop ()

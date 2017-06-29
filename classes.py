@@ -365,7 +365,7 @@ class SkeletLord (Monster):
 class Platform(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		self.image = image.load('images/ground.png')
+		self.image = image.load('images/ground2.png')
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))
@@ -393,6 +393,20 @@ class Pavestone(sprite.Sprite):
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))
+		self.rect = Rect(0,0,45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "no"
+	def interaction (self,hero):
+		pass
+
+class Flor(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		#self.image = image.load('images/wall.png')
+		#self.image.set_colorkey ((255,255,255))
+		self.image = Surface ((45,45))
+		self.image.fill ((95,95,95))
 		self.rect = Rect(0,0,45,45)
 		self.rect.x = x
 		self.rect.y = y

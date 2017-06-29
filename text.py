@@ -48,14 +48,14 @@ zombi1 = [
 	      },
 #1
     {
-    0: (zi0, "end", zia0),
+    0: (zi0, "next", zia0),
      10: (z20, 'war', empty),
       20: (z30, 'end', empty, ('go', 2))
     },
 
 #2
     {
-    0: (zi1, "end", zia0),
+    0: (zi1, "next", zia0),
      10: (z20, 'war', empty),
       20: (z30, 'end', empty, ('go', 1))
     }

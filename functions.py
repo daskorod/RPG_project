@@ -191,7 +191,7 @@ def create_dungeon1 (level, battle, control, son):
                             sprite_group.add (e)
 
                      if col == 's':
-                            s = classes.MinorChest (x,y, 'open', items.long_sword )
+                            s = classes.MinorChest (x,y, 'open', items.scythe )
                             sprite_group.add (s)
 
                      x += 45
@@ -204,6 +204,7 @@ def create_dungeon1 (level, battle, control, son):
 def create_interior_standart (level, grType):
 
        interior =[]
+       walls = []
        ground = []
 
        x = 0
@@ -211,12 +212,17 @@ def create_interior_standart (level, grType):
 
        for row in level:
               for col in row:
+                    if col != '0' and col != '-':
+                            ground.append(grType(x,y))
+                    x +=45
+              x = 0
+              for col in row:
 
-                    ground.append (grType (x,y))
+                    
                     
                     if col == "-":
                             pf = classes.Platform (x,y)
-                            interior.append (pf)
+                            walls.append (pf)
 
                     if col == "d":
                             door = classes.Door (x,y)
@@ -236,7 +242,7 @@ def create_interior_standart (level, grType):
        x = 0
        y = 0
 
-       return  interior, ground
+       return  interior, ground, walls
 
 
 def create_level_city (level, battle, control, son):

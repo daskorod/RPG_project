@@ -8,7 +8,7 @@ window = display.set_mode((860, 634))
 display.set_caption('Giperborea')
 
 start_screen = Surface((840, 630))
-background = image.load ('images/back.png')
+#background = image.load ('images/back.png')
 adventure_screen = Surface ((840, 420))
 instrumental_screen = Surface ((880,190))
 hero_screen = Surface ((180,190))
