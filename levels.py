@@ -20,7 +20,8 @@ class SuperLevel ():
 		self.description = ''
 		self.son = son
 		self.name = 'location`s name'
-		self.control = control		
+		self.control = control	
+		self.auto = True	
 		
 		self.block_group, self.background = self.create ()
 
@@ -29,6 +30,9 @@ class SuperLevel ():
 		self.camera = camera.Camera (self.level_width, self.level_height, 840, 420)
 	#	self.x_hero = (self.camera.apply(self.hero))
 		self.back = True
+
+# The piece of code which you can see below
+# is accounted for automatic selection of image for wall`s tile
 
 	def up_check (self, checked_wall, walls_set):
 		for i in walls_set:
@@ -134,9 +138,14 @@ class SuperLevel ():
 				else:
 					self.create_addition_wall (i, addition, wall_c)
 
-			elif self.up_check(i, walls_set) == False and self.left_check (i, walls_set) == False and self.is_left_flor(i, ground) == False:
+			elif self.up_check(i, walls_set) == False and self.left_check (i, walls_set) == False and self.is_left_flor(i, ground) == False and self.is_up_flor (i, ground) == False and self.is_down_flor (i, ground) == False:
 				i.image = wall_left
 				self.create_addition_wall (i, addition, wall_c_1)
+
+			elif self.up_check(i, walls_set) == False and self.left_check (i, walls_set) == False and self.is_left_flor(i, ground) == False and self.is_up_flor (i, ground) == False and self.is_down_flor (i, ground) == True:
+
+				i.image = wall_base
+				self.create_addition_wall (i, addition, wall_up_img)
 
 			elif self.up_check(i, walls_set) == False and self.left_check (i, walls_set) == False and self.is_left_flor(i, ground) == True and self.is_right_flor (i, ground) == True:
 				i.image = wall_c
@@ -178,16 +187,26 @@ class SuperLevel ():
 
 			else: i.image = wall_c
 
+#End of automatic wall`s taile selection
+
 	def create (self, create_level = functions.create_level_dungeon, create_interior = functions.create_interior_standart):
+
+# create_level - create monsters, treasures and unique objects of location
+# create interior - create WALLS, GROUND and other landscapes object.
+
 		sprites = create_level (self.lev, self.battle, self.control,self.son)
 		interior, ground, walls = create_interior (self.lev, classes.Flor)
 		addition = []
-		self.wall_determination(walls,addition, ground)
+
+		if self.auto == True:
+			self.wall_determination(walls,addition, ground)
 
 		for i in interior:
 			sprites.add (i)
+
 		for i in walls:
 			sprites.add (i)
+
 		for i in addition:
 			sprites.add (i)
 
@@ -264,22 +283,11 @@ class SuperLevel ():
 
 
 #DUNGEON
-class Level1 (SuperLevel):
-	def __init__ (self, control, lev, battle, son):
-		SuperLevel.__init__ (self, control, lev, battle, son)
-		self.skeletLord = classes.SkeletLord (19,5, self.battle, text.zombitext, self.control, 3,6,8,1, son)
-		self.block_group.add (self.skeletLord)
 
-		self.name = '- - - Неизвестное подземелье - - -'
+		
 
-	def stage_content (self, hero):
-
-		classes.boltAnim.blit (adventure_screen, (self.x_hero.x - 49, self.x_hero.y - 80))
-
-		if self.control.k_space == True:
-			self.control.stage1_flag = False
-			self.control.stage2_flag = True
-
+# Подземелье для первого квеста
+# First stage
 class dungeon (SuperLevel):
 	def __init__ (self, control, lev, battle, son):
 		SuperLevel.__init__ (self, control, lev, battle, son)
@@ -289,26 +297,59 @@ class dungeon (SuperLevel):
 	def stage_content (self, hero):
 		pass
 
+# second stage
+class dungeon2 (SuperLevel):
+	def __init__ (self, control, lev, battle, son):
+		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.block_group, self.background = self.create (create_level = functions.create_dungeon1)
+		self.name = '- - - Подземелье 2 этаж - - -'
+		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
+	def stage_content (self, hero):
+		pass
 
+class dungeon3 (SuperLevel):
+	def __init__ (self, control, lev, battle, son):
+		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.block_group, self.background = self.create (create_level = functions.create_dungeon1)
+		self.name = '- - - Тронный зал- - -'
+		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
+	def stage_content (self, hero):
+		pass
+
+
+class Level1 (SuperLevel):
+	def __init__ (self, control, lev, battle, son):
+		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.auto = False
+		self.block_group, self.background = self.create ()
+		self.skeletLord = classes.SkeletLord (19,5, self.battle, text.zombitext, self.control, 3,6,8,1, son)
+		self.block_group.add (self.skeletLord)
+		self.back = True
+		self.name = '- - - Неизвестное подземелье !- - -'
+
+	def stage_content (self, hero):
+		pass
+		#classes.boltAnim.blit (adventure_screen, (self.x_hero.x - 49, self.x_hero.y - 80))
 
 class Level2 (SuperLevel):
 	def __init__ (self, control, lev, battle, son):
 		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.auto = False
 		self.block_group, self.background = self.create (create_level = functions.create_level_city)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.name = '- - - Окраины города - - -'
 
 	def stage_content (self, hero):
+		pass
 
-		if self.control.k_space == True:
-			self.control.stage2_flag = False
-			self.control.stage1_flag = True
+
 
 
 class Platz (SuperLevel):
 	def __init__ (self, control, lev, battle, son):
 		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.auto = False
 		self.block_group, self.background = self.create (create_level = functions.create_level_city)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
@@ -333,8 +374,9 @@ class Tavern (SuperLevel):
 class Temple (SuperLevel):
 	def __init__ (self, control, lev, battle, son):
 		SuperLevel.__init__ (self, control, lev, battle, son)
+		self.auto = False
 		self.block_group, self.background = self.create (create_level = functions.create_level_city)
-		self.back = False
+		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 		self.name = '- - - Храм Единого - - -'
 

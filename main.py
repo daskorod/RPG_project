@@ -35,14 +35,16 @@ mainplatz = levels.Platz (control, platz, battle, son)
 tavern_loc = levels.Tavern (control, tavern, battle, son)
 temple_loc = levels.Temple (control, temple, battle, son)
 dungeon1_loc = levels.dungeon (control, dungeon1, battle, son)
+dungeon2_loc = levels.dungeon2 (control, dungeon2, battle, son)
+dungeon3_loc = levels.dungeon3 (control, dungeon3, battle, son)
 
 #list of locations
-levels_list = [dungeon1_loc, stage1,temple_loc, stage2, mainplatz]
+levels_list = [dungeon1_loc, dungeon2_loc, dungeon3_loc, stage1,temple_loc, stage2, mainplatz]
 levels_dict = {'dung1' : dungeon1_loc, '1':stage1, 'end':stage2, 'temple':temple_loc, "tavern":tavern_loc, "platz":mainplatz}
 
 
 #create hero
-hero = character.Hero (2,4, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
+hero = character.Hero (7,6, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
 
 #start game
 main_loop ()
