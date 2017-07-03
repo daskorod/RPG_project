@@ -40,7 +40,7 @@ dungeon3_loc = levels.dungeon3 (control, dungeon3, battle, son)
 
 #list of locations
 levels_list = [dungeon1_loc, dungeon2_loc, dungeon3_loc, stage1,temple_loc, stage2, mainplatz]
-levels_dict = {'dung1' : dungeon1_loc, '1':stage1, 'end':stage2, 'temple':temple_loc, "tavern":tavern_loc, "platz":mainplatz}
+levels_dict = {'dung1' : dungeon1_loc, '1':stage1, 'end':stage2, 'temple':temple_loc, "tavern":tavern_loc, "platz":mainplatz, 'dung2' : dungeon2_loc, 'dung3' : dungeon3_loc }
 
 
 #create hero

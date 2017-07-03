@@ -140,6 +140,7 @@ def combat (hero, monster):
 		hero.check_for_death ()
 		monster.render_monster_inf ()
 
+# Функция, которая создаёт набор для стандартного подземелья.
 		
 def create_level_dungeon (level, battle, control, son):
 
@@ -171,35 +172,11 @@ def create_level_dungeon (level, battle, control, son):
        y = 0
        return sprite_group
 
-def create_dungeon1 (level, battle, control, son):
+# Функция для создание спрайтов 1-ого этажа подземелья.
 
-       sprite_group = sprite.Group ()
 
-       x = 0
-       y = 0
 
-       for row in level:
-
-              for col in row:
-                           
-                     if col == "z":
-                            z = classes.Monster (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son, special_opt = True)
-                            sprite_group.add (z)
-
-                     if col == 'e':
-                            e = classes.PortalS (x,y, 'end', (1,4))
-                            sprite_group.add (e)
-
-                     if col == 's':
-                            s = classes.MinorChest (x,y, 'open', items.scythe )
-                            sprite_group.add (s)
-
-                     x += 45
-              x = 0
-              y += 45
-       x = 0
-       y = 0
-       return sprite_group
+#Функция для создание дверей, стен, стандартных сундуков и свечей - стандартных объектов, не предполагающих настройки
 
 def create_interior_standart (level, grType):
 
@@ -244,6 +221,7 @@ def create_interior_standart (level, grType):
 
        return  interior, ground, walls
 
+# Fuction for the city creation
 
 def create_level_city (level, battle, control, son):
        sprite_group = sprite.Group ()
@@ -277,7 +255,7 @@ def create_level_city (level, battle, control, son):
                             sprite_group.add (pr)
 #from end to dung
                      if col == 'w':
-                            pr = classes.Portal (x,y, control)
+                            pr = classes.PortalS (x,y,'dung1', (1,4))
                             sprite_group.add (pr)
 
                      x += 45
@@ -287,21 +265,3 @@ def create_level_city (level, battle, control, son):
        y = 0
        return sprite_group
 
-def create_background (grType, level):
-
-	ground = sprite.Group()
-	x = 0
-	y = 0
-	for row in level:
-		for col in row:
-
-			gr = grType (x,y)
-			ground.add (gr)
-
-			x += 45
-		x = 0
-		y += 45
-	x = 0
-	y = 0
-
-	return  ground
