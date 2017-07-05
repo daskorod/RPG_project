@@ -159,14 +159,20 @@ class Monster (sprite.Sprite):
 
 
 	def dialog_special (self, hero):
-		pass
+		if self.add_information == 'solve' and self.control.k_e == True:
 
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.rect.y = self.rect.y + 45
 
 
 	def dialog_options (self,hero):
 		self.dialog_special (hero)
 
-		if self.add_information == 'end':
+		if self.add_information == 'end' and self.control.k_e == True:
 
 			hero.move = True
 			self.control.k_e = False
