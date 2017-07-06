@@ -32,7 +32,7 @@ def create_dungeon1 (level, battle, control, son):
                             sprite_group.add (e)
 
                      if col == 's':
-                            s = classes.MinorChest (x,y, 'open', items.scythe )
+                            s = classes.MinorChest2 (x,y, 'open', items.garbage )
                             sprite_group.add (s)
 
                      x += 45

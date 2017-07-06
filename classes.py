@@ -446,6 +446,129 @@ class MinorChest(sprite.Sprite):
 			self.n = 0
 			self.branch = 0
 
+class MinorChest2(sprite.Sprite):
+	def __init__(self, x, y, status, *item):
+		sprite.Sprite.__init__(self)
+		self.image=image.load('images/chest2.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((200,30,70))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "chest"
+		self.status = status
+		self.items = item
+		self.inside = []
+		for i in self.items:
+			self.inside.append (i)
+
+		self.items_name = ''
+
+		for i in self.items:
+			self.items_name = self.items_name + i.name + ', '
+		self.items_name = self.items_name[:-2] + '.'
+
+		#conversation data
+		self.tree = text.mchest2
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= 1
+		elif hero.control.left == True:
+			hero.rect.x += 1
+		elif hero.control.up == True:
+			hero.rect.y += 1
+		elif hero.control.down == True:
+			hero.rect.y -= 1
+		hero.move = False
+		hero.collide_control = True
+
+		if 'zombisad' in hero.quest:
+			self.branch = 1
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		MinorChest.dialog_options(self, hero)
+
+
+		self.dialog_special (hero)
+		if self.add_information == 'end_chest':
+
+			hero.son.change_text_tree (hero.view.render_text ('В сундуке находится: ' + self.items_name, 'Нажмите E, чтобы забрать вещи...'))
+		if self.add_information == 'end_chest' and hero.control.k_e == True:
+			hero.move = True
+
+			hero.control.k_e = False
+
+			hero.son.clear_text ()
+
+
+
+
+			hero.collide_control = False
+			hero.start_conv = True
+
+			empty_space = 0
+			for item in hero.inv:
+				if item.name == 'Ничего':
+					empty_space += 1
+
+			if empty_space >= len (self.inside):
+				self.kill ()
+				hero.son.change_text (4, 'Вы взяли все вещи...')
+				counter = 0
+				for i in self.inside:
+					for item in hero.inv:
+						if item.name == 'Ничего':
+							hero.inv.pop (counter)
+							hero.inv.insert (counter, i)
+							break
+						counter += 1
+					counter = 0
+
+			if empty_space < len (self.inside):
+				hero.son.change_text (4, 'Вы взяли не всё, слишком много добра. Не убирается...')
+				counter = 0
+				taken = 0
+				for i in self.inside:
+					if taken > empty_space:
+						break
+					for item in hero.inv:
+						if item.name == 'Ничего':
+							hero.inv.pop (counter)
+							hero.inv.insert (counter, i)
+							self.inside.remove(i)
+							taken += 1
+							break
+						counter += 1
+					counter = 0
+
+				self.items_name = ''
+				for i in self.inside:
+					self.items_name = self.items_name + i.name + ', '
+				self.items_name = self.items_name[:-2] + '.'
+
+		if self.add_information == 'end' and hero.control.k_e == True:
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+			self.branch = 0
+
 
 class Portal2(sprite.Sprite):
 	def __init__(self, x, y,control):

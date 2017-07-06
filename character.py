@@ -114,7 +114,8 @@ class Hero(pygame.sprite.Sprite):
 		self.hp_old = hp
 		self.x_mod = 0	
 
-
+		#QEST
+		self.quest = {}
 		#DIALOG
 
 		self.start_conv = True
@@ -469,9 +470,9 @@ class Hero(pygame.sprite.Sprite):
 
 
 
-		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
-		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
-		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
+		#high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
+		#high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
+		#high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
 
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
@@ -601,11 +602,14 @@ class Hero(pygame.sprite.Sprite):
 	
 				if self.etwas != None:
 					self.etwas.interaction(self)
+
+
 	
 				else:
 					self.rect.x += self.velo
 	
 				self.control.right = False
+
 	
 			if self.control.left == True:
 				self.direction = 1

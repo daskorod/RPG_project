@@ -167,7 +167,25 @@ class Monster (sprite.Sprite):
 			hero.start_conv = True
 			hero.view.a = 0
 			self.rect.y = self.rect.y + 45
-
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+				
+		if self.add_information == 'quest' and self.control.k_e == True:
+			hero.quest['zombisad'] = 'is'
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			
 
 	def dialog_options (self,hero):
 		self.dialog_special (hero)
