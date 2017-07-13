@@ -501,50 +501,56 @@ class Hero(pygame.sprite.Sprite):
 
 		self.etwas.dialog_options (self)
 
-		if self.control.k_1 == True:
-			self.control.k_1 = False
-			self.son.clear_text ()
+		if self.control.button_up == True:
 
-			self.etwas.s = self.etwas.s*10
-			self.etwas.n = (self.etwas.n+(1*self.etwas.s))
-			self.view.a = 0
+			if self.control.k_1 == True:
+				self.control.k_1 = False
+				self.control.button_up = False
+				self.son.clear_text ()
 
-			if self.etwas.n not in tree[interlocutor.branch]:
-				self.etwas.n = (self.etwas.n-(1*self.etwas.s))
-				self.etwas.s = int(self.etwas.s/10)	
+				self.etwas.s = self.etwas.s*10
+				self.etwas.n = (self.etwas.n+(1*self.etwas.s))
+				self.view.a = 0
 
-		if self.control.k_2 == True:
-			self.control.k_2 = False
-			self.son.clear_text ()
-			self.etwas.s = self.etwas.s*10
-			self.etwas.n = (self.etwas.n+(2*self.etwas.s))
-			self.view.a = 0
+				if self.etwas.n not in tree[interlocutor.branch]:
+					self.etwas.n = (self.etwas.n-(1*self.etwas.s))
+					self.etwas.s = int(self.etwas.s/10)	
 
-			if self.etwas.n not in tree[interlocutor.branch]:
-				self.etwas.n = (self.etwas.n-(2*self.etwas.s))
-				self.etwas.s = int(self.etwas.s/10)		
+			if self.control.k_2 == True:
+				self.control.k_2 = False
+				self.control.button_up = False
+				self.son.clear_text ()
+				self.etwas.s = self.etwas.s*10
+				self.etwas.n = (self.etwas.n+(2*self.etwas.s))
+				self.view.a = 0
 
-		if self.control.k_3 == True:
-			self.control.k_3 = False
-			self.son.clear_text ()
-			self.etwas.s = self.etwas.s*10
-			self.etwas.n = (self.etwas.n+(3*self.etwas.s))
-			self.view.a = 0
+				if self.etwas.n not in tree[interlocutor.branch]:
+					self.etwas.n = (self.etwas.n-(2*self.etwas.s))
+					self.etwas.s = int(self.etwas.s/10)		
 
-			if self.etwas.n not in tree[interlocutor.branch]:
-				self.etwas.n = (self.etwas.n-(3*self.etwas.s))
-				self.etwas.s = int(self.etwas.s/10)
+			if self.control.k_3 == True:
+				self.control.k_3 = False
+				self.control.button_up = False
+				self.son.clear_text ()
+				self.etwas.s = self.etwas.s*10
+				self.etwas.n = (self.etwas.n+(3*self.etwas.s))
+				self.view.a = 0
 
-		if self.control.k_4 == True:
-			self.control.k_4 = False
-			self.son.clear_text ()
-			self.etwas.s = self.etwas.s*10
-			self.etwas.n = (self.etwas.n+(4*self.etwas.s))
-			self.view.a = 0
+				if self.etwas.n not in tree[interlocutor.branch]:
+					self.etwas.n = (self.etwas.n-(3*self.etwas.s))
+					self.etwas.s = int(self.etwas.s/10)
 
-			if self.etwas.n not in tree[interlocutor.branch]:
-				self.etwas.n = (self.etwas.n-(4*self.etwas.s))
-				self.etwas.s = int(self.etwas.s/10)
+			if self.control.k_4 == True:
+				self.control.k_4 = False
+				self.control.button_up = False
+				self.son.clear_text ()
+				self.etwas.s = self.etwas.s*10
+				self.etwas.n = (self.etwas.n+(4*self.etwas.s))
+				self.view.a = 0
+
+				if self.etwas.n not in tree[interlocutor.branch]:
+					self.etwas.n = (self.etwas.n-(4*self.etwas.s))
+					self.etwas.s = int(self.etwas.s/10)
 
 	def collide (self, array):
 

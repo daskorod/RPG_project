@@ -5,7 +5,7 @@ from screens import *
 from constants import *
 import text
 import items
-import text_data.zombisad, text_data.monk
+import text_data.zombisad, text_data.monk, text_data.gilbert_dict
 #import npc
 
 def create_dungeon1 (level, battle, control, son):
@@ -194,6 +194,9 @@ def create_level_city (level, battle, control, son):
                      if col == 'w':
                             pr = classes.Portal (x,y, control)
                             sprite_group.add (pr)
+                     if col == 'g':
+                            mn = classes.Monk (x/45,y/45,battle, text_data.gilbert_dict.text, control, 4,5,7,1, son)
+                            sprite_group.add (mn)
 
                      x += 45
               x = 0

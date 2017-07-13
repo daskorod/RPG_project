@@ -53,7 +53,7 @@ class Compose_dialog_tree ():
 		self.a = 0
 		self.control = control
 		self.empty = ''
-		self.stroke_size = 60
+		self.stroke_size = 70
 		self.son = son
 		self.arrowUp = image.load('images/arrow2.png')
 		self.arrowDw = image.load('images/arrow.png')

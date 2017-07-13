@@ -63,7 +63,7 @@ class Level2 (SuperLevel):
 	def __init__ (self, control, lev, battle, son):
 		SuperLevel.__init__ (self, control, lev, battle, son)
 		self.auto = False
-		self.block_group, self.background = self.create (create_level = functions.create_level_city)
+		self.block_group, self.background = self.create (create_level = constructor.create_level_city)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.name = '- - - Окраины города - - -'
