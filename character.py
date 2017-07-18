@@ -100,6 +100,7 @@ class Hero(pygame.sprite.Sprite):
 		self.anima = animlist[self.direction]
 
 		#CHARACTERSTICS
+		self.exp_old = 0
 		self.level = 1
 		self.sp = 2
 		self.sp_max = 2
@@ -290,6 +291,19 @@ class Hero(pygame.sprite.Sprite):
 		self.ac = self.char_value['4ac']
 		self.level = self.char_value['1lvl']
 		self.exp = self.char_value ['2exp']	
+
+	def level_up (self):
+		if self.char_value['2exp'] != self.exp_old:
+			self.exp_old == self.char_value['2exp']
+			if self.char_value['2exp'] >= self.next_level:
+				self.self.char_value['1lvl'] += 1
+				self.char_value['7points'] +=1
+				self.next_level = self.to_next_level(self.self.char_value['1lvl'])
+	
+	def to_next_level(self, current_level):
+		level_table = {1:100,2:200,3:400,4:700,5:1000}
+		return level_table[current_level]
+
 
 	def char_index (self):
 		if self.char_quit == False:

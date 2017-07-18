@@ -96,32 +96,12 @@ class Compose_dialog_tree ():
 			self.control.up = False
 			self.a = self.a-1
 
-#			else:
-#				self.a = 0
-#
 		if self.a < int((len(all_strokes)) // 7):
 			information_screen.blit (self.arrowDw, (600, 70))
 		if self.a !=0:
 			information_screen.blit (self.arrowUp, (600, 0))
 
 		return all_strokes, self.n
-#		counter = 0
-#
-#		for i in ss:
-#			try:
-#				ss[counter] = all_strokes [self.n+counter]
-#				information_screen.blit(fonts.font2.render (str(ss[counter]), True, (250,250,250)),(2,counter*22))
-#				counter = counter + 1
-#			except IndexError:
-#				pass
-#
-
-#		for i in self.strokelist:
-#			try:
-#				self.strokelist[counter] = all_strokes [self.n+counter]
-#				counter = counter + 1
-#			except IndexError:
-#				pass
 
 class Battle ():
 	def main_loop (self, hero, monster):
@@ -139,129 +119,4 @@ def combat (hero, monster):
 		monster.battle_action (hero)
 		hero.check_for_death ()
 		monster.render_monster_inf ()
-
-# Функция, которая создаёт набор для стандартного подземелья.
-		
-def create_level_dungeon (level, battle, control, son):
-
-       sprite_group = sprite.Group ()
-
-       x = 0
-       y = 0
-
-       for row in level:
-
-              for col in row:
-                           
-                     if col == "m":
-                            mn = classes.Monster (x/45,y/45,battle, text.zombi1, control, 10,0,10,1, son)
-                            sprite_group.add (mn)
-
-                     if col == 'p':
-                            pr = classes.Portal (x,y, control)
-                            sprite_group.add (pr)
-
-                     if col == 'z':
-                            pr = classes.Portal2 (x,y, control)
-                            sprite_group.add (pr)
-
-                     x += 45
-              x = 0
-              y += 45
-       x = 0
-       y = 0
-       return sprite_group
-
-# Функция для создание спрайтов 1-ого этажа подземелья.
-
-
-
-#Функция для создание дверей, стен, стандартных сундуков и свечей - стандартных объектов, не предполагающих настройки
-
-def create_interior_standart (level, grType):
-
-       interior =[]
-       walls = []
-       ground = []
-
-       x = 0
-       y = 0
-
-       for row in level:
-              for col in row:
-                    if col != '0' and col != '-':
-                            ground.append(grType(x,y))
-                    x +=45
-              x = 0
-              for col in row:
-
-                    
-                    
-                    if col == "-":
-                            pf = classes.Platform (x,y)
-                            walls.append (pf)
-
-                    if col == "d":
-                            door = classes.Door (x,y)
-                            interior.append (door)
-
-                    if col == "c":
-                            ch = classes.Chest (x,y)
-                            interior.append (ch)
-
-                    if col == "t":
-                            tr = classes.Candel (x,y)
-                            interior.append (tr)
-
-                    x += 45
-              x = 0
-              y += 45
-       x = 0
-       y = 0
-
-       return  interior, ground, walls
-
-# Fuction for the city creation
-
-def create_level_city (level, battle, control, son):
-       sprite_group = sprite.Group ()
-
-       x = 0
-       y = 0
-
-       for row in level:
-
-              for col in row:
-                           
-                     if col == "m":
-                            mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son)
-                            sprite_group.add (mn)
-# exit from temple
-                     if col == 'p':
-                            pr = classes.PortalS (x,y,'platz', (11,1))
-                            sprite_group.add (pr)
-#enter into temple
-                     if col == 'e':
-                            pr = classes.PortalS (x,y,'temple', (10,4))
-                            sprite_group.add (pr)
-
-#path to end of the city
-                     if col == 'o':
-                            pr = classes.PortalS (x,y,'end', (1,4))
-                            sprite_group.add (pr)
-#from end to platz
-                     if col == 'q':
-                            pr = classes.PortalS (x,y,'platz', (21,4))
-                            sprite_group.add (pr)
-#from end to dung
-                     if col == 'w':
-                            pr = classes.PortalS (x,y,'dung1', (1,4))
-                            sprite_group.add (pr)
-
-                     x += 45
-              x = 0
-              y += 45
-       x = 0
-       y = 0
-       return sprite_group
 

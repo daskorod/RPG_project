@@ -20,7 +20,7 @@ def create_dungeon1 (level, battle, control, son):
               for col in row:
                            
                      if col == "z":
-                            z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son, special_opt = True)
+                            z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son,20)
                             sprite_group.add (z)
 
                      if col == 'e':
@@ -54,11 +54,11 @@ def create_dungeon2 (level, battle, control, son):
               for col in row:
                            
                      if col == "z":
-                            z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son, special_opt = True)
+                            z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son, 20)
                             sprite_group.add (z)
 
                      if col == 'e':
-                            e = classes.PortalS (x,y, 'dung1', (15,4))
+                            e = classes.PortalS (x,y, 'dung1', (11,4))
                             sprite_group.add (e)
 
                      if col == 'w':
@@ -88,7 +88,7 @@ def create_dungeon3 (level, battle, control, son):
               for col in row:
                            
                      if col == "z":
-                            z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son, special_opt = True)
+                            z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son, 30)
                             sprite_group.add (z)
 
                      if col == 'e':
@@ -109,6 +109,57 @@ def create_dungeon3 (level, battle, control, son):
        x = 0
        y = 0
        return sprite_group
+
+# Fuction for the city creation
+
+def create_level_city (level, battle, control, son):
+       sprite_group = sprite.Group ()
+
+       x = 0
+       y = 0
+
+       for row in level:
+
+              for col in row:
+                           
+                     if col == "m":
+                            mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son, 100)
+                            sprite_group.add (mn)
+# exit from temple
+                     if col == 'p':
+                            pr = classes.PortalS (x,y,'platz', (11,1))
+                            sprite_group.add (pr)
+#enter into temple
+                     if col == 'e':
+                            pr = classes.PortalS (x,y,'temple', (10,4))
+                            sprite_group.add (pr)
+
+#path to end of the city
+                     if col == 'o':
+                            pr = classes.PortalS (x,y,'end', (1,4))
+                            sprite_group.add (pr)
+#from end to platz
+                     if col == 'q':
+                            pr = classes.PortalS (x,y,'platz', (21,4))
+                            sprite_group.add (pr)
+#from end to dung
+                     if col == 'w':
+                            pr = classes.PortalS (x,y, 'dung1', (1,4))
+                            sprite_group.add (pr)
+
+
+                     if col == 'g':
+                            mn = classes.Monk (x/45,y/45,battle, text_data.gilbert_dict.text, control, 4,5,7,1, son, 100)
+                            sprite_group.add (mn)
+
+                     x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+       return sprite_group
+
+
 
 #Функция для создание дверей, стен, стандартных сундуков и свечей - стандартных объектов, не предполагающих настройки
 def create_interior_standart (level, grType):
@@ -158,50 +209,4 @@ def create_interior_standart (level, grType):
 
 
 
-# Fuction for the city creation
-
-def create_level_city (level, battle, control, son):
-       sprite_group = sprite.Group ()
-
-       x = 0
-       y = 0
-
-       for row in level:
-
-              for col in row:
-                           
-                     if col == "m":
-                            mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son)
-                            sprite_group.add (mn)
-# exit from temple
-                     if col == 'p':
-                            pr = classes.PortalS (x,y,'platz', (11,1))
-                            sprite_group.add (pr)
-#enter into temple
-                     if col == 'e':
-                            pr = classes.PortalS (x,y,'temple', (10,4))
-                            sprite_group.add (pr)
-
-#path to end of the city
-                     if col == 'o':
-                            pr = classes.PortalS (x,y,'end', (1,4))
-                            sprite_group.add (pr)
-#from end to platz
-                     if col == 'q':
-                            pr = classes.PortalS (x,y,'platz', (21,4))
-                            sprite_group.add (pr)
-#from end to dung
-                     if col == 'w':
-                            pr = classes.Portal (x,y, control)
-                            sprite_group.add (pr)
-                     if col == 'g':
-                            mn = classes.Monk (x/45,y/45,battle, text_data.gilbert_dict.text, control, 4,5,7,1, son)
-                            sprite_group.add (mn)
-
-                     x += 45
-              x = 0
-              y += 45
-       x = 0
-       y = 0
-       return sprite_group
 

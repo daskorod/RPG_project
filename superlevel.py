@@ -7,6 +7,7 @@ from constants import *
 import fonts
 import text
 import camera
+import constructor
 
 timer = pygame.time.Clock  ()
 
@@ -193,7 +194,7 @@ class SuperLevel ():
 
 #End of automatic wall`s taile selection
 
-	def create (self, create_level = functions.create_level_dungeon, create_interior = functions.create_interior_standart):
+	def create (self, create_level = constructor.create_dungeon1, create_interior = constructor.create_interior_standart):
 
 # create_level - create monsters, treasures and unique objects of location
 # create interior - create WALLS, GROUND and other landscapes object.

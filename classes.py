@@ -29,14 +29,80 @@ boltAnim.rotate (270)
 
 
 class Zombi (Monster):
-	pass
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.image=image.load('images/zombi.png')
+		self.image.set_colorkey ((255,255,255))
+		self.mname = '     Зомби'
+
+	def interaction (self, hero):
+		for i in hero.inv:
+			if i.name == 'Хлам':
+				self.branch = 3
+		if hero.control.right == True:
+			hero.rect.x -= 1
+		elif hero.control.left == True:
+			hero.rect.x += 1
+		elif hero.control.up == True:
+			hero.rect.y += 1
+		elif hero.control.down == True:
+			hero.rect.y -= 1
+		hero.move = False
+		hero.collide_control = True
+
+	def dialog_special (self, hero):
+		if self.add_information == 'zombidead' and self.control.k_e == True:
+			self.kill()
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0	
+			self.son.clear_text ()
+			hero.char_value['2exp'] += 60
+			self.son.change_text(2, 'Поздравляю, вы сделали с зомби что-то ингуманистическое!')	
+			self.son.change_text(4, 'Вы получаете 60 опыта!')	
+			
+		if self.add_information == 'garbage':
+				for i in hero.inv:
+					if i.name == 'Хлам':
+						hero.inv.remove(i)
+
+		if self.add_information == 'solve' and self.control.k_e == True:
+
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.rect.y = self.rect.y + 45
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+				
+		if self.add_information == 'quest' and self.control.k_e == True:
+			hero.quest['zombisad'] = 'is'
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+
 
 class Skelet (Monster):
 	pass
 
 class SkeletLord (Monster):
-	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son):
-		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son)
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = text.lord
 		self.lbolt = False
 		self.mname = 'Скелет Лорд'
@@ -135,6 +201,7 @@ class Platform(sprite.Sprite):
 		hero.son.clear_text ()
 		hero.son.change_text (1, 'Холодная мрачная стена, напоминает о смерти.')
 
+
 class Pavestone(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
@@ -146,20 +213,32 @@ class Pavestone(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "no"
+
+
+
 	def interaction (self,hero):
 		pass
+
+pave1 = image.load('images/pave1.png')
+pave2 = image.load('images/pave2.png')
+pave3 = image.load('images/pave3.png')
+pavestones = [pave1,pave2,pave3]
 
 class Flor(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		#self.image = image.load('images/wall.png')
+		self.image = self.random(pavestones)
 		#self.image.set_colorkey ((255,255,255))
-		self.image = Surface ((45,45))
-		self.image.fill ((95,95,95))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((95,95,95))
 		self.rect = Rect(0,0,45,45)
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "no"
+
+	def random(self, florlist):
+		return random.choice(florlist)
+
 	def interaction (self,hero):
 		pass
 
@@ -656,8 +735,8 @@ class Bar(sprite.Sprite):
 		pass
 
 class Monk (Monster):
-	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son):
-		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son)
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = textus
 		self.lbolt = False
 		self.mname = 'Отец Изольд'

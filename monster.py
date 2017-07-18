@@ -26,7 +26,7 @@ class Bar(sprite.Sprite):
 		pass
 		
 class Monster (sprite.Sprite):
-	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son, special_opt = False):
+	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son, exp, special_opt = False):
 		sprite.Sprite.__init__(self)
 		#self.image = Surface ((45,45))
 		#self.image.fill ((120,30,200))
@@ -34,6 +34,8 @@ class Monster (sprite.Sprite):
 		#BASE DATA
 		self.image=image.load('images/zombi.png')
 		self.image.set_colorkey ((255,255,255))
+
+
 		self.rect = Rect (0,0, 45,45)
 		self.rect.x = x*PF_WIDTH
 		self.rect.y = y*PF_HEIGHT
@@ -48,6 +50,7 @@ class Monster (sprite.Sprite):
 		self.ac = ac
 		self.hp = hp
 		self.damage = dem
+		self.exp = exp
 
 		#conversation data
 		
@@ -118,7 +121,9 @@ class Monster (sprite.Sprite):
 			self.kill ()
 			hero.move = True
 			hero.collide_control = False
+			hero.char_value['2exp'] += self.exp
 			self.son.change_text (2, "Вы убили ужасного монстра!")
+			self.son.change_text (3, "Вы получаете опыт: %s " % self.exp)
 			self.son.clear_text ()
 
 	def interaction (self, hero):
@@ -159,33 +164,9 @@ class Monster (sprite.Sprite):
 
 
 	def dialog_special (self, hero):
-		if self.add_information == 'solve' and self.control.k_e == True:
 
-			hero.move = True
-			self.control.k_e = False
-			hero.collide_control = False
-			hero.start_conv = True
-			hero.view.a = 0
-			self.rect.y = self.rect.y + 45
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-				
-		if self.add_information == 'quest' and self.control.k_e == True:
-			hero.quest['zombisad'] = 'is'
-			hero.move = True
-			self.control.k_e = False
-			hero.collide_control = False
-			hero.start_conv = True
-			hero.view.a = 0
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-			
+		pass
+
 
 	def dialog_options (self,hero):
 		self.dialog_special (hero)
@@ -198,23 +179,11 @@ class Monster (sprite.Sprite):
 			hero.start_conv = True
 			hero.view.a = 0
 
-#			if self.branch_do == 'random1,2':
-#				a = random.randint (1,6)
-#				self.branch_do = 'done'
-#				self.s = 1
-#				self.n = 0
-#
-#				if a >3:
-#					self.branch = 1
-#				if a <=3:
-#					self.branch = 2
-
 			if self.branch_do == 'go':
 				self.branch_do = 'done'
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
-				
 
 		if self.add_information == 'war' and self.control.k_e == True:
 			self.son.clear_text ()
@@ -223,9 +192,6 @@ class Monster (sprite.Sprite):
 			hero.turn_main = True
 			hero.start_conv = True
 			hero.view.a = 0
-
-#		if self.branch_do == 'random1,2' and self.control.k_e == True and self.add_information != 'end':
-#			self.control.k_e = False
 
 			a = random.randint (1,6)
 			self.branch_do = 'done'
@@ -236,16 +202,6 @@ class Monster (sprite.Sprite):
 				self.branch = 1
 			if a <=3:
 				self.branch = 2
-
-
-#		if self.branch_do == 'go' and self.control.k_e == True and self.add_information != 'end':
-#			self.control.k_e = False
-#			self.branch_do = 'done'
-#			self.branch = self.branch_id
-#			self.s = 1
-#			self.n = 0
-
-
 
 
 	def battle_action (self, hero):

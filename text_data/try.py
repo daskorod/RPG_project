@@ -11,6 +11,6 @@ def exwr (filename):
 
 	outfile.write(str_to_write)
 
-exwr('gilbert')
+exwr('gil.txt')
 
-print ('text structure compile succsess!')
+print ('text structure compile success!')
