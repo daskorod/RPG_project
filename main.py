@@ -4,10 +4,11 @@ import levels
 import classes
 import controller
 import character
-from level_data import *
+import level_data
 from constants import *
 import camera
 import functions
+import superlevel
 
 #global settings
 pygame.key.set_repeat(100,100)
@@ -17,36 +18,50 @@ pygame.key.get_repeat ()
 
 def main_loop():
 	while True:
-		control.control () #control loop, control of events, key press
+		control.control () #control loop, control of events, keys press
 		hero.transcendental_apperception () #construct and render all the world from the character itself
 		pygame.display.update() #update the screen
-		
+
+
+#def levels_factory (level_class, level_data, *args):
+	#return level_class(level_data, *args)
+
+def levels_constructor (classlevellist):
+	levels_list = []
+	levels_dict= {}
+	for clss in classlevellist:
+		#a = levels_factory (i, getattr(level_data, str(i.__name__)), battle, son, control)
+		exemp = clss(getattr(level_data, str(clss.__name__)), battle, son, control)
+		print (exemp)
+		levels_list.append(exemp)
+		levels_dict[clss.__name__.strip('_')] = exemp
+	return levels_list, levels_dict
+
+def create_class_levels_list(levelsmodule):
+	class_levels_list = []
+	for levelname in levelsmodule:
+		if levelname.startswith ('_') == True and levelname.endswith ('__') == False:
+			class_levels_list.append(getattr (levels, levelname))
+	return class_levels_list
+
 #create objects (cosmic forces)
 
 son = functions.Son ()
 control = controller.Holy_Spirit () 
 battle = functions.Battle () #delet
 compose_text = functions.Compose_dialog_tree (control,son)
+levels_list, levels_dict = levels_constructor (create_class_levels_list (dir(levels)))
 
-#create locations
-#stage1 = levels.Level1(control, lev1, battle, son)
-stage2 = levels.Level2(control, lev2, battle, son)
-mainplatz = levels.Platz (control, platz, battle, son)
-tavern_loc = levels.Tavern (control, tavern, battle, son)
-temple_loc = levels.Temple (control, temple, battle, son)
-dungeon1_loc = levels.dungeon (control, dungeon1, battle, son)
-dungeon2_loc = levels.dungeon2 (control, dungeon2, battle, son)
-dungeon3_loc = levels.dungeon3 (control, dungeon3, battle, son)
 
-#list of locations
-levels_list = [dungeon1_loc, dungeon2_loc, dungeon3_loc, temple_loc, stage2, mainplatz]
-levels_dict = {'dung1' : dungeon1_loc, 'end':stage2, 'temple':temple_loc, "tavern":tavern_loc, "platz":mainplatz, 'dung2' : dungeon2_loc, 'dung3' : dungeon3_loc }
+print ('\n',levels_list, '\n\n', levels_dict,'\n')
+
 
 
 #create hero
 hero = character.Hero (7,6, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
 
 print ('Привет доброму человеку Кириллу Герою!')
+
 
 #start game
 main_loop ()

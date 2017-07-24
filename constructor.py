@@ -28,7 +28,7 @@ def create_dungeon1 (level, battle, control, son, locationname):
                             sprite_group.add (e)
 
                      if col == 'w':
-                            e = classes.PortalS (x,y, 'dung2', (2,15))
+                            e = classes.PortalS (x,y, 'dungeon2', (2,15))
                             sprite_group.add (e)
 
                      if col == 's':
@@ -59,11 +59,11 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             sprite_group.add (z)
 
                      if col == 'e':
-                            e = classes.PortalS (x,y, 'dung1', (11,4))
+                            e = classes.PortalS (x,y, 'dungeon1', (11,4))
                             sprite_group.add (e)
 
                      if col == 'w':
-                            e = classes.PortalS (x,y, 'dung3', (1,4))
+                            e = classes.PortalS (x,y, 'dungeon3', (1,4))
                             sprite_group.add (e)
 
                      if col == 's':
@@ -93,11 +93,11 @@ def create_dungeon3 (level, battle, control, son, locationname):
                             sprite_group.add (z)
 
                      if col == 'e':
-                            e = classes.PortalS (x,y, 'dung1', (15,4))
+                            e = classes.PortalS (x,y, 'dungeon1', (15,4))
                             sprite_group.add (e)
 
                      if col == 'w':
-                            e = classes.PortalS (x,y, 'dung3', (1,4))
+                            e = classes.PortalS (x,y, 'dungeon3', (1,4))
                             sprite_group.add (e)
 
                      if col == 's':
@@ -145,16 +145,18 @@ def create_level_city (level, battle, control, son, locationname):
                             sprite_group.add (pr)
 #from end to dung
                      if col == 'w':
-                            pr = classes.PortalS (x,y, 'dung1', (1,4))
+                            pr = classes.PortalS (x,y, 'dungeon1', (1,4))
                             sprite_group.add (pr)
 
 
                      if col == 'g':
                             mn = classes.Monk (x/45,y/45,battle, text_data.gilbert_dict.text, control, 4,5,7,1, son, 100)
                             sprite_group.add (mn)
+
                      if col == 'r':
                             pr = classes.PortalLink (x,y, 'TavernOutdoor', 'TavernInside', 'D', locationname )
                             sprite_group.add (pr)
+                            
                      if col == 'y':
                             pr = classes.PortalLink (x,y, 'TavernInside', 'TavernOutdoor', 'U', locationname )
                             sprite_group.add (pr)

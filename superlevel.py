@@ -11,15 +11,16 @@ import constructor
 
 timer = pygame.time.Clock  ()
 
+
 class SuperLevel ():
-	def __init__ (self, control, lev, battle, son):
+	def __init__ (self, lev, battle, son, control):
 
 		#self.create = create
 		self.lev = lev
 		self.battle = battle
 		self.description = ''
 		self.son = son
-		self.name = 'location`s name'
+		self.techname = self.__class__.__name__.strip('_')
 		self.control = control	
 		self.auto = True	
 		
@@ -30,6 +31,8 @@ class SuperLevel ():
 		self.camera = camera.Camera (self.level_width, self.level_height, 840, 420)
 	#	self.x_hero = (self.camera.apply(self.hero))
 		self.back = True
+
+
 
 # The piece of code which you can see below
 # is accounted for automatic selection of image for wall`s tile
@@ -199,7 +202,7 @@ class SuperLevel ():
 # create_level - create monsters, treasures and unique objects of location
 # create interior - create WALLS, GROUND and other landscapes object.
 
-		sprites = create_level (self.lev, self.battle, self.control, self.son, self.name)
+		sprites = create_level (self.lev, self.battle, self.control, self.son, self.techname)
 		interior, ground, walls = create_interior (self.lev, classes.Flor)
 		addition = []
 
