@@ -199,7 +199,7 @@ class SuperLevel ():
 # create_level - create monsters, treasures and unique objects of location
 # create interior - create WALLS, GROUND and other landscapes object.
 
-		sprites = create_level (self.lev, self.battle, self.control,self.son)
+		sprites = create_level (self.lev, self.battle, self.control, self.son, self.name)
 		interior, ground, walls = create_interior (self.lev, classes.Flor)
 		addition = []
 

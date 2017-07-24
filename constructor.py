@@ -8,7 +8,7 @@ import items
 import text_data.zombisad, text_data.monk, text_data.gilbert_dict
 #import npc
 
-def create_dungeon1 (level, battle, control, son):
+def create_dungeon1 (level, battle, control, son, locationname):
 
        sprite_group = sprite.Group ()
 
@@ -35,6 +35,7 @@ def create_dungeon1 (level, battle, control, son):
                             s = classes.MinorChest2 (x,y, 'open', items.garbage )
                             sprite_group.add (s)
 
+
                      x += 45
               x = 0
               y += 45
@@ -42,7 +43,7 @@ def create_dungeon1 (level, battle, control, son):
        y = 0
        return sprite_group
 
-def create_dungeon2 (level, battle, control, son):
+def create_dungeon2 (level, battle, control, son, locationname):
 
        sprite_group = sprite.Group ()
 
@@ -76,7 +77,7 @@ def create_dungeon2 (level, battle, control, son):
        y = 0
        return sprite_group
 
-def create_dungeon3 (level, battle, control, son):
+def create_dungeon3 (level, battle, control, son, locationname):
 
        sprite_group = sprite.Group ()
 
@@ -112,7 +113,7 @@ def create_dungeon3 (level, battle, control, son):
 
 # Fuction for the city creation
 
-def create_level_city (level, battle, control, son):
+def create_level_city (level, battle, control, son, locationname):
        sprite_group = sprite.Group ()
 
        x = 0
@@ -151,6 +152,12 @@ def create_level_city (level, battle, control, son):
                      if col == 'g':
                             mn = classes.Monk (x/45,y/45,battle, text_data.gilbert_dict.text, control, 4,5,7,1, son, 100)
                             sprite_group.add (mn)
+                     if col == 'r':
+                            pr = classes.PortalLink (x,y, 'TavernOutdoor', 'TavernInside', 'D', locationname )
+                            sprite_group.add (pr)
+                     if col == 'y':
+                            pr = classes.PortalLink (x,y, 'TavernInside', 'TavernOutdoor', 'U', locationname )
+                            sprite_group.add (pr)
 
                      x += 45
               x = 0

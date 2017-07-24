@@ -52,6 +52,7 @@ class Zombi (Monster):
 		hero.collide_control = True
 
 	def dialog_special (self, hero):
+		
 		if self.add_information == 'zombidead' and self.control.k_e == True:
 			self.kill()
 			hero.move = True
@@ -704,6 +705,53 @@ class PortalS (sprite.Sprite):
 		#self.control.stage1_flag = True
 		hero.location = hero.locations_dict[self.loc_num]
 		hero.rect.x, hero.rect.y = self.px*45, self.py*45
+
+class PortalLink (sprite.Sprite):
+	def __init__(self, x, y, name, link, exitside, locationname):
+		sprite.Sprite.__init__(self)
+		self.image=image.load('images/portal.png')
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = name
+		self.link = link
+		self.exitside = exitside
+		self.locationname = locationname
+
+	def interaction (self, hero):
+		#self.control.stage2_flag = False
+		#self.control.stage1_flag = True
+		portal = self.find_object_of_bounded_portal(hero)
+		hero.location = hero.locations_dict[portal.locationname]
+		hero.rect.x, hero.rect.y = portal.entrance()
+
+	def find_object_of_bounded_portal(self, hero):
+		for i in hero.locations_dict.keys():
+			for x in hero.locations_dict[i].block_group:
+				try:
+					if x.name == self.link:
+						return x
+				except:
+					pass
+
+	def entrance(self):
+
+		if self.exitside == 'L':
+			xs = self.rect.x - 45
+			ys = self.rect.y
+		elif self.exitside == 'R':
+			xs = 45+self.rect.x
+			ys = self.rect.y
+			
+		elif self.exitside == 'U':
+			xs = self.rect.x
+			ys = self.rect.y -45
+
+		elif self.exitside == 'D':
+			xs = self.rect.x
+			ys = self.rect.y +45
+
+		return xs,ys 
 
 class IndexS (Platform):
 	def __init__(self, x, y, text):
