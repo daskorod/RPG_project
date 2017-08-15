@@ -22,10 +22,6 @@ def main_loop():
 		hero.transcendental_apperception () #construct and render all the world from the character itself
 		pygame.display.update() #update the screen
 
-
-#def levels_factory (level_class, level_data, *args):
-	#return level_class(level_data, *args)
-
 def levels_constructor (classlevellist):
 	levels_list = []
 	levels_dict= {}
@@ -52,18 +48,12 @@ battle = functions.Battle () #delet
 compose_text = functions.Compose_dialog_tree (control,son)
 levels_list, levels_dict = levels_constructor (create_class_levels_list (dir(levels)))
 
-
 print ('\n',levels_list, '\n\n', levels_dict,'\n')
-
 
 
 #create hero
 hero = character.Hero (7,6, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
 
-print ('Привет доброму человеку Кириллу Герою!')
-
 
 #start game
 main_loop ()
-
-

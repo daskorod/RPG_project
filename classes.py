@@ -701,8 +701,6 @@ class PortalS (sprite.Sprite):
 		self.px, self.py = coordinates
 
 	def interaction (self, hero):
-		#self.control.stage2_flag = False
-		#self.control.stage1_flag = True
 		hero.location = hero.locations_dict[self.loc_num]
 		hero.rect.x, hero.rect.y = self.px*45, self.py*45
 
@@ -719,8 +717,6 @@ class PortalLink (sprite.Sprite):
 		self.locationname = locationname
 
 	def interaction (self, hero):
-		#self.control.stage2_flag = False
-		#self.control.stage1_flag = True
 		portal = self.find_object_of_bounded_portal(hero)
 		hero.location = hero.locations_dict[portal.locationname]
 		hero.rect.x, hero.rect.y = portal.entrance()

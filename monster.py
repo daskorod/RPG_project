@@ -171,7 +171,7 @@ class Monster (sprite.Sprite):
 	def dialog_options (self,hero):
 		self.dialog_special (hero)
 
-		if self.add_information == 'end' and self.control.k_e == True:
+		if self.add_information == 'end':
 
 			hero.move = True
 			self.control.k_e = False

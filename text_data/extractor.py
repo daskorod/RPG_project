@@ -1,3 +1,5 @@
+''' Текстовый файл для анализа должен быть в кодировке ANSI почему-то я не знаю почему. Если он в utf-8, то в сохранённом словаре появляются кракозябры'''
+
 
 def compose (filename):
   a = open (filename)
@@ -5,7 +7,7 @@ def compose (filename):
   generalls = []
   textbar = []
   
-  empty = 'NO'
+  empty = 'Нажмите E'
   branch = 0
   
   for i in a:
@@ -35,7 +37,7 @@ def compose (filename):
   
   
     else:
-      if tech_str.startswith('a') == False:
+      if tech_str.startswith('a') == False :
         add_information_str = 'next'
         key_str = tech_str
         value = value, add_information_str
@@ -69,3 +71,4 @@ def compose (filename):
       value, add_information = generalls[branch_number][key]
 
   return textbar
+
