@@ -206,6 +206,12 @@ def create_interior_standart (level, grType):
                     if col == "t":
                             tr = classes.Candel (x,y)
                             interior.append (tr)
+                    if col == "u":
+                            t = classes.Table(x,y)
+                            interior.append(t)
+                    if col == "i":
+                            t = classes.Chair(x,y)
+                            interior.append(t)
 
                     x += 45
               x = 0

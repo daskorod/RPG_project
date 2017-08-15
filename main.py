@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 import pygame
+import superlevel
 import levels
 import classes
 import controller
@@ -8,13 +9,16 @@ import level_data
 from constants import *
 import camera
 import functions
-import superlevel
+
+import sys
 
 #global settings
 pygame.key.set_repeat(100,100)
 pygame.key.get_repeat ()
 
 #main function
+
+
 
 def main_loop():
 	while True:
@@ -44,8 +48,16 @@ def create_class_levels_list(levelsmodule):
 
 son = functions.Son ()
 control = controller.Holy_Spirit () 
-battle = functions.Battle () #delet
+
+if len(sys.argv)>1:
+	if sys.argv[1] == 'test':
+		print ('Test mode')
+		control.auto = False
+
+battle = functions.Battle () #to delete
+
 compose_text = functions.Compose_dialog_tree (control,son)
+
 levels_list, levels_dict = levels_constructor (create_class_levels_list (dir(levels)))
 
 print ('\n',levels_list, '\n\n', levels_dict,'\n')

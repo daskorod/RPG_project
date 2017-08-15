@@ -206,7 +206,7 @@ class SuperLevel ():
 		interior, ground, walls = create_interior (self.lev, classes.Flor)
 		addition = []
 
-		if self.auto == True:
+		if self.auto == True and self.control.auto == True:
 			self.wall_determination(walls,addition, ground)
 
 		for i in interior:

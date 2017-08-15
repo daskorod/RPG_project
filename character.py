@@ -8,6 +8,7 @@ import classes
 from screens import *
 from constants import *
 import items
+import ideas
 
 time = 0.2
 
@@ -163,6 +164,16 @@ class Hero(pygame.sprite.Sprite):
 		self.damage = self.weapon.dem
 		self.inv_question = False
 		self.inv_quit = False
+
+		#JOURNAL
+
+		self.journal_flag = False
+
+		self.no_ideas = ideas.no_ideas
+		self.journal = [ideas.revelation, self.no_ideas, self.no_ideas, self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas]
+		self.journal_index_pos = 0
+		self.journal_question = False
+		self.journal_quit = False
 
 		#ChAr options
 		self.char_flag = False
@@ -439,7 +450,75 @@ class Hero(pygame.sprite.Sprite):
 
 			if self.control.up == True:
 				self.control.up = False
-				self.inv_quit = False	
+
+	def journal_manage (self):
+
+		if self.control.k_j == True and self.journal_flag == False:
+			self.move = False
+			self.journal_flag = True
+			self.control.k_j = False
+
+		if self.control.k_j == True and self.journal_flag == True:
+			self.control.k_j = False
+			self.move = True
+			self.journal_flag = False
+			self.son.clear_text ()
+
+		if self.journal_flag == True:
+			adventure_screen.blit (journal_screen, (200,10))
+			journal_screen.fill (swamp)
+			a = 0
+			journal_screen.blit(fonts.font2.render ('Философский Дневник', True, (250,250,250)),(70,10))
+			journal_screen.blit(fonts.font2.render ('Выйти', True, (250,250,250)),(152,350))
+			for i in self.journal:
+				
+				journal_screen.blit(fonts.font2.render (str(i.name), True, (250,250,250)),(40,50+(a*30)))
+				a +=1
+
+			
+
+			if self.journal_question == False:
+				self.journal_index()
+
+				if self.journal_quit == False:
+					self.son.change_text_tree (self.view.render_text (self.journal[self.journal_index_pos].name+ '. ' + self.journal[self.journal_index_pos].description, self.journal[self.journal_index_pos].use_description))
+
+			if self.journal_quit == True:
+				self.son.clear_text ()
+				information_screen.blit(fonts.font2.render ('Выйти? Нажмите E', True, (250,250,250)),(10,10))
+
+				if self.control.k_e == True:
+					self.control.k_e = False
+					self.move = True
+					self.journal_flag = False
+					self.journal_index_pos = 0
+					self.journal_quit = False
+
+
+	def journal_index (self):
+		if self.journal_quit == False:
+
+			journal_screen.blit(self.at_ic, (13,53+(self.journal_index_pos*30)))
+
+			if self.control.right == True and self.journal_index_pos <8:
+				self.control.right = False
+				self.journal_index_pos += 1
+			if self.control.left == True and self.journal_index_pos >0:
+				self.control.left = False
+				self.journal_index_pos -= 1
+
+			if self.control.right == True and self.journal_index_pos == 8:
+				self.control.right = False
+				self.journal_quit = True
+
+		if self.journal_quit == True:
+			journal_screen.blit(self.at_ic, (70, 353))
+
+			if self.control.left == True:
+				self.control.left = False
+				self.journal_quit = False	
+
+
 
 	def render_hp_mod(self, position):
 
@@ -596,11 +675,12 @@ class Hero(pygame.sprite.Sprite):
 
 
 		self.conversation_control ()
-		if self.char_flag == False:
+		if self.char_flag == False and self.journal_flag == False:
 			self.inventory_manage ()
-		if self.inventory_flag == False:
+		if self.inventory_flag == False and self.journal_flag == False:
 			self.char_options ()
-
+		if self.char_flag == False and self.inventory_flag == False:
+			self.journal_manage ()
 		#if self.control.move_cntrl == True and self.move == True:
 			#self.anima.play ()
 #

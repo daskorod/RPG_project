@@ -3,7 +3,7 @@ import sys
 
 class Holy_Spirit ():
 	def __init__ (self):
-
+		self.auto = True
 		self.k_space = False
 		self.stage1_flag = False
 		self.stage2_flag = True
@@ -21,6 +21,7 @@ class Holy_Spirit ():
 		self.k_i = False
 		self.k_c = False
 		self.button_up = True
+		self.k_j = False
 #		R = False
 #		L = False
 #		U = False
@@ -102,6 +103,8 @@ class Holy_Spirit ():
 						self.k_i = True
 					if e.key == pygame.K_c:
 						self.k_c = True
+					if e.key == pygame.K_j:
+						self.k_j = True
 				if e.type == pygame.KEYUP:
 					if e.key == pygame.K_1:
 						self.k_1 = False
@@ -126,3 +129,5 @@ class Holy_Spirit ():
 						self.k_i = False
 					if e.key == pygame.K_c:
 						self.k_c = False
+					if e.key == pygame.K_j:
+						self.k_j = False

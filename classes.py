@@ -324,8 +324,37 @@ class Candel(Platform):
 		Platform.interaction (self, hero)
 		hero.son.change_text (1, 'Крутой подсвечник. Да и свечи ничего')
 
+class Table(Platform):
+	def __init__(self, x, y):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load('images/tiles/table3.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, 'Добротный стол. Хоть и обшарпанный.')
 
-
+class Chair(Platform):
+	def __init__(self, x, y):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load('images/tiles/chair.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, 'Древний стул. Весьма гордый.')
 
 class Marker(sprite.Sprite):
 	def __init__(self,x,y):
