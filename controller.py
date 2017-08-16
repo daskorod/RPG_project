@@ -22,6 +22,7 @@ class Holy_Spirit ():
 		self.k_c = False
 		self.button_up = True
 		self.k_j = False
+		self.k_esc = False
 #		R = False
 #		L = False
 #		U = False
@@ -31,6 +32,8 @@ class Holy_Spirit ():
 		self.move_cntrl = False
 		
 	def control (self):
+			if self.k_esc == True:
+				sys.exit ()				
 			for e in pygame.event.get ():
 
 				if e.type == pygame.QUIT:
@@ -105,6 +108,9 @@ class Holy_Spirit ():
 						self.k_c = True
 					if e.key == pygame.K_j:
 						self.k_j = True
+					if e.key == pygame.K_ESCAPE:
+						self.k_esc = True
+
 				if e.type == pygame.KEYUP:
 					if e.key == pygame.K_1:
 						self.k_1 = False
@@ -131,3 +137,5 @@ class Holy_Spirit ():
 						self.k_c = False
 					if e.key == pygame.K_j:
 						self.k_j = False
+					if e.key == pygame.K_ESCAPE:
+						self.k_esc = False

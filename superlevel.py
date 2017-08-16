@@ -197,13 +197,13 @@ class SuperLevel ():
 
 #End of automatic wall`s taile selection
 
-	def create (self, create_level = constructor.create_dungeon1, create_interior = constructor.create_interior_standart):
+	def create (self, create_level = constructor.create_dungeon1, create_interior = constructor.create_interior_standart, flor = classes.Flor):
 
 # create_level - create monsters, treasures and unique objects of location
 # create interior - create WALLS, GROUND and other landscapes object.
 
 		sprites = create_level (self.lev, self.battle, self.control, self.son, self.techname)
-		interior, ground, walls = create_interior (self.lev, classes.Flor)
+		interior, ground, walls = create_interior (self.lev, flor)
 		addition = []
 
 		if self.auto == True and self.control.auto == True:

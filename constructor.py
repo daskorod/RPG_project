@@ -164,6 +164,15 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'b':
                             b = npc.Barmen (x/45,y/45,battle, text_data.barmen_dict.text, control, 8,5,7,4, son, 80)
                             sprite_group.add (b)
+                     if col == '[':
+                            ding = classes.Ding (x,y, 'images/tiles/bar.png', 'Барная стойка. На ней стоят разные пойла.')
+                            sprite_group.add (ding)
+                     if col == 'W':
+                            ding = classes.Ding (x,y, 'images/tiles/ind.png', 'На указателе написано: "Таверна"')
+                            sprite_group.add (ding)
+                     if col == 'Q':
+                            ding = classes.Ding (x,y, 'images/tiles/ind.png', 'На указателе написано: "Храм"')
+                            sprite_group.add (ding)
                      x += 45
               x = 0
               y += 45

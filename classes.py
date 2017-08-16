@@ -243,6 +243,24 @@ class Flor(sprite.Sprite):
 	def interaction (self,hero):
 		pass
 
+class WoodFlor(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = image.load('images/tiles/floor.png')
+		#self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((95,95,95))
+		self.rect = Rect(0,0,45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "no"
+
+	def random(self, florlist):
+		return random.choice(florlist)
+
+	def interaction (self,hero):
+		pass
+
 class Door(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
@@ -339,6 +357,23 @@ class Table(Platform):
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
 		hero.son.change_text (1, 'Добротный стол. Хоть и обшарпанный.')
+
+class Ding(Platform):
+	def __init__(self, x, y, img, text):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load(img)
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.text = text
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, self.text)
 
 class Chair(Platform):
 	def __init__(self, x, y):

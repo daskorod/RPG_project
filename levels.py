@@ -1,6 +1,7 @@
 ﻿import camera
 from superlevel import SuperLevel
 import constructor
+import classes
 #functions.create_level
 #timer = pygame.time.Clock  ()
 
@@ -69,7 +70,7 @@ class _tavern (SuperLevel):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.name = '- Таверна "Приют героев" -'
 		self.auto = False		
-		self.block_group, self.background = self.create (create_level = constructor.create_level_city)
+		self.block_group, self.background = self.create (create_level = constructor.create_level_city, flor = classes.WoodFlor)
 		#self.back = False
 
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)

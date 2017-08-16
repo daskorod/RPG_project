@@ -134,7 +134,7 @@ class Barmen (classes.Monster):
 		self.image = Surface ((45,45))
 		self.image.fill ((220,130,100))
 		self.ll = False
-		#self.image = image.load('images/priest.png')
+		self.image = image.load('images/tiles/barmen.png')
 		self.icon = pygame.image.load ('images/priest_av.png')
 		#self.image.set_colorkey ((254,254,254))
 		self.matter = 0
