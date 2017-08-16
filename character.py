@@ -108,7 +108,7 @@ class Hero(pygame.sprite.Sprite):
 		self.at = at 
 		self.ac = ac
 		self.hp = hp
-		self.gold = 0
+		self.gold = 60
 		self.mx = 50
 		self.my = 50
 		self.exp = 0
@@ -563,9 +563,9 @@ class Hero(pygame.sprite.Sprite):
 
 
 
-		#high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
-		#high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
-		#high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
+		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
+		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
+		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
 
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
@@ -657,6 +657,7 @@ class Hero(pygame.sprite.Sprite):
 		
 			if self.conv_stop == True:
 				self.son.clear_text ()
+				self.view.a = 0
 				self.conv_stop = False
 
 			self.conversation(self.etwas.tree, self.etwas)

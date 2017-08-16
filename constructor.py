@@ -6,7 +6,7 @@ from constants import *
 import text
 import items
 import npc
-import text_data.zombisad, text_data.monk, text_data.gilbert_dict
+import text_data.zombisad, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict
 #import npc
 
 def create_dungeon1 (level, battle, control, son, locationname):
@@ -161,7 +161,9 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'y':
                             pr = classes.PortalLink (x,y, 'TavernInside', 'TavernOutdoor', 'U', locationname )
                             sprite_group.add (pr)
-
+                     if col == 'b':
+                            b = npc.Barmen (x/45,y/45,battle, text_data.barmen_dict.text, control, 8,5,7,4, son, 80)
+                            sprite_group.add (b)
                      x += 45
               x = 0
               y += 45
@@ -212,6 +214,7 @@ def create_interior_standart (level, grType):
                     if col == "i":
                             t = classes.Chair(x,y)
                             interior.append(t)
+
 
                     x += 45
               x = 0

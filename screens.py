@@ -1,10 +1,13 @@
+import pygame
 from pygame import Surface
 from pygame import image
 from pygame import display
 from constants import *
 import fonts
-
+#display.toggle_fullscreen()
+#window = display.set_mode((860, 634), pygame.FULLSCREEN)
 window = display.set_mode((860, 634))
+
 display.set_caption('Giperborea')
 
 start_screen = Surface((840, 630))

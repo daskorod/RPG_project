@@ -12,6 +12,9 @@ import functions
 
 import sys
 
+
+
+
 #global settings
 pygame.key.set_repeat(100,100)
 pygame.key.get_repeat ()
