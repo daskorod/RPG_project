@@ -45,7 +45,7 @@ class _end (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.auto = False
-		self.block_group, self.background = self.create (create_level = constructor.create_level_city)
+		self.block_group, self.background = self.create (create_level = constructor.create_level_city, floor = classes.CityFloor)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.name = '- - - Окраины города - - -'
@@ -70,7 +70,7 @@ class _tavern (SuperLevel):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.name = '- Таверна "Приют героев" -'
 		self.auto = False		
-		self.block_group, self.background = self.create (create_level = constructor.create_level_city, flor = classes.WoodFlor)
+		self.block_group, self.background = self.create (create_level = constructor.create_level_city, floor = classes.WoodFloor)
 		#self.back = False
 
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)

@@ -70,7 +70,9 @@ def create_dungeon2 (level, battle, control, son, locationname):
                      if col == 's':
                             s = classes.MinorChest (x,y, 'open', items.scythe )
                             sprite_group.add (s)
-
+                     if col == 'a':
+                            a = classes.Skelet ((x/45)+(20/45),y/45,battle, text_data.zombisad.text, control, 10,8,30,3, son, 120)
+                            sprite_group.add (a)
                      x += 45
               x = 0
               y += 45

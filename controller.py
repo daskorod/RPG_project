@@ -23,6 +23,7 @@ class Holy_Spirit ():
 		self.button_up = True
 		self.k_j = False
 		self.k_esc = False
+		self.e_cntrl = False
 #		R = False
 #		L = False
 #		U = False
@@ -100,6 +101,7 @@ class Holy_Spirit ():
 					if e.key == pygame.K_n:
 						self.k_n = True
 					if e.key == pygame.K_e:
+						#self.e_cntrl = False
 						self.k_e = True
 
 					if e.key == pygame.K_i:
@@ -130,6 +132,7 @@ class Holy_Spirit ():
 					if e.key == pygame.K_n:
 						self.k_n = False
 					if e.key == pygame.K_e:
+						self.e_cntrl = True
 						self.k_e = False
 					if e.key == pygame.K_i:
 						self.k_i = False

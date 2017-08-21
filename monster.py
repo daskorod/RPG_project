@@ -85,7 +85,7 @@ class Monster (sprite.Sprite):
 		self.m4 = 'Ж:'
 		self.m5 = 'У:'
 		self.monsterList = [self.m2, self.m3, self.m4, self.m5]
-		self.icon = pygame.image.load ('images/zombi_icon.png')
+		self.icon = pygame.image.load ('images/skull.png')
 		self.hp_bar =Bar (12,15, red)
 		self.at_ic = pygame.image.load ('images/at.png')
 		self.ac_ic = pygame.image.load ('images/ac.png')
@@ -94,7 +94,7 @@ class Monster (sprite.Sprite):
 
 		instrumental_screen.blit (monster_screen, (678,15))
 		monster_screen.fill ((black))
-		monster_screen.blit (self.icon, (15,30))
+		monster_screen.blit (self.icon, (25,45))
 
 		monster_screen.blit(fonts.font3.render (str(self.mname), True, (250,250,250)),(0, 0))
 		
@@ -231,7 +231,7 @@ class Monster (sprite.Sprite):
 			hero.monster_turn = False
 			self.wait_for_next_turn = True
 
-		if self.control.k_e == True and self.wait_for_next_turn == True:
+		if self.control.k_e == True and self.wait_for_next_turn == True and self.control.e_cntrl == True:
 			self.control.k_e = False
 			hero.turn_main = True
 			self.son.clear_text ()

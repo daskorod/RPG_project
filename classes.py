@@ -13,6 +13,7 @@ from constants import *
 import random
 import controller
 from monster import Monster
+import img
 
 boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
                                  ('testimages/bolt_strike_0002.png', 0.1),
@@ -99,7 +100,12 @@ class Zombi (Monster):
 
 
 class Skelet (Monster):
-	pass
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.image=image.load('images/skeleton2.png')
+		self.image.set_colorkey ((255,255,255))
+		self.mname = '   Скелет'
 
 class SkeletLord (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
@@ -220,15 +226,11 @@ class Pavestone(sprite.Sprite):
 	def interaction (self,hero):
 		pass
 
-pave1 = image.load('images/pave1.png')
-pave2 = image.load('images/pave2.png')
-pave3 = image.load('images/pave3.png')
-pavestones = [pave1,pave2,pave3]
 
-class Flor(sprite.Sprite):
+class Floor(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		self.image = self.random(pavestones)
+		self.image = self.random(img.pavestones)
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((95,95,95))
@@ -243,10 +245,28 @@ class Flor(sprite.Sprite):
 	def interaction (self,hero):
 		pass
 
-class WoodFlor(sprite.Sprite):
+class WoodFloor(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
 		self.image = image.load('images/tiles/floor.png')
+		#self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((95,95,95))
+		self.rect = Rect(0,0,45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "no"
+
+	def random(self, florlist):
+		return random.choice(florlist)
+
+	def interaction (self,hero):
+		pass
+
+class CityFloor(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = self.random(img.pavestones_city)
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((95,95,95))
@@ -389,7 +409,7 @@ class Chair(Platform):
 		self.name = ""
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, 'Древний стул. Весьма гордый.')
+		hero.son.change_text (1, 'Грубо сколоченный стул. Но при этом весьма прочный.')
 
 class Marker(sprite.Sprite):
 	def __init__(self,x,y):

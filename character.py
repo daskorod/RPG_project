@@ -9,6 +9,7 @@ from screens import *
 from constants import *
 import items
 import ideas
+from constants import *
 
 time = 0.2
 
@@ -109,8 +110,8 @@ class Hero(pygame.sprite.Sprite):
 		self.ac = ac
 		self.hp = hp
 		self.gold = 60
-		self.mx = 50
-		self.my = 50
+		self.mx = 20
+		self.my = 40
 		self.exp = 0
 		self.hp_max = 7
 		self.hp_old = hp
@@ -142,6 +143,7 @@ class Hero(pygame.sprite.Sprite):
 
 		#TECH
 		self.marker = classes.Marker (self.mx,self.my)
+		self.line = image.load ('images/line.png')
 		self.status = "alive"
 		self.move = True
 		self.start_rendering = False # переключатель для отображения изменения HP
@@ -211,19 +213,19 @@ class Hero(pygame.sprite.Sprite):
 
 		self.char = [
 
-#0
+
 		('Уровень', self.char_value['1lvl'], 'Каждый уровень вы получаете одно очко для распределения', '','lvl'),
-#1
-		 ('Опыт',self.char_value['2exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
-#2
+
+	 ('Опыт',self.char_value['2exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
+
 		  ('Атака',self.char_value['3at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери', self.d,'at'),
-#3
+
 		   ('Защита',self.char_value['4ac'], 'Ваши навыки обороны', self.d),
-#4
+
 		    ('Жизни',self.char_value['5hp'], 'Сколько ударов вы можете держать', self.d),
-#5
+
 		     ('Вера',self.char_value['6sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
-#6
+
 		      ('Очки на распределение', self.char_value['7points'], 'За одно очко можно повысить один параметр', '')
 
 		      ]
@@ -684,19 +686,16 @@ class Hero(pygame.sprite.Sprite):
 			self.journal_manage ()
 		#if self.control.move_cntrl == True and self.move == True:
 			#self.anima.play ()
-#
-		#if self.control.move_cntrl == False:
-		#	self.anima.stop()
+
 
 		if self.move == True:
 			self.anima.play ()
 
 
 		if self.move == True:
-
-			#self.anima.play ()			
+		
 			if self.control.right == True:
-#animlist = [heroAnim, heroAnim_l, heroAnim_r, heroAnim_u]
+
 				self.direction = 2
 				self.rect.x += self.back_move
 				self.etwas = self.collide(array)
@@ -782,7 +781,6 @@ class Hero(pygame.sprite.Sprite):
 		self.status = 'dead'
 		self.kill ()
 
-
 	def end_text (self):
 		pass
 
@@ -790,26 +788,69 @@ class Hero(pygame.sprite.Sprite):
 
 		information_screen.blit (roll_screen, (0,0))
 		roll_screen.fill ((black))
-		roll_screen.blit (self.marker.image, (self.mx, self.my))
+
+		roll_screen.blit (self.line, (40, 20))
+		roll_screen.blit (self.marker.image, (self.mx, self.my+10))
 
 		if self.go_left == False:
-			self.mx = self.mx +10
+			self.mx = self.mx +2
 
 		if self.go_left == True:
-			self.mx = self.mx -10
+			self.mx = self.mx -2
 
-		if self.mx > 350:
+		if self.mx > 410:
 			self.go_left = True
 
-		if self.mx < 40:
+		if self.mx < 20:
 			self.go_left = False
+
+		try:
+			color = self.line.get_at((self.mx-20, 10))
+		except:
+			color = 'NONE'
+		finally:
+			print (self.mx)
+			print (str(color))
+
+		value = self.color_defenition (color)
+		roll_screen.blit(fonts.font12.render (str(value), True, (250,250,250)),(230,60))
+		roll_screen.blit(fonts.font3.render ('Нажмите E, когда меч ближе к центру.', True, (250,250,250)),(60,150))
+		roll_screen.blit(fonts.font3.render ('Ваша атака!', True, (250,250,250)),(60,60))
+
+		if value != 7:
+			self.dice_value = value
 
 		if self.control.k_e == True:
 			self.control.k_e = False
 			self.dice_fun = False
-			self.dice_value = int((self.mx - 80) / 20)
+			#self.dice_value = int((self.mx - 80) / 20)
 			self.attack_roll = True
-		
+			self.control.e_cntrl = False
+			#self.mx = 20
+
+	def color_defenition (self, color):
+		if color[0:3] ==  C1:
+
+			return 1
+		elif color[0:3] ==  C2:
+
+			return 2
+		elif color[0:3] ==  C3:
+
+			return 3
+		elif color[0:3] ==  C4:
+
+			return 4
+		elif color[0:3] ==  C5:
+
+			return 5
+		elif color[0:3] ==  C6:
+
+			return 6
+		else:
+			return 7
+
+												
 	def battle_action_main (self):
 		#self.son.change_text (7, 'Вы получили 20 монет')
 		self.press_to_kill_fun ()
@@ -820,11 +861,13 @@ class Hero(pygame.sprite.Sprite):
 			self.son.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
 	
 			if self.control.k_1 == True:
+				self.mx = random.choice ((20, 40, 80,120,140,160,180))
 				self.turn_main = False
 				self.control.k_1 = False
 				self.assault = True
 				self.dice_fun = True
 				self.son.clear_text ()
+
 	
 			if self.control.k_2 == True:
 				self.turn_main = False
@@ -849,9 +892,6 @@ class Hero(pygame.sprite.Sprite):
 		if self.special == True:
 			self.special_fun ()
 
-#	def chang (self):
-#		pass
-#		
 	def press_to_kill_fun (self):
 		if self.press_to_kill == True and self.control.k_e == True:
 			self.press_to_kill = False
@@ -926,7 +966,8 @@ class Hero(pygame.sprite.Sprite):
 			c = self.at + a + self.weapon.at_mod
 			d = monster.ac + b
 		
-			self.son.change_text (1, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
+			self.son.change_text (2, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
+			self.son.change_text (1, 'БРОСОК КУБИКА: '+str(self.dice_value))
 			if c >= d:
 				
 				if int(c/d)>1:
@@ -944,10 +985,12 @@ class Hero(pygame.sprite.Sprite):
 			self.wait_for_next_turn = True
 			self.son.change_text (7, 'Нажмите Е')
 
-		if self.control.k_e == True and self.wait_for_next_turn == True:
+
+		if self.control.k_e == True and self.control.e_cntrl == True and self.wait_for_next_turn == True:
 			self.wait_for_next_turn = False
 			self.control.k_e = False
 			self.monster_turn = True
 			self.assault = False
+			self.control.e_cntrl = False
 
 
