@@ -268,10 +268,6 @@ class SuperLevel ():
 		self.x_hero = (self.camera.apply(hero))
 		hero.render_hp_mod(self.x_hero)
 
-		#activation of a battle loop
-		if hero.collide_control == True and hero.etwas.agression == True:
-			functions.combat (hero, hero.etwas)	
-			#self.battle.main_loop (hero, hero.etwas)
 
 		#camera
 		self.camera.update(hero)

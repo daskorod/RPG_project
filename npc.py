@@ -20,7 +20,7 @@ class Monk2 (classes.Monk):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = textus
 		self.lbolt = False
-		self.mname = 'Отец Изольд'
+		self.mname = 'Отец Гильберт'
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/priest.png')

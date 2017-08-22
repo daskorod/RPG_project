@@ -45,7 +45,7 @@ class Monster (sprite.Sprite):
 		self.battle = battle
 
 		#CHAR DATA
-		self.mname = '     Зомби'
+		self.mname = 'Зомби'
 		self.at = at
 		self.ac = ac
 		self.hp = hp
@@ -115,16 +115,16 @@ class Monster (sprite.Sprite):
 	def death_check (self, hero):
 
 		if self.hp <= 0:
-			
+			self.son.clear_text ()
+			hero.char_value['2exp'] += self.exp
+			self.son.change_text (2, "%s повержен!" % self.mname)
+			self.son.change_text (3, "Вы получаете опыт: %s " % self.exp)
+
 			self.status = 'killed'
 			hero.turn_main = True
-			self.kill ()
 			hero.move = True
-			hero.collide_control = False
-			hero.char_value['2exp'] += self.exp
-			self.son.change_text (2, "Вы убили ужасного монстра!")
-			self.son.change_text (3, "Вы получаете опыт: %s " % self.exp)
-			self.son.clear_text ()
+			self.kill ()
+			hero.collide_control = False			
 
 	def interaction (self, hero):
 		if hero.control.right == True:

@@ -175,6 +175,13 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'Q':
                             ding = classes.Ding (x,y, 'images/tiles/ind.png', 'На указателе написано: "Храм"')
                             sprite_group.add (ding)
+                     if col == 'E':
+                            ding = classes.Ding (x,y, 'images/tiles/cross.png', 'Молчаливый каменный крест. Внушает страх Божий.')
+                            sprite_group.add (ding)
+                     if col == 'R':
+                            ding = classes.Ding (x,y, 'images/tiles/pilar.png', 'Монументальная колонна, поддерживающая потолок.')
+                            sprite_group.add (ding)
+
                      x += 45
               x = 0
               y += 45

@@ -1,4 +1,4 @@
-﻿import pygame
+import pygame
 import pyganim
 import functions
 import screens
@@ -765,7 +765,9 @@ class Hero(pygame.sprite.Sprite):
 
 		self.update (self.location.block_group)
 		self.location.stage_loop (self)
-		
+
+		if self.collide_control == True and self.etwas.agression == True:
+			functions.combat (self, self.etwas)			
 
 
 	# BATTLE OPTIONS
@@ -793,10 +795,10 @@ class Hero(pygame.sprite.Sprite):
 		roll_screen.blit (self.marker.image, (self.mx, self.my+10))
 
 		if self.go_left == False:
-			self.mx = self.mx +2
+			self.mx = self.mx + dice_speed
 
 		if self.go_left == True:
-			self.mx = self.mx -2
+			self.mx = self.mx - dice_speed
 
 		if self.mx > 410:
 			self.go_left = True
@@ -813,12 +815,13 @@ class Hero(pygame.sprite.Sprite):
 			print (str(color))
 
 		value = self.color_defenition (color)
-		roll_screen.blit(fonts.font12.render (str(value), True, (250,250,250)),(230,60))
+
 		roll_screen.blit(fonts.font3.render ('Нажмите E, когда меч ближе к центру.', True, (250,250,250)),(60,150))
 		roll_screen.blit(fonts.font3.render ('Ваша атака!', True, (250,250,250)),(60,60))
 
 		if value != 7:
 			self.dice_value = value
+			roll_screen.blit(fonts.font12.render (str(value), True, (250,250,250)),(240,60))
 
 		if self.control.k_e == True:
 			self.control.k_e = False
@@ -829,24 +832,24 @@ class Hero(pygame.sprite.Sprite):
 			#self.mx = 20
 
 	def color_defenition (self, color):
-		if color[0:3] ==  C1:
-
+		if color[0:3] == C1:
 			return 1
-		elif color[0:3] ==  C2:
 
+		elif color[0:3] == C2:
 			return 2
-		elif color[0:3] ==  C3:
 
+		elif color[0:3] == C3:
 			return 3
-		elif color[0:3] ==  C4:
 
+		elif color[0:3] == C4:
 			return 4
-		elif color[0:3] ==  C5:
 
+		elif color[0:3] == C5:
 			return 5
-		elif color[0:3] ==  C6:
 
+		elif color[0:3] == C6:
 			return 6
+
 		else:
 			return 7
 
@@ -855,7 +858,7 @@ class Hero(pygame.sprite.Sprite):
 		#self.son.change_text (7, 'Вы получили 20 монет')
 		self.press_to_kill_fun ()
 
-		if self.turn_main == True:
+		if self.turn_main == True and self.etwas.status != 'killed':
 
 			self.son.change_text (1, "Что будете делать?")
 			self.son.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
@@ -883,20 +886,24 @@ class Hero(pygame.sprite.Sprite):
 				self.flee = True
 				self.son.clear_text ()
 
-		if self.assault == True:
+		if self.assault == True and self.etwas.status != 'killed':
 			self.assault_fun (self.etwas)
 
-		if self.flee == True:
+		if self.flee == True and self.etwas.status != 'killed':
 			self.flee_fun ()
 
-		if self.special == True:
+		if self.special == True and self.etwas.status != 'killed':
 			self.special_fun ()
+
+
+		
 
 	def press_to_kill_fun (self):
 		if self.press_to_kill == True and self.control.k_e == True:
 			self.press_to_kill = False
 			self.control.k_e = False
 			self.etwas.hp = 0
+
 
 	def special_fun (self):
 
@@ -986,10 +993,18 @@ class Hero(pygame.sprite.Sprite):
 			self.son.change_text (7, 'Нажмите Е')
 
 
-		if self.control.k_e == True and self.control.e_cntrl == True and self.wait_for_next_turn == True:
+		if self.control.k_e == True and self.control.e_cntrl == True and self.wait_for_next_turn == True and monster.hp >0:
 			self.wait_for_next_turn = False
 			self.control.k_e = False
 			self.monster_turn = True
+			self.assault = False
+			self.control.e_cntrl = False
+		
+		elif self.control.k_e == True and self.control.e_cntrl == True and self.wait_for_next_turn == True and monster.hp <= 0:
+			#monster.death_check (self)
+			self.wait_for_next_turn = False
+			self.control.k_e = False
+			self.monster_turn = False
 			self.assault = False
 			self.control.e_cntrl = False
 

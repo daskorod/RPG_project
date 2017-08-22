@@ -23,3 +23,5 @@ color_emerging = ((xx,xx,xx))
 event1 = True
 
 done = True
+
+dice_speed = 8

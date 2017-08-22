@@ -113,7 +113,7 @@ class Battle ():
 			monster.render_monster_inf ()
 
 def combat (hero, monster):
-	if hero.status != 'dead' and monster.status != 'killed':
+#	if hero.status != 'dead' and monster.status != 'killed':
 		hero.battle_action_main ()
 		monster.death_check (hero)	
 		monster.battle_action (hero)
