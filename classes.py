@@ -367,6 +367,7 @@ class Candel(Platform):
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
 		hero.son.change_text (1, 'Крутой подсвечник. Да и свечи ничего')
+		hero.char_value['2exp'] += 50
 
 class Table(Platform):
 	def __init__(self, x, y):
@@ -459,7 +460,7 @@ class Trap(sprite.Sprite):
 			hero.rect.y -= hero.velo
 		elif hero.control.down == True:
 			hero.rect.y += hero.velo
-			
+
 		hero.check_for_death()
 		self.kill()
 

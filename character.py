@@ -9,7 +9,6 @@ from screens import *
 from constants import *
 import items
 import ideas
-from constants import *
 
 time = 0.2
 
@@ -115,7 +114,16 @@ class Hero(pygame.sprite.Sprite):
 		self.exp = 0
 		self.hp_max = 7
 		self.hp_old = hp
-		self.x_mod = 0	
+		self.x2_mod = 0	
+		self.x1_mod = 0		
+		self.next_level = 100
+		self.x_mod = 0
+		self.x3_mod = 0
+
+		self.exp_mod = 0
+		self.sp_mod = 0
+		self.sp_old = self.sp
+
 
 		#QEST
 		self.quest = {}
@@ -147,6 +155,9 @@ class Hero(pygame.sprite.Sprite):
 		self.status = "alive"
 		self.move = True
 		self.start_rendering = False # переключатель для отображения изменения HP
+		self.start_rendering_exp = False
+		self.start_rendering_sp = False
+		self.start_rendering_lev = False
 
 		#BAR LIFE MANA
 		self.at_ic = pygame.image.load ('images/at.png')
@@ -172,7 +183,7 @@ class Hero(pygame.sprite.Sprite):
 		self.journal_flag = False
 
 		self.no_ideas = ideas.no_ideas
-		self.journal = [ideas.revelation, self.no_ideas, self.no_ideas, self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas]
+		self.journal = [ideas.revelation, self.no_ideas, self.no_ideas, self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas]
 		self.journal_index_pos = 0
 		self.journal_question = False
 		self.journal_quit = False
@@ -304,15 +315,44 @@ class Hero(pygame.sprite.Sprite):
 		self.ac = self.char_value['4ac']
 		self.level = self.char_value['1lvl']
 		self.exp = self.char_value ['2exp']	
+		self.level_up ()
 
 	def level_up (self):
 		if self.char_value['2exp'] != self.exp_old:
-			self.exp_old == self.char_value['2exp']
+			self.start_rendering_exp = True			
+			self.exp_mod = self.exp - self.exp_old 
+			self.exp_old = self.exp
+
 			if self.char_value['2exp'] >= self.next_level:
-				self.self.char_value['1lvl'] += 1
+				self.char_value['1lvl'] += 1
+				self.start_rendering_lev = True
 				self.char_value['7points'] +=1
-				self.next_level = self.to_next_level(self.self.char_value['1lvl'])
-	
+				self.next_level = self.to_next_level(self.char_value['1lvl'])
+
+	def render_lev_mod(self, position):
+
+		if self.start_rendering_lev == True:
+			self.x1_mod += 1
+
+			adventure_screen.blit(fonts.fontlevel.render ('+ 1 УРОВЕНЬ!', True, (white)),(position.x-70, position.y - 30 - self.x1_mod))
+
+			if self.x1_mod > 200:
+				self.start_rendering_lev = False
+				self.x1_mod = 0	
+
+
+	def render_exp_mod(self, position):
+
+		if self.start_rendering_exp == True:
+			self.x2_mod += 1
+
+			adventure_screen.blit(fonts.font4.render (str(self.exp_mod)+ ' exp', True, (yellow)),(position.x-10, position.y - 10 - self.x2_mod))
+
+			if self.x2_mod > 200:
+				self.start_rendering_exp = False
+				self.x2_mod = 0	
+
+
 	def to_next_level(self, current_level):
 		level_table = {1:100,2:200,3:400,4:700,5:1000}
 		return level_table[current_level]
@@ -543,9 +583,36 @@ class Hero(pygame.sprite.Sprite):
 #			adventure_screen.blit(fonts.font2.render (str(self.hp_mod), True, (self.color)),(self.rect.x, self.rect.y - 30 - self.x_mod))
 			adventure_screen.blit(fonts.font4.render (str(self.hp_mod)+ ' hp', True, (self.color)),(position.x, position.y - 30 - self.x_mod))
 
-			if self.x_mod > 100:
+			if self.x_mod > 200:
 				self.start_rendering = False
 				self.x_mod = 0
+
+	def render_sp_mod(self, position):
+
+		if self.sp_old != self.sp:
+
+			if self.sp_old > self.sp:
+				self.sp_mod = self.sp -self.sp_old
+
+#				self.color = blue
+			if self.sp_old < self.sp:
+				self.sp_mod =self.sp - self.sp_old 
+#				self.color = blue
+
+			self.sp_old = self.sp
+			self.start_rendering_sp = True
+
+		if self.start_rendering_sp == True:
+
+			self.x3_mod += 1
+		#hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
+#			adventure_screen.blit(fonts.font2.render (str(self.hp_mod), True, (self.color)),(self.rect.x, self.rect.y - 30 - self.x_mod))
+			adventure_screen.blit(fonts.font4.render (str(self.sp_mod)+ ' sp', True, (blue)),(position.x-20, position.y - 60 - self.x3_mod))
+
+			if self.x3_mod > 200:
+				self.start_rendering_sp = False
+				self.x3_mod = 0	
+
 
 	def render_information (self):
 
@@ -568,6 +635,7 @@ class Hero(pygame.sprite.Sprite):
 		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
 		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
 		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
+		high_screen.blit(fonts.font5.render ('Сл. ур. '+str(self.next_level), True, (250,250,250)),(300,0))
 
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
@@ -678,18 +746,22 @@ class Hero(pygame.sprite.Sprite):
 
 
 		self.conversation_control ()
-		if self.char_flag == False and self.journal_flag == False:
-			self.inventory_manage ()
-		if self.inventory_flag == False and self.journal_flag == False:
-			self.char_options ()
-		if self.char_flag == False and self.inventory_flag == False:
-			self.journal_manage ()
+		if self.collide_control == False:
+			if self.char_flag == False and self.journal_flag == False:
+				self.inventory_manage ()
+			if self.inventory_flag == False and self.journal_flag == False:
+				self.char_options ()
+			if self.char_flag == False and self.inventory_flag == False:
+				self.journal_manage ()
+
 		#if self.control.move_cntrl == True and self.move == True:
 			#self.anima.play ()
 
 
 		if self.move == True:
 			self.anima.play ()
+
+
 
 
 		if self.move == True:
@@ -778,15 +850,22 @@ class Hero(pygame.sprite.Sprite):
 
 	def death (self):
 		self.son.clear_text ()
-		self.son.change_text (1, 'Вы умерли.')
-		self.son.change_text (2, 'На ваших костях упыри будут танцевать джигу.')
-		self.son.change_text (4, 'Нажмите ESC, чтобы выйти.')
+		#self.son.change_text (1, 'Вы умерли.')
+		#self.son.change_text (2, 'На ваших костях упыри будут танцевать джигу.')
+		self.auto_text (random.choice([('Теперь вы мертвы.', "Ваши кости нынче объедают шакалы и никто не вспомнит вашего имени.", "Вы канули в пучину бесконечности."),("Вы почили в бозе.", "Но мир этого даже не заметил", "Ведь вы из себя практически ничего не пресдтавляли.", "Ведь вы - песчинка на берегу неизбежности."),("Вы сгинули в пучине бесконечности.", "А мир всё также продолжал существовать.", "Что есть вы, что неn - ему без разницы.")]))
+		self.son.change_text (6, 'Нажмите ESC, чтобы выйти.')
 		self.status = 'dead'
 		self.kill ()
 		self.move = False
 
 	def end_text (self):
 		pass
+
+	def auto_text (self, args):
+		x = 1
+		for i in args:
+			self.son.change_text (x, i)
+			x += 1
 
 	def dice_rolling (self):
 

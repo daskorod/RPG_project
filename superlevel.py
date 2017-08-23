@@ -267,8 +267,9 @@ class SuperLevel ():
 		#Rendering hero hp modification
 		self.x_hero = (self.camera.apply(hero))
 		hero.render_hp_mod(self.x_hero)
-
-
+		hero.render_sp_mod(self.x_hero)
+		hero.render_exp_mod(self.x_hero)
+		hero.render_lev_mod(self.x_hero)
 		#camera
 		self.camera.update(hero)
 
