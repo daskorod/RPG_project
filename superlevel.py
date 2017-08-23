@@ -235,9 +235,14 @@ class SuperLevel ():
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))
 
+		try:
+			pos = self.camera.apply(hero.etwas)
+		except:
+			pos = self.camera.apply(hero)
 		#rendering hero
 		if hero.status != 'dead':
 			adventure_screen.blit (hero.image, self.camera.apply(hero))
+			hero.dustAnim.blit (adventure_screen, (pos.x-45, pos.y-45))
 			hero.anima.blit (adventure_screen, (self.camera.apply(hero)))
 			if hero.move == False:
 			# or self.control.move_cntrl == False:

@@ -24,9 +24,16 @@ boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
                                  ('testimages/bolt_strike_0007.png', 0.1),
                                  ('testimages/bolt_strike_0008.png', 0.1),
                                  ('testimages/bolt_strike_0009.png', 0.1),
-                                 ('testimages/bolt_strike_0010.png', 0.1)])
+                                 ('testimages/bolt_strike_0010.png', 0.1)], loop=False)
 boltAnim.rotate (270)
 #boltAnim.play() # there is also a pause() and stop() method
+
+fireAnim = pyganim.PygAnimation([('testimages/flame_a_0001.png', 0.2),
+                                 ('testimages/flame_a_0002.png', 0.2),
+                                 ('testimages/flame_a_0003.png', 0.2),
+                                 ('testimages/flame_a_0004.png', 0.2),
+                                 ('testimages/flame_a_0005.png', 0.2),
+                                 ('testimages/flame_a_0006.png', 0.2),], loop=False)
 
 
 class Zombi (Monster):
@@ -444,6 +451,7 @@ class Trap(sprite.Sprite):
 		self.name = str(Trap.__name__)
 		self.charge = True
 
+
 	def interaction (self, hero):
 		if self.charge == True:
 			self.charge = False
@@ -451,6 +459,7 @@ class Trap(sprite.Sprite):
 			hero.son.change_text (4, 'Вы наступили на плиту и по вам шибанули снопы огня.')
 			hero.son.change_text (5, "Больно!")
 			hero.hp -=4
+			fireAnim.play ()
 
 		if hero.control.right == True:
 			hero.rect.x += hero.velo

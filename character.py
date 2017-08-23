@@ -12,6 +12,18 @@ import ideas
 
 time = 0.2
 
+dustAnim = pyganim.PygAnimation([('testimages/smoke_puff_0001.png', 0.1),
+                                 ('testimages/smoke_puff_0002.png', 0.1),
+                                 ('testimages/smoke_puff_0003.png', 0.1),
+                                 ('testimages/smoke_puff_0004.png', 0.1),
+                                 ('testimages/smoke_puff_0005.png', 0.1),
+                                 ('testimages/smoke_puff_0006.png', 0.1),
+                                 ('testimages/smoke_puff_0007.png', 0.1),
+                                 ('testimages/smoke_puff_0008.png', 0.1),
+                                 ('testimages/smoke_puff_0009.png', 0.1),
+                                 ('testimages/smoke_puff_0010.png', 0.1)], loop=False)
+
+
 heroAnim = pyganim.PygAnimation([
 								('images/anim/d1.png', time),
 								('images/anim/stand.png', time),
@@ -76,7 +88,7 @@ class Hero(pygame.sprite.Sprite):
 		self.control = control
 		self.battle = battle
 		self.name = 'Рихтер'
-
+		self.dustAnim = dustAnim
 		
 		self.image = pygame.Surface ((45,45))
 		self.image.fill ((100,200,230))
@@ -158,6 +170,7 @@ class Hero(pygame.sprite.Sprite):
 		self.start_rendering_exp = False
 		self.start_rendering_sp = False
 		self.start_rendering_lev = False
+		self.dict = {'trap' : False}
 
 		#BAR LIFE MANA
 		self.at_ic = pygame.image.load ('images/at.png')
@@ -985,6 +998,9 @@ class Hero(pygame.sprite.Sprite):
 			self.control.k_e = False
 			self.etwas.hp = 0
 
+	#def pos_definition(self):
+
+
 
 	def special_fun (self):
 
@@ -998,8 +1014,10 @@ class Hero(pygame.sprite.Sprite):
 					self.press_to_kill = True
 					self.son.change_text (1, "Монстры рассылпался в прах!")
 					self.son.change_text (3, "Нажмите Е")
+					self.dustAnim.play()
+					self.etwas.kill()
 
-				if self.etwas.hp > 10 or self.sp<=0:
+				elif self.etwas.hp > 100 or self.sp<=0:
 					self.back = True
 					self.son.change_text (1, "Ничего не произошло.")
 					self.son.change_text (3, "Нажмите Е")

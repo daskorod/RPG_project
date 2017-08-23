@@ -2,6 +2,7 @@
 from superlevel import SuperLevel
 import constructor
 import classes
+import screens
 #functions.create_level
 #timer = pygame.time.Clock  ()
 
@@ -29,7 +30,9 @@ class _dungeon2 (SuperLevel):
 		self.name = '- - - Подземелье 2 этаж - - -'
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 	def stage_content (self, hero):
-		pass
+
+		classes.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
+		#classes.boltAnim.stop()
 
 class _dungeon3 (SuperLevel):
 	def __init__ (self,  lev, battle, son, control):
