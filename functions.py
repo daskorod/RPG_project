@@ -8,6 +8,16 @@ import items
 import text_data.zombisad, text_data.monk
 #import npc
 
+def journal_update (self, hero, add_information, concept):
+		if self.add_information == add_information and self.control.k_e == True:
+			hero.move = True
+			x = 0
+			for i in hero.journal:
+				if i.name == 'Пусто':
+					hero.jornal.insert (x, concept)
+					break
+				x +=1
+
 class Son ():
 	'''render text information'''
 

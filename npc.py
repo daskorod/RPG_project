@@ -14,8 +14,9 @@ import random
 import controller
 from monster import Monster
 import classes
+import ideas
 
-class Monk2 (classes.Monk):
+class Gilbert (classes.Monk):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = textus
@@ -42,7 +43,20 @@ class Monk2 (classes.Monk):
 				self.branch = 6
 				self.s = 1
 				self.n = 0
-						
+
+		if self.add_information == 'gold_inf' and self.control.k_e == True:
+			self.control.k_e = False
+			if hero.gold >= 20:
+				hero.gold -= 20
+
+				self.branch = 5
+				self.s = 1
+				self.n = 0
+
+			else:
+				self.branch = 13
+				self.s = 1
+				self.n = 0						
 
 		if self.add_information == 'hit' and self.control.k_e == True:
 			hero.move = True
@@ -63,6 +77,150 @@ class Monk2 (classes.Monk):
 				self.n = 0
 			hero.collide_control = False
 			hero.start_conv = True
+
+		if self.add_information == 'trinktour' and self.control.k_e == True:
+			hero.move = True
+
+			self.control.k_e = False
+			hero.gold = 0
+			if ideas.gelassenheit not in hero.journal:
+
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Вы долго пили. И пьянствовали. Но для чего?')
+				hero.son.change_text (3, 'Вы и сами не знаете. Вы тупо просадили все деньги.')
+				hero.son.change_text (4, 'Вы и сами уже не помните, что происходило и кто за что платил.')
+				hero.son.change_text (5, 'Теперь у вас лишь головная боль, а впереди много дел.')
+
+				self.branch = 7
+				self.s = 1
+				self.n = 0
+
+
+			if ideas.gelassenheit in hero.journal:
+
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Вы долго пили. И пьянствовали. Но для чего?')
+				hero.son.change_text (3, 'Вспомнив концепцию отрешённости, вы восприняли данную пьянку как нечто пустое.')
+				hero.son.change_text (4, 'Отрешившись от своего тела, потребляющего алкоголь вы обратились к вечности.')
+				hero.son.change_text (5, 'И преисполнились внутреннего спокойствия и силы. ')
+				hero.son.change_text (6, 'На утро вы чувствовали себя отлично. Ваша вера возросла.')
+
+				hero.char_value['6sp'] += 1
+
+
+				self.branch = 12
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'stupid' and self.control.k_e == True:
+			hero.move = True
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы презрительно отозвались об идеях монаха, которые')
+			hero.son.change_text (3, 'он вынашивал у себя под сердцем. Достойный ли это поступок?')
+			hero.son.change_text (4, 'Кто знает? Может вы искренне считали его построения заблужденем?')
+			hero.son.change_text (5, 'Или же проявили невнимание и нетерпение?')
+
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'magnus' and self.control.k_e == True:
+			hero.move = True
+			x = 0
+			for i in hero.journal:
+				if i.name == 'Пусто':
+					hero.journal[x] = ideas.order_of_magnitude
+					break
+				x +=1
+
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы записали концепцию Порядка Магнитуд в свой журнал.')
+			hero.son.change_text (3, 'Теперь вы будете по-другому смотреть на мир монстров.')
+			hero.son.change_text (4, 'Кто знает, до чего вас это доведёт.')
+
+			if ideas.individ not in hero.journal:
+				self.branch = 9			
+				self.s = 1
+				self.n = 0
+
+			else:
+				self.branch = 7
+				self.s = 1
+				self.n = 0
+
+
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'individ' and self.control.k_e == True:
+			hero.move = True
+			x = 0
+			for i in hero.journal:
+				if i.name == 'Пусто':
+					hero.journal[x] = ideas.individ
+					break
+				x +=1
+
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы записали концепцию Индивидуации Города в свой журнал.')
+			hero.son.change_text (3, 'Теперь вы будете по-другому смотреть на городские противоречия.')
+			hero.son.change_text (4, 'Кто знает, до чего вас это доведёт.')
+
+
+			if ideas.order_of_magnitude not in hero.journal:
+				self.branch = 8			
+				self.s = 1
+				self.n = 0
+
+			else:
+				self.branch = 7
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+
+		if self.add_information == 'gelassenheit' and self.control.k_e == True:
+			hero.move = True
+			x = 0
+			for i in hero.journal:
+				if i.name == 'Пусто':
+					hero.journal[x] = ideas.gelassenheit
+					break
+				x +=1
+
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы записали концепцию Отрешённости в свой дневничок.')
+			hero.son.change_text (3, 'Теперь вы по-другому будете относиться к внутреннему и внешнему.')
+			hero.son.change_text (4, 'Кто знает, до чего вас это доведёт?')
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
 
 		if self.add_information == 'passage' and self.control.k_e == True:
 
@@ -191,7 +349,7 @@ class Barmen (classes.Monster):
 			hero.start_conv = True								
 
 		if self.add_information == 'pray':
-			if random.randint(1,6) < hero.sp+6:
+			if random.randint(1,6) <= hero.sp:
 				self.branch = 6
 				self.s = 1
 				self.n = 0

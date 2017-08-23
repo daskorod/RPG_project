@@ -36,12 +36,19 @@ class Zombi (Monster):
 		self.image=image.load('images/zombi.png')
 		self.image.set_colorkey ((255,255,255))
 		self.mname = '     Зомби'
+		self.order = False
+		self.branch = 4
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
 		for i in hero.inv:
 			if i.name == 'Хлам':
 				self.branch = 3
+		if self.order == False:
+			for i in hero.journal:
+				if i.name == 'Порядок магнитуд':
+					self.branch = 0
+					self.order = True
 
 	def dialog_special (self, hero):
 		
@@ -97,16 +104,15 @@ class Skelet (Monster):
 		self.image=image.load('images/skeleton2.png')
 		self.image.set_colorkey ((255,255,255))
 		self.mname = '   Скелет'
-		self.first = True
+		self.order = False
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
-		if self.first == True:
+		if self.order == False:
 			for i in hero.journal:
-				self.first = False
 				if i.name == 'Порядок магнитуд':
 					self.branch = 1
-
+					self.order = True
 class SkeletLord (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
@@ -453,6 +459,7 @@ class Trap(sprite.Sprite):
 			hero.rect.y -= hero.velo
 		elif hero.control.down == True:
 			hero.rect.y += hero.velo
+			
 		hero.check_for_death()
 		self.kill()
 

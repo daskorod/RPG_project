@@ -160,7 +160,7 @@ def create_level_city (level, battle, control, son, locationname):
 
 
                      if col == 'g':
-                            mn = npc.Monk2 (x/45,y/45,battle, text_data.gilbert_dict.text, control, 4,5,7,1, son, 100)
+                            mn = npc.Gilbert (x/45,y/45,battle, text_data.gilbert_dict.text, control, 4,5,7,1, son, 100)
                             sprite_group.add (mn)
 
                      if col == 'r':

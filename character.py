@@ -502,22 +502,22 @@ class Hero(pygame.sprite.Sprite):
 
 			journal_screen.blit(self.at_ic, (13,53+(self.journal_index_pos*30)))
 
-			if self.control.right == True and self.journal_index_pos <8:
-				self.control.right = False
+			if self.control.down == True and self.journal_index_pos <8:
+				self.control.down = False
 				self.journal_index_pos += 1
-			if self.control.left == True and self.journal_index_pos >0:
-				self.control.left = False
+			if self.control.up == True and self.journal_index_pos >0:
+				self.control.up = False
 				self.journal_index_pos -= 1
 
-			if self.control.right == True and self.journal_index_pos == 8:
-				self.control.right = False
+			if self.control.down == True and self.journal_index_pos == 8:
+				self.control.down = False
 				self.journal_quit = True
 
 		if self.journal_quit == True:
 			journal_screen.blit(self.at_ic, (70, 353))
 
-			if self.control.left == True:
-				self.control.left = False
+			if self.control.up == True:
+				self.control.up = False
 				self.journal_quit = False	
 
 
@@ -780,8 +780,10 @@ class Hero(pygame.sprite.Sprite):
 		self.son.clear_text ()
 		self.son.change_text (1, 'Вы умерли.')
 		self.son.change_text (2, 'На ваших костях упыри будут танцевать джигу.')
+		self.son.change_text (4, 'Нажмите ESC, чтобы выйти.')
 		self.status = 'dead'
 		self.kill ()
+		self.move = False
 
 	def end_text (self):
 		pass
