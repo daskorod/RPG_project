@@ -912,7 +912,7 @@ class Hero(pygame.sprite.Sprite):
 				self.control.k_1 = False
 				self.son.clear_text ()
 
-				if self.etwas.hp <= 10 and self.sp >0:
+				if self.etwas.hp <= 100 and self.sp >0:
 					self.sp -= 1
 					self.press_to_kill = True
 					self.son.change_text (1, "Монстры рассылпался в прах!")

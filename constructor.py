@@ -6,7 +6,7 @@ from constants import *
 import text
 import items
 import npc
-import text_data.zombisad, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict
+import text_data.zombisad, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict
 #import npc
 
 def create_dungeon1 (level, battle, control, son, locationname):
@@ -71,8 +71,15 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             s = classes.MinorChest (x,y, 'open', items.scythe )
                             sprite_group.add (s)
                      if col == 'a':
-                            a = classes.Skelet ((x/45)+(20/45),y/45,battle, text_data.zombisad.text, control, 10,8,30,3, son, 120)
+                            a = classes.Skelet ((x/45)+(20/45),y/45,battle, text_data.skeletonw_dict.text, control, 10,8,30,3, son, 120)
                             sprite_group.add (a)
+                     if col == 'Q':
+                            s = classes.MinorChest (x,y, 'open', items.hp_potion )
+                            sprite_group.add (s)
+                     if col == 'W':
+                            s = classes.Trap (x,y)
+                            sprite_group.add (s)                     
+
                      x += 45
               x = 0
               y += 45

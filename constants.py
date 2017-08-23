@@ -1,5 +1,3 @@
-
-
 aa = bb = cc = xx = 0
 green = (17, 220, 17)
 cool_orange = (213,111,23)

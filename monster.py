@@ -117,8 +117,8 @@ class Monster (sprite.Sprite):
 		if self.hp <= 0:
 			self.son.clear_text ()
 			hero.char_value['2exp'] += self.exp
-			self.son.change_text (2, "%s повержен!" % self.mname)
-			self.son.change_text (3, "Вы получаете опыт: %s " % self.exp)
+			self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
+			self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
 
 			self.status = 'killed'
 			hero.turn_main = True

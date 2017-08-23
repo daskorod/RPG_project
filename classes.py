@@ -38,19 +38,10 @@ class Zombi (Monster):
 		self.mname = '     Зомби'
 
 	def interaction (self, hero):
+		Monster.interaction (self, hero)
 		for i in hero.inv:
 			if i.name == 'Хлам':
 				self.branch = 3
-		if hero.control.right == True:
-			hero.rect.x -= 1
-		elif hero.control.left == True:
-			hero.rect.x += 1
-		elif hero.control.up == True:
-			hero.rect.y += 1
-		elif hero.control.down == True:
-			hero.rect.y -= 1
-		hero.move = False
-		hero.collide_control = True
 
 	def dialog_special (self, hero):
 		
@@ -106,6 +97,15 @@ class Skelet (Monster):
 		self.image=image.load('images/skeleton2.png')
 		self.image.set_colorkey ((255,255,255))
 		self.mname = '   Скелет'
+		self.first = True
+
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if self.first == True:
+			for i in hero.journal:
+				self.first = False
+				if i.name == 'Порядок магнитуд':
+					self.branch = 1
 
 class SkeletLord (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
@@ -425,7 +425,36 @@ class Marker(sprite.Sprite):
 	def interaction (self,hero):
 		pass
 
+class Trap(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = Surface ((0,0))
+		#self.image=image.load('images/chest2.png')
+		#self.image.fill ((200,30,70))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = str(Trap.__name__)
+		self.charge = True
 
+	def interaction (self, hero):
+		if self.charge == True:
+			self.charge = False
+			hero.son.clear_text ()
+			hero.son.change_text (4, 'Вы наступили на плиту и по вам шибанули снопы огня.')
+			hero.son.change_text (5, "Больно!")
+			hero.hp -=4
+
+		if hero.control.right == True:
+			hero.rect.x += hero.velo
+		elif hero.control.left == True:
+			hero.rect.x -= hero.velo
+		elif hero.control.up == True:
+			hero.rect.y -= hero.velo
+		elif hero.control.down == True:
+			hero.rect.y += hero.velo
+		hero.check_for_death()
+		self.kill()
 
 class Chest(sprite.Sprite):
 	def __init__(self, x, y):
