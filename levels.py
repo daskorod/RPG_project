@@ -73,7 +73,7 @@ class _tavern (SuperLevel):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.name = '- Таверна "Приют героев" -'
 		self.auto = False		
-		self.block_group, self.background = self.create (create_level = constructor.create_level_city, floor = classes.WoodFloor)
+		self.block_group, self.background = self.create (create_level = constructor.create_level_city, create_interior = constructor.create_interior_tavern, floor = classes.WoodFloor)
 		#self.back = False
 
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)

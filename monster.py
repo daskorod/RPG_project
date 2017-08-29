@@ -156,7 +156,7 @@ class Monster (sprite.Sprite):
 #			adventure_screen.blit(fonts.font2.render (str(self.hp_mod), True, (self.color)),(self.rect.x, self.rect.y - 30 - self.x_mod))
 			adventure_screen.blit(fonts.font4.render (str(self.hp_mod)+ ' hp', True, (self.color)),(position.x, position.y - 30 - self.x_mod))
 
-			if self.x_mod > 100:
+			if self.x_mod > 200:
 				self.start_rendering = False
 				self.x_mod = 0
 

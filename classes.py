@@ -243,6 +243,7 @@ class Pavestone(sprite.Sprite):
 class Floor(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
+		#self.image_set = img.stone_wall_tavern
 		self.image = self.random(img.pavestones)
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
@@ -258,10 +259,22 @@ class Floor(sprite.Sprite):
 	def interaction (self,hero):
 		pass
 
+class TavernWall (Platform):
+	def __init__ (self, x, y, form):
+		Platform.__init__ (self, x,y)
+		self.form_number = form
+		self.image = img.stone_wall_tavern[self.form_number]
+
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, 'Каменная кладка, жирная от сальных рук и свечной копоти.')
+
+
+
 class WoodFloor(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		self.image = image.load('images/tiles/floor.png')
+		self.image = self.random(img.pave_tavern)
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((95,95,95))
@@ -375,6 +388,43 @@ class Candel(Platform):
 		Platform.interaction (self, hero)
 		hero.son.change_text (1, 'Крутой подсвечник. Да и свечи ничего')
 		hero.char_value['2exp'] += 50
+
+
+class Cupboard (Platform):
+	def __init__(self, x, y):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load('images/tiles/books.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, 'Книжный шкаф. Очень старый.')
+		hero.char_value['2exp'] += 50
+
+class Well(Platform):
+	def __init__(self, x, y):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load('images/tiles/well.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, 'Вот вода, а вот и колодец! Напейся.')
+		hero.sp = 10
 
 class Table(Platform):
 	def __init__(self, x, y):

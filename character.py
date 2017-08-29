@@ -131,7 +131,7 @@ class Hero(pygame.sprite.Sprite):
 		self.next_level = 100
 		self.x_mod = 0
 		self.x3_mod = 0
-
+		self.death = False
 		self.exp_mod = 0
 		self.sp_mod = 0
 		self.sp_old = self.sp
@@ -184,12 +184,13 @@ class Hero(pygame.sprite.Sprite):
 		self.weapon = items.short_sword
 		self.weapon.status = 'экипировано'
 		self.no_item = items.no_item
-		self.inv = [self.weapon, items.long_sword,self.no_item,items.bouquet,self.no_item,self.no_item,self.no_item,self.no_item,self.no_item]
+		self.inv = [self.weapon, items.long_sword,self.no_item,items.bouquet,items.hp_potion,self.no_item,self.no_item,self.no_item,self.no_item]
 		self.inv_index_pos = 0
 		self.first = items.first
 		self.damage = self.weapon.dem
 		self.inv_question = False
 		self.inv_quit = False
+		self.hp_potions = 0
 
 		#JOURNAL
 
@@ -230,6 +231,19 @@ class Hero(pygame.sprite.Sprite):
 		      ]
 		#self.char = {level: 1, exp: 0, at:, self.ac, self.hp_max, self.sp, self.char_point}
 		#
+
+	def drink_potion (self):
+		if self.control.k_q == True:
+			self.control.k_q = False
+			for i in self.inv:
+				if i.name == 'Лечебное зелье':
+					#if self.char_value
+					self.hp += random.choice(range(1,i.value))
+					if self.hp > self.char_value['5hp']:
+						self.hp = self.char_value['5hp']
+					self.inv.remove(i)
+					break
+
 
 
 
@@ -408,6 +422,7 @@ class Hero(pygame.sprite.Sprite):
 			self.son.clear_text ()
 
 		if self.inventory_flag == True:
+
 			adventure_screen.blit (inventory_screen, (200,10))
 			inventory_screen.fill (sea_color)
 			a = 0
@@ -417,8 +432,6 @@ class Hero(pygame.sprite.Sprite):
 				
 				inventory_screen.blit(fonts.font2.render (str(i.name)+' ( '+ i.status + ' )', True, (250,250,250)),(40,50+(a*30)))
 				a +=1
-
-			
 
 			if self.inv_question == False:
 				self.inv_index()
@@ -443,7 +456,9 @@ class Hero(pygame.sprite.Sprite):
 
 					if self.control.k_1 == True:
 						self.control.k_1 = False
+
 						if self.inv[self.inv_index_pos].status == 'в рюкзаке':
+
 							for i in self.inv:
 								if i.species == 'оружие' and i.status == 'экипировано':
 									i.status = "в рюкзаке"
@@ -452,6 +467,7 @@ class Hero(pygame.sprite.Sprite):
 								self.weapon = self.inv[self.inv_index_pos]
 								self.at += self.weapon.at_mod
 								self.damage = self.weapon.dem
+
 						elif self.inv[self.inv_index_pos].status == 'экипировано':
 							self.inv[self.inv_index_pos].status = 'в рюкзаке'
 		
@@ -459,6 +475,14 @@ class Hero(pygame.sprite.Sprite):
 								self.weapon = self.first
 								#self.at += self.weapon.at_mod
 								self.damage = self.weapon.dem
+
+						if self.inv[self.inv_index_pos].__class__.__name__ == 'Potion':
+									self.hp += random.choice(range(1,self.inv[self.inv_index_pos].value))
+									if self.hp > self.char_value['5hp']:
+										self.hp = self.char_value['5hp']
+									self.inv[self.inv_index_pos] = items.no_item
+					
+
 		
 					if self.control.k_2 == True:
 						self.inv_question = True
@@ -468,6 +492,7 @@ class Hero(pygame.sprite.Sprite):
 						self.son.change_text (3, '1 - Да, 2 - Нет')
 
 				if self.inv_question == True:
+
 					if self.control.k_1 == True:
 						self.control.k_1 = False
 
@@ -505,6 +530,7 @@ class Hero(pygame.sprite.Sprite):
 
 			if self.control.up == True:
 				self.control.up = False
+				self.inv_quit = False
 
 	def journal_manage (self):
 
@@ -751,6 +777,7 @@ class Hero(pygame.sprite.Sprite):
 
 
 	def update (self, array):
+		self.drink_potion()
 		self.update_char()
 		#self.location.stage_loop ()
 		
@@ -858,10 +885,11 @@ class Hero(pygame.sprite.Sprite):
 	# BATTLE OPTIONS
 
 	def check_for_death (self):
-		if self.hp <= 0:
+		if self.hp <= 0 and self.death != True:
 			self.death ()
 
 	def death (self):
+		self.death = True
 		self.son.clear_text ()
 		#self.son.change_text (1, 'Вы умерли.')
 		#self.son.change_text (2, 'На ваших костях упыри будут танцевать джигу.')

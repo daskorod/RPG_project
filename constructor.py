@@ -78,8 +78,13 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             sprite_group.add (s)
                      if col == 'W':
                             s = classes.Trap (x,y)
-                            sprite_group.add (s)                     
-
+                            sprite_group.add (s)  
+                     if col == 'E':
+                            cupboard = classes.Cupboard(x,y)  
+                            sprite_group.add (cupboard)                 
+                     if col == 'R':
+                            well = classes.Well(x,y)  
+                            sprite_group.add (well)
                      x += 45
               x = 0
               y += 45
@@ -251,6 +256,170 @@ def create_interior_standart (level, grType):
 
 
 
+def create_level_tavern (level, battle, control, son, locationname):
+       sprite_group = sprite.Group ()
+
+       x = 0
+       y = 0
+
+       for row in level:
+
+              for col in row:
+                           
+                     if col == "m":
+                            mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son, 100)
+                            sprite_group.add (mn)
+# exit from temple
+                     if col == 'p':
+                            pr = classes.PortalS (x,y,'platz', (11,1))
+                            sprite_group.add (pr)
+#enter into temple
+                     if col == 'e':
+                            pr = classes.PortalS (x,y,'temple', (10,4))
+                            sprite_group.add (pr)
+
+#path to end of the city
+                     if col == 'o':
+                            pr = classes.PortalS (x,y,'end', (1,4))
+                            sprite_group.add (pr)
+#from end to platz
+                     if col == 'q':
+                            pr = classes.PortalS (x,y,'platz', (21,4))
+                            sprite_group.add (pr)
+#from end to dung
+                     if col == 'w':
+                            pr = classes.PortalS (x,y, 'dungeon1', (1,4))
+                            sprite_group.add (pr)
+
+
+                     if col == 'g':
+                            mn = npc.Gilbert (x/45,y/45,battle, text_data.gilbert_dict.text, control, 4,5,7,1, son, 100)
+                            sprite_group.add (mn)
+
+                     if col == 'r':
+                            pr = classes.PortalLink (x,y, 'TavernOutdoor', 'TavernInside', 'D', locationname )
+                            sprite_group.add (pr)
+                            
+                     if col == 'y':
+                            pr = classes.PortalLink (x,y, 'TavernInside', 'TavernOutdoor', 'U', locationname )
+                            sprite_group.add (pr)
+                     if col == 'b':
+                            b = npc.Barmen (x/45,y/45,battle, text_data.barmen_dict.text, control, 8,5,7,4, son, 80)
+                            sprite_group.add (b)
+                     if col == '[':
+                            ding = classes.Ding (x,y, 'images/tiles/bar.png', 'Барная стойка. На ней стоят разные пойла.')
+                            sprite_group.add (ding)
+                     if col == 'W':
+                            ding = classes.Ding (x,y, 'images/tiles/ind.png', 'На указателе написано: "Таверна"')
+                            sprite_group.add (ding)
+                     if col == 'Q':
+                            ding = classes.Ding (x,y, 'images/tiles/ind.png', 'На указателе написано: "Храм"')
+                            sprite_group.add (ding)
+                     if col == 'E':
+                            ding = classes.Ding (x,y, 'images/tiles/cross.png', 'Молчаливый каменный крест. Внушает страх Божий.')
+                            sprite_group.add (ding)
+                     if col == 'R':
+                            ding = classes.Ding (x,y, 'images/tiles/pilar.png', 'Монументальная колонна, поддерживающая потолок.')
+                            sprite_group.add (ding)
+
+                     x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+       return sprite_group
 
 
 
+def create_interior_tavern (level, grType):
+
+       interior =[]
+       walls = []
+       ground = []
+
+       x = 0
+       y = 0
+
+       for row in level:
+              for col in row:
+                    if col != '0' and col != '-' and col != '1' and col != '2' and col != '3' and col != '4' and col != '5' and col != '6' and col != '7' and col != '8' and col != '9'  and col != '!' and col != '@' and col != '#' and col != '$'  :
+                            ground.append(classes.WoodFloor(x,y))
+                    x +=45
+              x = 0
+              for col in row:
+
+                    
+                    
+                    if col == "1":
+                            pf = classes.TavernWall (x,y, 0)
+                            walls.append (pf)
+
+                    if col == "2":
+                            pf = classes.TavernWall (x,y, 1)
+                            walls.append (pf)
+
+                    if col == "3":
+                            pf = classes.TavernWall (x,y,2)
+
+                            walls.append (pf)
+
+                    if col == "4":
+                            pf = classes.TavernWall (x,y, 3)
+                            walls.append (pf)
+
+                    if col == "5":
+                            pf = classes.TavernWall (x,y, 4)
+                            walls.append (pf)
+
+                    if col == "6":
+                            pf = classes.TavernWall (x,y,5)
+                            walls.append (pf)
+                    if col == "7":
+                            pf = classes.TavernWall (x,y,6)
+                            walls.append (pf)
+
+                    if col == "8":
+                            pf = classes.TavernWall (x,y,7)
+                            walls.append (pf)
+                    if col == "9":
+                            pf = classes.TavernWall (x,y,8)
+                            walls.append (pf)
+
+                    if col == "!":
+                            pf = classes.TavernWall (x,y,9)
+                            walls.append (pf)
+                    if col == "@":
+                            pf = classes.TavernWall (x,y,10)
+                            walls.append (pf)
+                    if col == "#":
+                            pf = classes.TavernWall (x,y,11)
+                            walls.append (pf)
+                    if col == "$":
+                            pf = classes.TavernWall (x,y,12)
+                            walls.append (pf)
+                    if col == "d":
+                            door = classes.Door (x,y)
+                            interior.append (door)
+
+                    if col == "c":
+                            ch = classes.Chest (x,y)
+                            interior.append (ch)
+
+                    if col == "t":
+                            tr = classes.Candel (x,y)
+                            interior.append (tr)
+                    if col == "u":
+                            t = classes.Table(x,y)
+                            interior.append(t)
+                    if col == "i":
+                            t = classes.Chair(x,y)
+                            interior.append(t)
+
+
+                    x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+
+       return  interior, ground, walls
