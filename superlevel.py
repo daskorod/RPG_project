@@ -243,6 +243,7 @@ class SuperLevel ():
 		if hero.status != 'dead':
 			adventure_screen.blit (hero.image, self.camera.apply(hero))
 			hero.dustAnim.blit (adventure_screen, (pos.x-45, pos.y-45))
+			hero.slashAnim.blit (adventure_screen, (pos.x, pos.y))
 			hero.anima.blit (adventure_screen, (self.camera.apply(hero)))
 			if hero.move == False:
 			# or self.control.move_cntrl == False:

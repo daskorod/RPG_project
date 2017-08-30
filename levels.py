@@ -3,6 +3,7 @@ from superlevel import SuperLevel
 import constructor
 import classes
 import screens
+import img
 #functions.create_level
 #timer = pygame.time.Clock  ()
 
@@ -31,7 +32,8 @@ class _dungeon2 (SuperLevel):
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 	def stage_content (self, hero):
 
-		classes.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
+		img.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
+		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 		#classes.boltAnim.stop()
 
 class _dungeon3 (SuperLevel):
@@ -55,6 +57,7 @@ class _end (SuperLevel):
 
 	def stage_content (self, hero):
 		pass
+		#classes.slashAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x, self.camera.apply(hero).y))
 
 class _platz (SuperLevel):
 	def __init__ (self,lev, battle, son, control):

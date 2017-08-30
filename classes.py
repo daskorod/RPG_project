@@ -15,26 +15,6 @@ import controller
 from monster import Monster
 import img
 
-boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
-                                 ('testimages/bolt_strike_0002.png', 0.1),
-                                 ('testimages/bolt_strike_0003.png', 0.1),
-                                 ('testimages/bolt_strike_0004.png', 0.1),
-                                 ('testimages/bolt_strike_0005.png', 0.1),
-                                 ('testimages/bolt_strike_0006.png', 0.1),
-                                 ('testimages/bolt_strike_0007.png', 0.1),
-                                 ('testimages/bolt_strike_0008.png', 0.1),
-                                 ('testimages/bolt_strike_0009.png', 0.1),
-                                 ('testimages/bolt_strike_0010.png', 0.1)], loop=False)
-boltAnim.rotate (270)
-#boltAnim.play() # there is also a pause() and stop() method
-
-fireAnim = pyganim.PygAnimation([('testimages/flame_a_0001.png', 0.2),
-                                 ('testimages/flame_a_0002.png', 0.2),
-                                 ('testimages/flame_a_0003.png', 0.2),
-                                 ('testimages/flame_a_0004.png', 0.2),
-                                 ('testimages/flame_a_0005.png', 0.2),
-                                 ('testimages/flame_a_0006.png', 0.2),], loop=False)
-
 
 class Zombi (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp):
@@ -120,82 +100,16 @@ class Skelet (Monster):
 				if i.name == 'Порядок магнитуд':
 					self.branch = 1
 					self.order = True
-class SkeletLord (Monster):
-	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
-		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
-		self.tree = text.lord
-		self.lbolt = False
-		self.mname = 'Скелет Лорд'
-		#self.image.fill ((220,130,100))
-		self.ll = False
-		self.image = image.load('images/skeleton3.png')
-		self.image.set_colorkey ((254,254,254))
-		self.g = 1000
-
-	def dialog_special (self, hero):
-		if self.add_information == 'gold' and self.control.k_e == True:
-			hero.move = True
-			hero.gold += 20
-			self.control.k_e = False
-
-			hero.son.clear_text ()
-			hero.son.change_text (4, 'Вы получили 20 монет')
-			hero.son.change_text (5, 'Ваши деньги: '+str(hero.gold))
-
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-			hero.collide_control = False
-			hero.start_conv = True
-
-	def battle_action (self, hero):
-		self.g += 1
-		if self.lbolt == True:
-			self.g = 185
-
-			self.lbolt = False
 
 
-		if self.g > 190 and self.g< 240:
-			
-#			x_hero.x -=49
-#			x_hero.y -=80
-#			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
-			boltAnim.play ()
-			if self.g==239:
-				boltAnim.stop()
 
-		if hero.monster_turn == True:
-			self.son.clear_text ()
-			a = random.randint (1,3)
-			#boltAnim.blit (adventure_screen, (100, 100))
-		
-			self.son.change_text (1, "В руках скелета заплясали электрические разряды...")
-			self.son.change_text (3, 'Нажмите Е')
-		
-			self.lbolt = True
-			self.ll = True
 
-		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
-			self.ll = False
-			self.lbolt = False
-			self.son.clear_text ()
-			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
-			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
-			hero.hp -= a
-			self.son.change_text (4, 'Нажмите Е')
-			self.wait_for_next_turn = True
-			hero.monster_turn = False
-			self.control.k_e = False
 
-		if self.control.k_e == True and self.wait_for_next_turn == True:
-			
-			self.wait_for_next_turn = False
-			self.control.k_e = False
-			hero.turn_main = True
-			self.son.clear_text ()
+
+
+
+
+
 
 class Platform(sprite.Sprite):
 	def __init__(self, x, y):
@@ -267,7 +181,7 @@ class TavernWall (Platform):
 
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, 'Каменная кладка, жирная от сальных рук и свечной копоти.')
+		hero.son.change_text (3, random.choice (['Каменная кладка, жирная от сальных рук и свечной копоти.', 'Деревянные балки заоптились от времени чадом свечей.',"Стена как стена, добротная крепкая, приятная на ощупь.", "Ничего интересного - просто стена из какого-то грубо обработанного камня."]) )
 
 
 
@@ -509,7 +423,7 @@ class Trap(sprite.Sprite):
 			hero.son.change_text (4, 'Вы наступили на плиту и по вам шибанули снопы огня.')
 			hero.son.change_text (5, "Больно!")
 			hero.hp -=4
-			fireAnim.play ()
+			img.fireAnim.play ()
 
 		if hero.control.right == True:
 			hero.rect.x += hero.velo

@@ -1,4 +1,5 @@
 from pygame import image
+import pyganim
 import re
 
 pave1 = image.load('images/pave1.png')
@@ -51,3 +52,30 @@ wall_stone2,
 
      ]
 #stone_wall_tavern = [x for x in range(1,7)]
+
+slash1 = image.load('animation/slash/Effect_Slash11.png')
+slash2 = image.load('animation/slash/Effect_Slash21.png')
+slash3 = image.load('animation/slash/Effect_Slash31.png')
+slash4 = image.load('animation/slash/Effect_Slash41.png')
+
+slash_list = [slash1, slash2, slash3, slash4]
+
+
+boltAnim = pyganim.PygAnimation([('testimages/bolt_strike_0001.png', 0.1),
+                                 ('testimages/bolt_strike_0002.png', 0.1),
+                                 ('testimages/bolt_strike_0003.png', 0.1),
+                                 ('testimages/bolt_strike_0004.png', 0.1),
+                                 ('testimages/bolt_strike_0005.png', 0.1),
+                                 ('testimages/bolt_strike_0006.png', 0.1),
+                                 ('testimages/bolt_strike_0007.png', 0.1),
+                                 ('testimages/bolt_strike_0008.png', 0.1),
+                                 ('testimages/bolt_strike_0009.png', 0.1),
+                                 ('testimages/bolt_strike_0010.png', 0.1)], loop=False)
+boltAnim.rotate (270)
+
+fireAnim = pyganim.PygAnimation([('testimages/flame_a_0001.png', 0.2),
+                                 ('testimages/flame_a_0002.png', 0.2),
+                                 ('testimages/flame_a_0003.png', 0.2),
+                                 ('testimages/flame_a_0004.png', 0.2),
+                                 ('testimages/flame_a_0005.png', 0.2),
+                                 ('testimages/flame_a_0006.png', 0.2),], loop=False)

@@ -12,6 +12,12 @@ import ideas
 
 time = 0.2
 
+
+slashAnim = pyganim.PygAnimation([('animation/slash/Effect_Slash11.png', 0.1),
+                                 ('animation/slash/Effect_Slash21.png', 0.1),
+                                 ('animation/slash/Effect_Slash31.png', 0.1),
+                                 ('animation/slash/Effect_Slash41.png', 0.1)], loop=False)
+
 dustAnim = pyganim.PygAnimation([('testimages/smoke_puff_0001.png', 0.1),
                                  ('testimages/smoke_puff_0002.png', 0.1),
                                  ('testimages/smoke_puff_0003.png', 0.1),
@@ -89,6 +95,7 @@ class Hero(pygame.sprite.Sprite):
 		self.battle = battle
 		self.name = 'Рихтер'
 		self.dustAnim = dustAnim
+		self.slashAnim = slashAnim
 		
 		self.image = pygame.Surface ((45,45))
 		self.image.fill ((100,200,230))
@@ -131,7 +138,7 @@ class Hero(pygame.sprite.Sprite):
 		self.next_level = 100
 		self.x_mod = 0
 		self.x3_mod = 0
-		self.death = False
+		self.is_death = False
 		self.exp_mod = 0
 		self.sp_mod = 0
 		self.sp_old = self.sp
@@ -885,11 +892,11 @@ class Hero(pygame.sprite.Sprite):
 	# BATTLE OPTIONS
 
 	def check_for_death (self):
-		if self.hp <= 0 and self.death != True:
+		if self.hp <= 0 and self.is_death != True:
 			self.death ()
 
 	def death (self):
-		self.death = True
+		self.is_death = True
 		self.son.clear_text ()
 		#self.son.change_text (1, 'Вы умерли.')
 		#self.son.change_text (2, 'На ваших костях упыри будут танцевать джигу.')
@@ -1093,6 +1100,7 @@ class Hero(pygame.sprite.Sprite):
 			self.dice_rolling ()
 
 		if self.attack_roll == True:
+			self.slashAnim.play()
 			self.son.clear_text ()
 
 			a = self.dice_value

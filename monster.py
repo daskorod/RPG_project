@@ -13,6 +13,8 @@ from constants import *
 import random
 import controller
 import classes
+import img
+import items
 
 class Bar(sprite.Sprite):
 	def __init__(self, xs, ys, color):
@@ -26,7 +28,7 @@ class Bar(sprite.Sprite):
 		pass
 		
 class Monster (sprite.Sprite):
-	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son, exp, special_opt = False):
+	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son, exp, special_opt = False, item = items.no_item):
 		sprite.Sprite.__init__(self)
 		#self.image = Surface ((45,45))
 		#self.image.fill ((120,30,200))
@@ -51,6 +53,8 @@ class Monster (sprite.Sprite):
 		self.hp = hp
 		self.damage = dem
 		self.exp = exp
+
+		self.item = item
 
 		#conversation data
 		
@@ -232,6 +236,139 @@ class Monster (sprite.Sprite):
 			self.wait_for_next_turn = True
 
 		if self.control.k_e == True and self.wait_for_next_turn == True and self.control.e_cntrl == True:
+			self.control.k_e = False
+			hero.turn_main = True
+			self.son.clear_text ()
+
+	def get_item (self, hero, item):
+		counter = 0
+		for i in hero.inv:
+			if i.name == "Ничего":
+				hero.inv[counter]=item
+				break
+			counter +=1
+
+
+class SkeletLord (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = text.lord
+		self.lbolt = False
+		self.mname = 'Скелет Лорд'
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/skeleton3.png')
+		self.image.set_colorkey ((254,254,254))
+
+	def dialog_special (self, hero):
+		if self.add_information == 'gold' and self.control.k_e == True:
+			hero.move = True
+			hero.gold += 20
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (4, 'Вы получили 20 монет')
+			hero.son.change_text (5, 'Ваши деньги: '+str(hero.gold))
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+	def battle_action (self, hero):
+
+		if hero.monster_turn == True:
+			self.son.clear_text ()
+			a = random.randint (1,3)
+			#boltAnim.blit (adventure_screen, (100, 100))
+		
+			self.son.change_text (1, "В руках скелета заплясали электрические разряды...")
+			self.son.change_text (3, 'Нажмите Е')
+		
+			self.lbolt = True
+			self.ll = True
+
+		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
+			self.ll = False
+			img.boltAnim.play ()
+			self.son.clear_text ()
+			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
+			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
+			hero.hp -= a
+			self.son.change_text (4, 'Нажмите Е')
+			self.wait_for_next_turn = True
+			hero.monster_turn = False
+			self.control.k_e = False
+
+		if self.control.k_e == True and self.wait_for_next_turn == True:
+			
+			self.wait_for_next_turn = False
+			self.control.k_e = False
+			hero.turn_main = True
+			self.son.clear_text ()
+
+
+
+class ZombiLord (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = text.lord
+		self.lbolt = False
+		self.mname = 'Скелет Лорд'
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/skeleton3.png')
+		self.image.set_colorkey ((254,254,254))
+
+	def dialog_special (self, hero):
+		if self.add_information == 'gold' and self.control.k_e == True:
+			hero.move = True
+			hero.gold += 20
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (4, 'Вы получили 20 монет')
+			hero.son.change_text (5, 'Ваши деньги: '+str(hero.gold))
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+	def battle_action (self, hero):
+
+		if hero.monster_turn == True:
+			self.son.clear_text ()
+			a = random.randint (1,3)
+			#boltAnim.blit (adventure_screen, (100, 100))
+		
+			self.son.change_text (1, "В руках скелета заплясали электрические разряды...")
+			self.son.change_text (3, 'Нажмите Е')
+		
+			self.lbolt = True
+			self.ll = True
+
+		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
+			self.ll = False
+			img.boltAnim.play ()
+			self.son.clear_text ()
+			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
+			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
+			hero.hp -= a
+			self.son.change_text (4, 'Нажмите Е')
+			self.wait_for_next_turn = True
+			hero.monster_turn = False
+			self.control.k_e = False
+
+		if self.control.k_e == True and self.wait_for_next_turn == True:
+			
+			self.wait_for_next_turn = False
 			self.control.k_e = False
 			hero.turn_main = True
 			self.son.clear_text ()
