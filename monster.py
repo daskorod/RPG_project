@@ -28,7 +28,7 @@ class Bar(sprite.Sprite):
 		pass
 		
 class Monster (sprite.Sprite):
-	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son, exp, special_opt = False, item = items.no_item):
+	def __init__(self, x, y, battle, textus, control, at, ac, hp, dem, son, exp, item = items.no_item, special_opt = False):
 		sprite.Sprite.__init__(self)
 		#self.image = Surface ((45,45))
 		#self.image.fill ((120,30,200))
@@ -119,16 +119,31 @@ class Monster (sprite.Sprite):
 	def death_check (self, hero):
 
 		if self.hp <= 0:
-			self.son.clear_text ()
-			hero.char_value['2exp'] += self.exp
-			self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
-			self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
+			if self.item == items.no_item:
 
-			self.status = 'killed'
-			hero.turn_main = True
-			hero.move = True
-			self.kill ()
-			hero.collide_control = False			
+				self.son.clear_text ()
+				hero.char_value['2exp'] += self.exp
+				self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
+				self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
+#				self.son.change_text (5, "С трупа вы забрали: %s " % self.item.name)	
+				self.status = 'killed'
+				hero.turn_main = True
+				hero.move = True
+				self.kill ()
+				hero.collide_control = False
+			elif self.item != items.no_item:
+				self.get_item(hero, self.item)	
+
+				self.son.clear_text ()
+				hero.char_value['2exp'] += self.exp
+				self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
+				self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
+				self.son.change_text (5, "С трупа вы забрали: %s " % self.item.name)	
+				self.status = 'killed'
+				hero.turn_main = True
+				hero.move = True
+				self.kill ()
+				hero.collide_control = False
 
 	def interaction (self, hero):
 		if hero.control.right == True:

@@ -14,11 +14,12 @@ import random
 import controller
 from monster import Monster
 import img
+import items
 
 
 class Zombi (Monster):
-	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp):
-		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp, item = items.no_item):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp, item)
 		self.tree = textus
 		self.image=image.load('images/zombi.png')
 		self.image.set_colorkey ((255,255,255))
@@ -285,6 +286,69 @@ class Door(sprite.Sprite):
 			self.branch = 0
 
 
+class DoorGold(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = image.load('images/door_gold.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+
+		#conversation data
+		#self.tree = text.door_gold
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
+
+		hero.move = False
+		hero.collide_control = True
+
+
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		self.dialog_special (hero)
+		if self.add_information == 'open':
+			hero.move = True
+			hero.control.k_e = False
+			hero.son.clear_text ()
+			hero.son.change_text (1, 'Вы открыли эту никчёмную дверь!')
+			self.kill ()
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'end':
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+			self.branch = 0
+
 class Candel(Platform):
 	def __init__(self, x, y):
 		#sprite.Sprite.__init__(self)
@@ -501,7 +565,7 @@ class Chest(sprite.Sprite):
 			self.n = 0
 			self.branch = 0
 
-class MinorChest(sprite.Sprite):
+class MinorChestOld(sprite.Sprite):
 	def __init__(self, x, y, status, *item):
 		sprite.Sprite.__init__(self)
 		self.image=image.load('images/chest2.png')
@@ -620,7 +684,88 @@ class MinorChest(sprite.Sprite):
 			self.n = 0
 			self.branch = 0
 
-class MinorChest2(sprite.Sprite):
+class MinorChest(sprite.Sprite):
+	def __init__(self, x, y, status, *item):
+		sprite.Sprite.__init__(self)
+		self.image=image.load('images/chest2.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((200,30,70))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "chest"
+		self.status = status
+		self.items = item
+		self.inside = []
+		for i in self.items:
+			self.inside.append (i)
+
+		self.items_name = ''
+
+		for i in self.items:
+			self.items_name = self.items_name + i.name + ', '
+		self.items_name = self.items_name[:-2] + '.'
+
+		#conversation data
+		self.tree = text.mchest
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= 1
+		elif hero.control.left == True:
+			hero.rect.x += 1
+		elif hero.control.up == True:
+			hero.rect.y += 1
+		elif hero.control.down == True:
+			hero.rect.y -= 1
+		hero.move = False
+		hero.collide_control = True
+
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+
+		self.dialog_special (hero)
+		if self.add_information == 'end_chest':
+
+			hero.son.change_text_tree (hero.view.render_text ('В сундуке находится: ' + self.items_name, 'Нажмите E, чтобы всё забрать...'))
+
+		if self.add_information == 'end_chest' and hero.control.k_e == True:
+			hero.move = True
+			hero.control.k_e = False
+			hero.son.clear_text ()
+			hero.collide_control = False
+			hero.start_conv = True
+
+			self.kill ()
+			hero.son.change_text (4, 'Вы взяли все вещи...')
+			for i in self.inside:
+				hero.inv.append(i)
+
+
+
+		if self.add_information == 'end' and hero.control.k_e == True:
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+			self.branch = 0
+'''
+class MinorChest2Old(sprite.Sprite):
 	def __init__(self, x, y, status, *item):
 		sprite.Sprite.__init__(self)
 		self.image=image.load('images/chest2.png')
@@ -742,7 +887,91 @@ class MinorChest2(sprite.Sprite):
 			self.s = 1
 			self.n = 0
 			self.branch = 0
+'''
+class MinorChest2(sprite.Sprite):
+	def __init__(self, x, y, status, *item):
+		sprite.Sprite.__init__(self)
+		self.image=image.load('images/chest2.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((200,30,70))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "chest"
+		self.status = status
+		self.items = item
+		self.inside = []
+		for i in self.items:
+			self.inside.append (i)
 
+		self.items_name = ''
+
+		for i in self.items:
+			self.items_name = self.items_name + i.name + ', '
+		self.items_name = self.items_name[:-2] + '.'
+
+		#conversation data
+		self.tree = text.mchest2
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= 1
+		elif hero.control.left == True:
+			hero.rect.x += 1
+		elif hero.control.up == True:
+			hero.rect.y += 1
+		elif hero.control.down == True:
+			hero.rect.y -= 1
+		hero.move = False
+		hero.collide_control = True
+
+		if 'zombisad' in hero.quest:
+			self.branch = 1
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		MinorChest.dialog_options(self, hero)
+
+
+		self.dialog_special (hero)
+
+
+		if self.add_information == 'end_chest':
+
+			hero.son.change_text_tree (hero.view.render_text ('В сундуке находится: ' + self.items_name, 'Нажмите E, чтобы всё забрать...'))
+
+		if self.add_information == 'end_chest' and hero.control.k_e == True:
+			hero.move = True
+			hero.control.k_e = False
+			hero.son.clear_text ()
+			hero.collide_control = False
+			hero.start_conv = True
+
+			self.kill ()
+			hero.son.change_text (4, 'Вы взяли все вещи...')
+			for i in self.inside:
+				hero.inv.append(i)
+
+		if self.add_information == 'end' and hero.control.k_e == True:
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+			self.branch = 0
 
 class Portal2(sprite.Sprite):
 	def __init__(self, x, y,control):

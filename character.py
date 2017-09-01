@@ -9,6 +9,7 @@ from screens import *
 from constants import *
 import items
 import ideas
+import img
 
 time = 0.2
 
@@ -191,13 +192,15 @@ class Hero(pygame.sprite.Sprite):
 		self.weapon = items.short_sword
 		self.weapon.status = 'экипировано'
 		self.no_item = items.no_item
-		self.inv = [self.weapon, items.long_sword,self.no_item,items.bouquet,items.hp_potion,self.no_item,self.no_item,self.no_item,self.no_item]
+		self.inv = [self.weapon, items.long_sword,items.bouquet,items.hp_potion]
 		self.inv_index_pos = 0
 		self.first = items.first
 		self.damage = self.weapon.dem
 		self.inv_question = False
 		self.inv_quit = False
 		self.hp_potions = 0
+		self.inv_page = 0
+		self.number_of_things_on_the_page = 9
 
 		#JOURNAL
 
@@ -435,16 +438,36 @@ class Hero(pygame.sprite.Sprite):
 			a = 0
 			inventory_screen.blit(fonts.font2.render ('Инвентарь', True, (250,250,250)),(90,10))
 			inventory_screen.blit(fonts.font2.render ('Выйти', True, (250,250,250)),(90,350))
-			for i in self.inv:
-				
-				inventory_screen.blit(fonts.font2.render (str(i.name)+' ( '+ i.status + ' )', True, (250,250,250)),(40,50+(a*30)))
-				a +=1
+
+			for i in range(self.inv_page*self.number_of_things_on_the_page,(self.inv_page+1)*self.number_of_things_on_the_page):
+				try:				
+					inventory_screen.blit(fonts.font2.render (str(self.inv[i].name)+' ( '+ self.inv[i].status + ' )', True, (	250,250,250)),(40,50+(a*30)))
+					a +=1
+					if a > self.number_of_things_on_the_page or a > len(self.inv)-((self.inv_page)*self.	number_of_things_on_the_page):
+						break
+				except:
+					pass
 
 			if self.inv_question == False:
 				self.inv_index()
 
 				if self.inv_quit == False:
-					self.son.change_text_tree (self.view.render_text (self.inv[self.inv_index_pos].name+ '. ' + self.inv[self.inv_index_pos].description, self.inv[self.inv_index_pos].use_description))
+					#if a < len(self.inv) or a < 8:
+					try:
+						self.son.change_text_tree (self.view.render_text (self.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].name+ '. ' + self.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].description, self.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].use_description))
+					except:
+						self.inv_quit = True
+
+			if len(self.inv)>7:
+				inventory_screen.blit(fonts.font2.render (str(len(self.inv)), True, (250,250,250)),(280,10))
+				inventory_screen.blit(fonts.font2.render (str(self.inv_page+1), True, (250,250,250)),(235,10))				
+				if self.inv_page<len(self.inv)//self.number_of_things_on_the_page:
+					inventory_screen.blit(img.arrow_right,(250,10))
+
+				if self.inv_page >0:
+							
+					inventory_screen.blit(img.arrow_left,(200,10))
+
 
 			if self.inv_quit == True:
 				self.son.clear_text ()
@@ -464,30 +487,30 @@ class Hero(pygame.sprite.Sprite):
 					if self.control.k_1 == True:
 						self.control.k_1 = False
 
-						if self.inv[self.inv_index_pos].status == 'в рюкзаке':
+						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'в рюкзаке':
 
 							for i in self.inv:
 								if i.species == 'оружие' and i.status == 'экипировано':
 									i.status = "в рюкзаке"
-							self.inv[self.inv_index_pos].status = 'экипировано'
-							if self.inv[self.inv_index_pos].species == 'оружие':
-								self.weapon = self.inv[self.inv_index_pos]
+							self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'экипировано'
+							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
+								self.weapon = self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)]
 								self.at += self.weapon.at_mod
 								self.damage = self.weapon.dem
 
-						elif self.inv[self.inv_index_pos].status == 'экипировано':
-							self.inv[self.inv_index_pos].status = 'в рюкзаке'
+						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'экипировано':
+							self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'в рюкзаке'
 		
-							if self.inv[self.inv_index_pos].species == 'оружие':
+							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
 								self.weapon = self.first
 								#self.at += self.weapon.at_mod
 								self.damage = self.weapon.dem
 
-						if self.inv[self.inv_index_pos].__class__.__name__ == 'Potion':
-									self.hp += random.choice(range(1,self.inv[self.inv_index_pos].value))
+						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].__class__.__name__ == 'Potion':
+									self.hp += random.choice(range(1,self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].value))
 									if self.hp > self.char_value['5hp']:
 										self.hp = self.char_value['5hp']
-									self.inv[self.inv_index_pos] = items.no_item
+									#self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)] = items.no_item
 					
 
 		
@@ -495,7 +518,7 @@ class Hero(pygame.sprite.Sprite):
 						self.inv_question = True
 						self.control.k_2 = False
 						self.son.clear_text ()
-						self.son.change_text (1, 'Вы уверены, что хотите выбросить ' +self.inv[self.inv_index_pos].name+ ' на фиг!' )
+						self.son.change_text (1, 'Вы уверены, что хотите выбросить ' +self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name+ ' на фиг!' )
 						self.son.change_text (3, '1 - Да, 2 - Нет')
 
 				if self.inv_question == True:
@@ -503,13 +526,13 @@ class Hero(pygame.sprite.Sprite):
 					if self.control.k_1 == True:
 						self.control.k_1 = False
 
-						if self.inv[self.inv_index_pos].status == 'экипировано':
-							if self.inv[self.inv_index_pos].species == 'оружие':
+						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'экипировано':
+							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
 								self.weapon = self.first
 								#self.at += self.weapon.at_mod
 								self.damage = self.weapon.dem
-						self.inv.pop (self.inv_index_pos)
-						self.inv.insert (self.inv_index_pos, items.no_item)
+						self.inv.pop (self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page))
+					#	self.inv.insert (self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page), items.no_item)
 						self.inv_question = False
 
 					if self.control.k_2 == True:
@@ -517,6 +540,15 @@ class Hero(pygame.sprite.Sprite):
 						self.inv_question = False
 
 	def inv_index (self):
+
+		if self.control.right == True and (len(self.inv)-(self.inv_page+1)*self.number_of_things_on_the_page)>0:
+			self.control.right = False
+			self.inv_page+= 1
+
+		if self.control.left == True and self.inv_page>0:
+			self.control.left = False
+			self.inv_page -= 1
+
 		if self.inv_quit == False:
 
 			inventory_screen.blit(self.at_ic, (13,53+(self.inv_index_pos*30)))
@@ -532,10 +564,14 @@ class Hero(pygame.sprite.Sprite):
 				self.control.down = False
 				self.inv_quit = True
 
-		if self.inv_quit == True:
+		elif self.inv_quit == True:
 			inventory_screen.blit(self.at_ic, (70, 353))
 
 			if self.control.up == True:
+				if len(self.inv)//self.number_of_things_on_the_page == self.inv_page:
+					self.inv_index_pos = len(self.inv)%self.number_of_things_on_the_page-1
+				else:
+					self.inv_index_pos = 8
 				self.control.up = False
 				self.inv_quit = False
 

@@ -79,3 +79,7 @@ fireAnim = pyganim.PygAnimation([('testimages/flame_a_0001.png', 0.2),
                                  ('testimages/flame_a_0004.png', 0.2),
                                  ('testimages/flame_a_0005.png', 0.2),
                                  ('testimages/flame_a_0006.png', 0.2),], loop=False)
+
+
+arrow_right = image.load('images/arrow_right.png')
+arrow_left = image.load('images/arrow_left.png')

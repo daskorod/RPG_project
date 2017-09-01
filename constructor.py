@@ -22,7 +22,7 @@ def create_dungeon1 (level, battle, control, son, locationname):
               for col in row:
                            
                      if col == "z":
-                            z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son,20)
+                            z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son,20, item = items.hp_potion)
                             sprite_group.add (z)
 
                      if col == 'e':
@@ -88,7 +88,11 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             sprite_group.add (well)
                      if col == 'T':
                             well = monster.SkeletLord(x/45,y/45,battle, text.lord, control, 6,5,6,2, son, 150)  
-                            sprite_group.add (well)                            
+                            sprite_group.add (well)
+                     if col == 'Y':
+                            pr = classes.PortalLink (x,y, 'dung3', 'dung2', 'L', locationname )
+                            sprite_group.add (pr)
+
                      x += 45
               x = 0
               y += 45
@@ -122,6 +126,9 @@ def create_dungeon3 (level, battle, control, son, locationname):
                      if col == 's':
                             s = classes.MinorChest (x,y, 'open', items.scythe )
                             sprite_group.add (s)
+                     if col == 'Q':
+                            pr = classes.PortalLink (x,y, 'dung2', 'dung3', 'U', locationname )
+                            sprite_group.add (pr)
 
                      x += 45
               x = 0
