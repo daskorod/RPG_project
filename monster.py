@@ -256,12 +256,7 @@ class Monster (sprite.Sprite):
 			self.son.clear_text ()
 
 	def get_item (self, hero, item):
-		counter = 0
-		for i in hero.inv:
-			if i.name == "Ничего":
-				hero.inv[counter]=item
-				break
-			counter +=1
+		hero.inv.append(item)
 
 
 class SkeletLord (Monster):
@@ -274,6 +269,7 @@ class SkeletLord (Monster):
 		self.ll = False
 		self.image = image.load('images/skeleton3.png')
 		self.image.set_colorkey ((254,254,254))
+		self.item = items.gold_key
 
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:
@@ -332,11 +328,12 @@ class ZombiLord (Monster):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = text.lord
 		self.lbolt = False
-		self.mname = 'Скелет Лорд'
+		self.mname = 'Зомби Лорд'
 		#self.image.fill ((220,130,100))
 		self.ll = False
-		self.image = image.load('images/skeleton3.png')
+		self.image = image.load('images/zombi.png')
 		self.image.set_colorkey ((254,254,254))
+		self.item = items.silver_key
 
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:
@@ -356,34 +353,3 @@ class ZombiLord (Monster):
 			hero.collide_control = False
 			hero.start_conv = True
 
-	def battle_action (self, hero):
-
-		if hero.monster_turn == True:
-			self.son.clear_text ()
-			a = random.randint (1,3)
-			#boltAnim.blit (adventure_screen, (100, 100))
-		
-			self.son.change_text (1, "В руках скелета заплясали электрические разряды...")
-			self.son.change_text (3, 'Нажмите Е')
-		
-			self.lbolt = True
-			self.ll = True
-
-		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
-			self.ll = False
-			img.boltAnim.play ()
-			self.son.clear_text ()
-			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
-			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
-			hero.hp -= a
-			self.son.change_text (4, 'Нажмите Е')
-			self.wait_for_next_turn = True
-			hero.monster_turn = False
-			self.control.k_e = False
-
-		if self.control.k_e == True and self.wait_for_next_turn == True:
-			
-			self.wait_for_next_turn = False
-			self.control.k_e = False
-			hero.turn_main = True
-			self.son.clear_text ()

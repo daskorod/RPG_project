@@ -8,7 +8,7 @@ import items
 import npc
 import monster
 import text_data.zombisad, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict
-#import npc
+import img
 
 def create_dungeon1 (level, battle, control, son, locationname):
 
@@ -90,9 +90,18 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             well = monster.SkeletLord(x/45,y/45,battle, text.lord, control, 6,5,6,2, son, 150)  
                             sprite_group.add (well)
                      if col == 'Y':
-                            pr = classes.PortalLink (x,y, 'dung3', 'dung2', 'L', locationname )
+                            pr = classes.PortalLink (x,y, 'dung3', 'dung2', 'D', locationname )
                             sprite_group.add (pr)
-
+                     if col == 'U':
+                            pr = classes.GoldDoor (x,y)
+                            sprite_group.add (pr)
+                     if col == 'I':
+                            well = monster.ZombiLord(x/45,y/45,battle, text.lord, control, 15,5,16,4, son, 250)  
+                            sprite_group.add (well)      
+                     if col == 'O':
+                            well = classes.Obstacle(x,y, img.obstacles)  
+                            sprite_group.add (well)      
+         
                      x += 45
               x = 0
               y += 45
@@ -204,6 +213,7 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'R':
                             ding = classes.Ding (x,y, 'images/tiles/pilar.png', 'Монументальная колонна, поддерживающая потолок.')
                             sprite_group.add (ding)
+
 
                      x += 45
               x = 0

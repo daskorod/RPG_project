@@ -161,9 +161,17 @@ class SuperLevel ():
 			elif self.up_check(i, walls_set) == False and self.right_check (i, walls_set) == False and self.is_right_flor(i, ground) == False and self.down_check (i, walls_set) == False and self.is_down_flor(i, ground) == True:
 				i.image = wall_base
 				self.create_addition_wall (i, addition, wall_up_img)
-
-			elif self.up_check(i, walls_set) == False and self.right_check (i, walls_set) == False and self.is_right_flor(i, ground) == True:
+#
+			elif self.up_check(i, walls_set) == False and self.right_check (i, walls_set) == False and self.is_right_flor(i, ground) == True and self.is_up_flor(i, ground) == True:
 				i.image = wall_c
+
+			elif self.up_check(i, walls_set) == False and self.right_check (i, walls_set) == False and self.is_right_flor(i, ground) == True and self.is_up_flor(i, ground) == False:
+				i.image = wall_base
+				self.create_addition_wall (i, addition, wall_up_img)
+
+			elif self.up_check(i, walls_set) == False and self.left_check (i, walls_set) == False and self.is_left_flor(i, ground) == True and self.is_up_flor(i, ground) == False:
+				i.image = wall_base
+				self.create_addition_wall (i, addition, wall_up_img)
 
 			elif self.up_check(i, walls_set) == True and self.right_check (i, walls_set) == False and self.is_right_flor(i, ground) == False and self.left_check(i, walls_set) == False:
 				i.image = wall_right
@@ -192,7 +200,7 @@ class SuperLevel ():
 				i.image = wall_c_4
 
 
-
+#
 			else: i.image = wall_c
 
 #End of automatic wall`s taile selection

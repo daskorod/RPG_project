@@ -83,3 +83,16 @@ fireAnim = pyganim.PygAnimation([('testimages/flame_a_0001.png', 0.2),
 
 arrow_right = image.load('images/arrow_right.png')
 arrow_left = image.load('images/arrow_left.png')
+
+
+barrel = image.load('images/tiles/barrel.png')
+box = image.load('images/tiles/box.png')
+pot = image.load('images/tiles/pot.png')
+stone = image.load('images/tiles/stone.png')
+
+barrel_t = 'Старая никому ненужная бочка. Внутри вся в паутине.'
+box_t = 'Раздолбанный ящик. Пойдёт только на дрова.'
+stone_t = 'Какая-то вопиющая глыба, взгромоздившаяся у вас на пути.'
+pot_t = 'Тресунвший кувшин. Он представляет собой жалкое зрелище.'
+
+obstacles = [(barrel,barrel_t), (box,box_t), (pot,pot_t), (stone,stone_t)]

@@ -66,7 +66,7 @@ print ('\n',levels_list, '\n\n', levels_dict,'\n')
 
 
 #create hero
-hero = character.Hero (7,6, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
+hero = character.Hero (35,20, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
 
 
 #start game
