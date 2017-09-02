@@ -6,7 +6,7 @@ from constants import *
 import fonts
 
 #display.toggle_fullscreen()
-#window = display.set_mode((840,634),pygame.FULLSCREEN)
+#window = display.set_mode((860,634),pygame.FULLSCREEN)
 
 window = display.set_mode((860, 634))
 display.set_caption('Giperborea')

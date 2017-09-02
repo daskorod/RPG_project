@@ -9,6 +9,7 @@ import npc
 import monster
 import text_data.zombisad, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict
 import img
+import functions
 
 def create_dungeon1 (level, battle, control, son, locationname):
 
@@ -100,7 +101,10 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             sprite_group.add (well)      
                      if col == 'O':
                             well = classes.Obstacle(x,y, img.obstacles)  
-                            sprite_group.add (well)      
+                            sprite_group.add (well)
+                     if col == 'P':
+                            cupboard = classes.Cupboard2(x,y)  
+                            sprite_group.add (cupboard)          
          
                      x += 45
               x = 0
@@ -138,7 +142,12 @@ def create_dungeon3 (level, battle, control, son, locationname):
                      if col == 'Q':
                             pr = classes.PortalLink (x,y, 'dung2', 'dung3', 'U', locationname )
                             sprite_group.add (pr)
-
+                     if col == 'T':
+                            pr = classes.Throne (x,y)
+                            sprite_group.add (pr)
+                     if col == 'S':
+                            pr = classes.DingSpecial (x,y, img.kubert, text.door_gold, functions.dialog_special, functions.dialog_special1)
+                            sprite_group.add (pr)
                      x += 45
               x = 0
               y += 45
@@ -241,7 +250,9 @@ def create_interior_standart (level, grType):
                     x +=45
               x = 0
               for col in row:
-
+                    if col == "+":
+                            pf = classes.PlatformBlack (x,y)
+                            interior.append (pf)
                     
                     
                     if col == "-":
@@ -339,6 +350,7 @@ def create_level_tavern (level, battle, control, son, locationname):
                      if col == 'E':
                             ding = classes.Ding (x,y, 'images/tiles/cross.png', 'Молчаливый каменный крест. Внушает страх Божий.')
                             sprite_group.add (ding)
+
                      if col == 'R':
                             ding = classes.Ding (x,y, 'images/tiles/pilar.png', 'Монументальная колонна, поддерживающая потолок.')
                             sprite_group.add (ding)
@@ -374,7 +386,9 @@ def create_interior_tavern (level, grType):
                     if col == "1":
                             pf = classes.TavernWall (x,y, 0)
                             walls.append (pf)
-
+                    if col == "0":
+                            pf = classes.PlatformBlack (x,y)
+                            walls.append (pf)
                     if col == "2":
                             pf = classes.TavernWall (x,y, 1)
                             walls.append (pf)

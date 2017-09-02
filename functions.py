@@ -8,6 +8,82 @@ import items
 import text_data.zombisad, text_data.monk
 #import npc
 
+
+def dialog_special1(self, hero):
+	pass
+
+def dialog_special(self, hero):
+		if self.add_information == 'open':
+			hero.move = True
+			hero.control.k_e = False
+			hero.son.clear_text ()
+			hero.son.change_text (1, 'Вы открыли эту никчёмную дверь!')
+			self.kill ()
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'key':
+			for i in hero.inv:
+				if i.name == 'Серебряный ключ':
+					for i in hero.inv:
+						if i.name ==  'Золотой ключ':
+							hero.move = True
+							hero.control.k_e = False
+							hero.son.clear_text ()
+							hero.son.change_text (1, 'Вы вставили серебряный и золотой ключи в замочные скважины и провернули их.')
+							hero.son.change_text (2, 'Раздался лёгкий щелчок и дверь отворилась.')
+
+							hero.son.change_text (4, 'Вы открыли эту жалкую дверь!')
+							self.kill ()
+							hero.collide_control = False
+							hero.start_conv = True
+							hero.char_value['2exp']+=50
+							break
+					else:
+						hero.move = True
+						hero.control.k_e = False
+						hero.son.clear_text ()
+						hero.son.change_text (1, 'Один из ключей, который вы вставили подошёл.')
+						hero.son.change_text (2, 'К сожалению, там две замочных скважины, а значит и два замка.')
+						hero.son.change_text (3, 'Не переживайте, поищите ещё. Может что и найдёте.')
+						hero.collide_control = False
+						hero.start_conv = True
+
+				elif i.name == 'Золотой ключ':
+					for i in hero.inv:
+						if i.name ==  'Серебряный ключ':
+							hero.move = True
+							hero.control.k_e = False
+							hero.son.clear_text ()
+							hero.son.change_text (1, 'Вы вставили серебряный и золотой ключи в замочные скважины и провернули их.')
+							hero.son.change_text (2, 'Раздался лёгкий щелчок и дверь отворилась.')
+
+							hero.son.change_text (4, 'Вы открыли эту жалкую дверь!')
+							self.kill ()
+							hero.collide_control = False
+							hero.start_conv = True
+							hero.char_value['2exp']+=50
+							break
+					else:
+						hero.move = True
+						hero.control.k_e = False
+						hero.son.clear_text ()
+						hero.son.change_text (1, 'Один из ключей, который вы вставили подошёл.')
+						hero.son.change_text (2, 'К сожалению, там две замочных скважины, а значит и два замка.')
+						hero.son.change_text (3, 'Не переживайте, поищите ещё. Может что и найдёте.')
+						hero.collide_control = False
+						hero.start_conv = True	
+
+		if self.add_information == 'end':
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+
 def journal_update (self, hero, add_information, concept):
 		if self.add_information == add_information and self.control.k_e == True:
 			hero.move = True

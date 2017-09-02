@@ -10,6 +10,7 @@ from constants import *
 import items
 import ideas
 import img
+import math
 
 time = 0.2
 
@@ -252,6 +253,7 @@ class Hero(pygame.sprite.Sprite):
 					if self.hp > self.char_value['5hp']:
 						self.hp = self.char_value['5hp']
 					self.inv.remove(i)
+					img.healAnim.play()
 					break
 
 
@@ -366,28 +368,6 @@ class Hero(pygame.sprite.Sprite):
 				self.char_value['7points'] +=1
 				self.next_level = self.to_next_level(self.char_value['1lvl'])
 
-	def render_lev_mod(self, position):
-
-		if self.start_rendering_lev == True:
-			self.x1_mod += 1
-
-			adventure_screen.blit(fonts.fontlevel.render ('+ 1 УРОВЕНЬ!', True, (white)),(position.x-70, position.y - 30 - self.x1_mod))
-
-			if self.x1_mod > 200:
-				self.start_rendering_lev = False
-				self.x1_mod = 0	
-
-
-	def render_exp_mod(self, position):
-
-		if self.start_rendering_exp == True:
-			self.x2_mod += 1
-
-			adventure_screen.blit(fonts.font4.render (str(self.exp_mod)+ ' exp', True, (yellow)),(position.x-10, position.y - 10 - self.x2_mod))
-
-			if self.x2_mod > 200:
-				self.start_rendering_exp = False
-				self.x2_mod = 0	
 
 
 	def to_next_level(self, current_level):
@@ -663,7 +643,7 @@ class Hero(pygame.sprite.Sprite):
 			self.x_mod += 1
 		#hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
 #			adventure_screen.blit(fonts.font2.render (str(self.hp_mod), True, (self.color)),(self.rect.x, self.rect.y - 30 - self.x_mod))
-			adventure_screen.blit(fonts.font4.render (str(self.hp_mod)+ ' hp', True, (self.color)),(position.x, position.y - 30 - self.x_mod))
+			adventure_screen.blit(fonts.font4.render (str(self.hp_mod)+ ' HP', True, (self.color)),(position.x-self.x_mod*(self.x_mod/60), position.y - 30 - self.x_mod))
 
 			if self.x_mod > 200:
 				self.start_rendering = False
@@ -689,11 +669,34 @@ class Hero(pygame.sprite.Sprite):
 			self.x3_mod += 1
 		#hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
 #			adventure_screen.blit(fonts.font2.render (str(self.hp_mod), True, (self.color)),(self.rect.x, self.rect.y - 30 - self.x_mod))
-			adventure_screen.blit(fonts.font4.render (str(self.sp_mod)+ ' sp', True, (blue)),(position.x-20, position.y - 60 - self.x3_mod))
+			adventure_screen.blit(fonts.font4.render (str(self.sp_mod)+ ' SP', True, (blue)),(position.x-(self.x3_mod*self.x3_mod/60)-20, position.y - 60 - self.x3_mod))
 
 			if self.x3_mod > 200:
 				self.start_rendering_sp = False
 				self.x3_mod = 0	
+
+	def render_lev_mod(self, position):
+
+		if self.start_rendering_lev == True:
+			self.x1_mod += 1
+
+			adventure_screen.blit(fonts.fontlevel.render ('+ 1 УРОВЕНЬ!', True, (white)),(position.x-70, position.y - 30 - self.x1_mod))
+
+			if self.x1_mod > 200:
+				self.start_rendering_lev = False
+				self.x1_mod = 0	
+
+
+	def render_exp_mod(self, position):
+
+		if self.start_rendering_exp == True:
+			self.x2_mod += 1
+
+			adventure_screen.blit(fonts.font4.render (str(self.exp_mod)+ ' EXP', True, (yellow)),(position.x-(self.x2_mod*(self.x2_mod/60))-10, position.y - 10 - self.x2_mod))
+
+			if self.x2_mod > 200:
+				self.start_rendering_exp = False
+				self.x2_mod = 0	
 
 
 	def render_information (self):
@@ -717,7 +720,7 @@ class Hero(pygame.sprite.Sprite):
 		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
 		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
 		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
-		high_screen.blit(fonts.font5.render ('Сл. ур. '+str(self.next_level), True, (250,250,250)),(300,0))
+		high_screen.blit(fonts.font5.render ('Сл. ур. '+str(self.next_level), True, (250,250,250)),(350,0))
 
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
@@ -1112,6 +1115,8 @@ class Hero(pygame.sprite.Sprite):
 					self.son.change_text (1, "Ваши раны восстановились чудесным образом. +4 ЖС")
 					self.son.change_text (3, "Нажмите Е")
 					self.back = True
+					img.healAnim.play()
+
 
 				if self.sp <=0:
 					self.back = True

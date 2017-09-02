@@ -96,3 +96,18 @@ stone_t = 'Какая-то вопиющая глыба, взгромоздивш
 pot_t = 'Тресунвший кувшин. Он представляет собой жалкое зрелище.'
 
 obstacles = [(barrel,barrel_t), (box,box_t), (pot,pot_t), (stone,stone_t)]
+
+speed = 0.05
+healAnim = pyganim.PygAnimation([('animation/heal/heal01.png', speed),
+('animation/heal/heal02.png', speed),
+('animation/heal/heal03.png', speed),
+('animation/heal/heal04.png', speed),
+('animation/heal/heal05.png', speed),
+('animation/heal/heal06.png', speed),
+('animation/heal/heal07.png', speed),
+('animation/heal/heal08.png', speed),
+('animation/heal/heal09.png', speed),
+('animation/heal/heal10.png', speed)], loop=False)
+
+
+kubert = image.load('images/tiles/kubert.png')

@@ -123,7 +123,6 @@ class Platform(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "block"
-
 	def interaction (self,hero):
 		if hero.control.right == True:
 			hero.rect.x -= hero.back_move
@@ -135,6 +134,30 @@ class Platform(sprite.Sprite):
 			hero.rect.y -= hero.back_move
 		hero.son.clear_text ()
 		hero.son.change_text (1, 'Холодная мрачная стена, напоминает о смерти.')
+
+class PlatformBlack(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+
+		self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "block"
+
+
+	def interaction (self,hero):
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
+		hero.son.clear_text ()
+		hero.son.change_text (1, 'Тьма.')
 
 
 class Pavestone(sprite.Sprite):
@@ -285,6 +308,169 @@ class Door(sprite.Sprite):
 			self.n = 0
 			self.branch = 0
 
+class DingSpecial(sprite.Sprite):
+	def __init__(self, x, y, imagee, text, dialog, interaction_add):
+		sprite.Sprite.__init__(self)
+		self.image = imagee
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+
+		self.dialog = dialog
+		self.interaction_add = interaction_add
+
+		#conversation data
+		self.tree = text
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
+
+		hero.move = False
+		hero.collide_control = True
+		self.interaction_add(self,hero)
+
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		self.dialog_special (hero)
+		self.dialog(self, hero)
+
+
+class Throne(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = image.load('images/tiles/throne.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+
+		#conversation data
+		self.tree = text.door_gold
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
+
+		hero.move = False
+		hero.collide_control = True
+
+
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		self.dialog_special (hero)
+		if self.add_information == 'open':
+			hero.move = True
+			hero.control.k_e = False
+			hero.son.clear_text ()
+			hero.son.change_text (1, 'Вы открыли эту никчёмную дверь!')
+			self.kill ()
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'key':
+			for i in hero.inv:
+				if i.name == 'Серебряный ключ':
+					for i in hero.inv:
+						if i.name ==  'Золотой ключ':
+							hero.move = True
+							hero.control.k_e = False
+							hero.son.clear_text ()
+							hero.son.change_text (1, 'Вы вставили серебряный и золотой ключи в замочные скважины и провернули их.')
+							hero.son.change_text (2, 'Раздался лёгкий щелчок и дверь отворилась.')
+
+							hero.son.change_text (4, 'Вы открыли эту жалкую дверь!')
+							self.kill ()
+							hero.collide_control = False
+							hero.start_conv = True
+							hero.char_value['2exp']+=50
+							break
+					else:
+						hero.move = True
+						hero.control.k_e = False
+						hero.son.clear_text ()
+						hero.son.change_text (1, 'Один из ключей, который вы вставили подошёл.')
+						hero.son.change_text (2, 'К сожалению, там две замочных скважины, а значит и два замка.')
+						hero.son.change_text (3, 'Не переживайте, поищите ещё. Может что и найдёте.')
+						hero.collide_control = False
+						hero.start_conv = True
+
+				elif i.name == 'Золотой ключ':
+					for i in hero.inv:
+						if i.name ==  'Серебряный ключ':
+							hero.move = True
+							hero.control.k_e = False
+							hero.son.clear_text ()
+							hero.son.change_text (1, 'Вы вставили серебряный и золотой ключи в замочные скважины и провернули их.')
+							hero.son.change_text (2, 'Раздался лёгкий щелчок и дверь отворилась.')
+
+							hero.son.change_text (4, 'Вы открыли эту жалкую дверь!')
+							self.kill ()
+							hero.collide_control = False
+							hero.start_conv = True
+							hero.char_value['2exp']+=50
+							break
+					else:
+						hero.move = True
+						hero.control.k_e = False
+						hero.son.clear_text ()
+						hero.son.change_text (1, 'Один из ключей, который вы вставили подошёл.')
+						hero.son.change_text (2, 'К сожалению, там две замочных скважины, а значит и два замка.')
+						hero.son.change_text (3, 'Не переживайте, поищите ещё. Может что и найдёте.')
+						hero.collide_control = False
+						hero.start_conv = True	
+
+		if self.add_information == 'end':
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+
 
 class GoldDoor(sprite.Sprite):
 	def __init__(self, x, y):
@@ -419,7 +605,7 @@ class Candel(Platform):
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
 		hero.son.change_text (1, 'Крутой подсвечник. Да и свечи ничего')
-		hero.char_value['2exp'] += 50
+	#	hero.char_value['2exp'] += 50
 
 
 class Cupboard (Platform):
@@ -431,6 +617,8 @@ class Cupboard (Platform):
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))
 		self.rect = Rect (0,0, 45,45)
+		self.rect = self.image.get_rect()
+
 		self.rect.x = x
 		self.rect.y = y
 		self.name = ""
@@ -438,7 +626,31 @@ class Cupboard (Platform):
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
 		hero.son.change_text (1, 'Книжный шкаф. Очень старый.')
-		hero.char_value['2exp'] += 50
+		hero.son.change_text (2, 'На полках пусто, нет ничего интересного.')
+		#hero.char_value['2exp'] += 50
+
+
+class Cupboard2 (Platform):
+	def __init__(self, x, y):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load('images/tiles/books.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect = self.image.get_rect()
+
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, 'Книжный шкаф. Очень старый.')
+		#hero.char_value['2exp'] += 50
+
+
 
 class Well(Platform):
 	def __init__(self, x, y):

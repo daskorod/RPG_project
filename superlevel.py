@@ -8,7 +8,7 @@ import fonts
 import text
 import camera
 import constructor
-
+import img
 timer = pygame.time.Clock  ()
 
 
@@ -252,6 +252,7 @@ class SuperLevel ():
 			adventure_screen.blit (hero.image, self.camera.apply(hero))
 			hero.dustAnim.blit (adventure_screen, (pos.x-45, pos.y-45))
 			hero.slashAnim.blit (adventure_screen, (pos.x, pos.y))
+			
 			hero.anima.blit (adventure_screen, (self.camera.apply(hero)))
 			if hero.move == False:
 			# or self.control.move_cntrl == False:
@@ -260,6 +261,9 @@ class SuperLevel ():
 		#render text_information
 		self.son.render_text ()
 		hero.render_information ()
+
+	#def get_coordinates(self,hero):
+		#return self.camera.apply(hero)
 
 	def general_stuff (self, hero):
 
@@ -287,9 +291,12 @@ class SuperLevel ():
 		#camera
 		self.camera.update(hero)
 
+
+		pos = self.camera.apply(hero)
 		#timer
 		self.a = timer.get_fps()		
 		timer.tick (60)
+		img.healAnim.blit (adventure_screen, (pos.x-70, pos.y-70))
 
 	def stage_content (self, hero):
 		pass
