@@ -15,7 +15,7 @@ import controller
 from monster import Monster
 import img
 import items
-
+import text_data.well_dict
 
 class Zombi (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp, item = items.no_item):
@@ -24,15 +24,16 @@ class Zombi (Monster):
 		self.image=image.load('images/zombi.png')
 		self.image.set_colorkey ((255,255,255))
 		self.mname = '     Зомби'
-		self.order = False
+		self.order = True
 		self.branch = 4
+		self.order_special = False
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
 		for i in hero.inv:
 			if i.name == 'Хлам':
 				self.branch = 3
-		if self.order == False:
+		if self.order_special == False:
 			for i in hero.journal:
 				if i.name == 'Порядок магнитуд':
 					self.branch = 0
@@ -93,6 +94,7 @@ class Skelet (Monster):
 		self.image.set_colorkey ((255,255,255))
 		self.mname = '   Скелет'
 		self.order = False
+		self.item = items.rope
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
@@ -665,10 +667,112 @@ class Well(Platform):
 		self.rect.y = y
 		self.name = ""
 		self.status = 'closed'
+
+		#conversation data
+		self.tree = text_data.well_dict.text
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def dialog_options (self,hero):	
+		#self.dialog_special (hero)
+		if self.add_information == 'drink' and hero.control.k_e == True:
+			if random.randint(1,6)>hero.sp:
+
+				hero.move = True
+				hero.control.k_e = False
+	
+				hero.son.clear_text ()
+				hero.son.change_text (4, 'Вы чувствуете упадок сил, словно из вас отжали все соки.')
+				hero.hp = 1
+				self.s = 1
+				self.n = 0
+
+	
+				hero.collide_control = False
+				hero.start_conv = True
+			else:
+				self.s = 1
+				self.n = 0
+				hero.move = True
+				hero.control.k_e = False
+	
+				hero.son.clear_text ()
+				hero.son.change_text (4, 'Вы чувствуете себя нехорошо, но ваша вера придаёт вам надежду.')
+	
+				hero.collide_control = False
+				hero.start_conv = True				
+
+		elif self.add_information == 'take' and hero.control.k_e == True:
+
+				if items.death_water in hero.inv:
+
+					hero.son.clear_text ()
+					hero.son.change_text (4, 'Вы обновили воду в своей фляжке.')
+					
+					hero.move = True
+					hero.control.k_e = False
+					hero.collide_control = False
+					hero.start_conv = True
+					hero.view.a = 0
+					self.s = 1
+					self.n = 0
+
+					
+				else:
+
+					hero.inv.append(items.death_water)
+					hero.move = True
+					hero.control.k_e = False
+					hero.son.clear_text ()					
+					hero.son.change_text (4, 'Вы налили воду из колодца в свою фляжку.')
+					hero.son.change_text (5, 'Получен новый предмет!')
+					hero.collide_control = False
+					hero.start_conv = True
+					hero.view.a = 0
+					self.s = 1
+					self.n = 0
+
+		elif self.add_information == 'infinity' and hero.control.k_e == True:
+			hero.hp = 0
+			hero.check_for_death()
+			hero.move = False
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+
+		 		
+		elif self.add_information == 'end':
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+			#self.branch = 0
+		 		
+
 	def interaction (self,hero):
+		for i in hero.inv:
+			if i.name == 'Верёвка':
+				self.branch = 1
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, 'Вот вода, а вот и колодец! Напейся.')
-		hero.sp = 10
+		hero.move = False
+		hero.collide_control = True
+
+		#hero.son.change_text (1, 'Вот вода, а вот и колодец! Напейся.')
+
+
+
 
 class Table(Platform):
 	def __init__(self, x, y):
@@ -1398,6 +1502,8 @@ class Monk (Monster):
 		self.icon = pygame.image.load ('images/priest_av.png')
 		self.image.set_colorkey ((254,254,254))
 		self.g = 1000
+		self.order = True
+
 
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:

@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict
+import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict
 import img
 import functions
 
@@ -88,7 +88,7 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             well = classes.Well(x,y)  
                             sprite_group.add (well)
                      if col == 'T':
-                            well = monster.SkeletLord(x/45,y/45,battle, text.lord, control, 6,5,6,2, son, 150)  
+                            well = monster.SkeletLord(x/45,y/45,battle, text_data.skelet_lord2_dict.text, control, 6,5,6,2, son, 150)  
                             sprite_group.add (well)
                      if col == 'Y':
                             pr = classes.PortalLink (x,y, 'dung3', 'dung2', 'D', locationname )
@@ -97,7 +97,7 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             pr = classes.GoldDoor (x,y)
                             sprite_group.add (pr)
                      if col == 'I':
-                            well = monster.ZombiLord(x/45,y/45,battle, text.lord, control, 15,5,16,4, son, 250)  
+                            well = monster.ZombiLord(x/45,y/45,battle, text_data.zombi_lord_dict.text, control, 15,5,16,4, son, 250)  
                             sprite_group.add (well)      
                      if col == 'O':
                             well = classes.Obstacle(x,y, img.obstacles)  

@@ -193,7 +193,7 @@ class Hero(pygame.sprite.Sprite):
 		self.weapon = items.short_sword
 		self.weapon.status = 'экипировано'
 		self.no_item = items.no_item
-		self.inv = [self.weapon, items.long_sword,items.bouquet,items.hp_potion]
+		self.inv = [self.weapon, items.long_sword,items.bouquet,items.hp_potion, items.death_water]
 		self.inv_index_pos = 0
 		self.first = items.first
 		self.damage = self.weapon.dem
@@ -208,7 +208,7 @@ class Hero(pygame.sprite.Sprite):
 		self.journal_flag = False
 
 		self.no_ideas = ideas.no_ideas
-		self.journal = [ideas.revelation, self.no_ideas, self.no_ideas, self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas]
+		self.journal = [ideas.revelation, ideas.order_of_magnitude, self.no_ideas, self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas,self.no_ideas]
 		self.journal_index_pos = 0
 		self.journal_question = False
 		self.journal_quit = False

@@ -28,6 +28,8 @@ class Gilbert (classes.Monk):
 		self.icon = pygame.image.load ('images/priest_av.png')
 		self.image.set_colorkey ((254,254,254))
 		self.g = 1000
+		self.order = True
+
 
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:
@@ -296,6 +298,7 @@ class Barmen (classes.Monster):
 		self.icon = pygame.image.load ('images/priest_av.png')
 		#self.image.set_colorkey ((254,254,254))
 		self.matter = 0
+		self.order = True
 
 	def pay (self, add_information, quantity, where_sucsess, where_not_sucsess, hero):
 		if self.add_information == add_information:

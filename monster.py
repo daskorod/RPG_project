@@ -15,6 +15,7 @@ import controller
 import classes
 import img
 import items
+import text_data.skelet_lord2_dict
 
 class Bar(sprite.Sprite):
 	def __init__(self, xs, ys, color):
@@ -69,6 +70,7 @@ class Monster (sprite.Sprite):
 		self.branch = 0
 		self.branch_do = ''
 		self.branch_id = ''
+		self.order = False
 
 		#battle data
 
@@ -125,6 +127,9 @@ class Monster (sprite.Sprite):
 				hero.char_value['2exp'] += self.exp
 				self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
 				self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
+				gold = random.randint(1,30)
+				self.son.change_text (5, "Так же вы нашли немного золотишка: %s " % str(gold) )
+				hero.gold +=gold
 #				self.son.change_text (5, "С трупа вы забрали: %s " % self.item.name)	
 				self.status = 'killed'
 				hero.turn_main = True
@@ -139,6 +144,9 @@ class Monster (sprite.Sprite):
 				self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
 				self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
 				self.son.change_text (5, "С трупа вы забрали: %s " % self.item.name)	
+				gold = random.randint(1,30)
+				self.son.change_text (6, "Так же вы нашли немного золотишка: %s " % str(gold) )
+				hero.gold +=gold
 				self.status = 'killed'
 				hero.turn_main = True
 				hero.move = True
@@ -146,6 +154,12 @@ class Monster (sprite.Sprite):
 				hero.collide_control = False
 
 	def interaction (self, hero):
+		if self.order == False:
+			for i in hero.journal:
+				if i.name == 'Порядок магнитуд':
+					self.branch = 1
+					self.order = True
+
 		if hero.control.right == True:
 			hero.rect.x -= 1
 		elif hero.control.left == True:
@@ -222,7 +236,24 @@ class Monster (sprite.Sprite):
 			if a <=3:
 				self.branch = 2
 
+		if self.add_information == 'passage' and self.control.k_e == True:
 
+
+			self.control.k_e = False
+
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+
+		if self.add_information == 'go':
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
 	def battle_action (self, hero):
 		if hero.monster_turn == True:
 			self.son.clear_text ()
@@ -262,7 +293,7 @@ class Monster (sprite.Sprite):
 class SkeletLord (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
-		self.tree = text.lord
+		self.tree = text_data.skelet_lord2_dict.text
 		self.lbolt = False
 		self.mname = 'Скелет Лорд'
 		#self.image.fill ((220,130,100))
@@ -270,6 +301,7 @@ class SkeletLord (Monster):
 		self.image = image.load('images/skeleton3.png')
 		self.image.set_colorkey ((254,254,254))
 		self.item = items.gold_key
+		self.hit = False
 
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:
@@ -288,6 +320,90 @@ class SkeletLord (Monster):
 				self.n = 0
 			hero.collide_control = False
 			hero.start_conv = True
+
+		if self.add_information == 'dance':
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = 5
+				self.s = 1
+				self.n = 0
+
+		if self.add_information == 'key':
+			
+			hero.inv.append (self.item)
+			self.item = items.no_item
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.move = True
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (5, 'Вы получили %s' % self.item.name)
+			hero.son.change_text (4, 'Скелет-лорд протягивает вам ключик.')
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = 6
+				self.s = 1
+				self.n = 0
+
+
+		if self.add_information == 'faith' and self.control.k_e == True:
+			
+
+			#hero.collide_control = False
+			hero.start_conv = True
+			#hero.move = True
+			self.control.k_e = False
+			
+			hero.son.clear_text ()
+
+			if hero.sp > random.randint(1,6):
+				hero.inv.append (self.item)
+				self.item = items.no_item
+				hero.son.clear_text ()
+				hero.son.change_text (5, 'Скелет рассыпается в прах.')
+				hero.son.change_text (4, 'Вы подбираете из кучки праха золотой ключик.')
+
+			elif hero.sp < random.randint(1,6):
+
+				self.control.k_e = False
+				self.agression = True
+				hero.turn_main = True
+				hero.start_conv = True
+				hero.view.a = 0
+
+		if self.add_information == 'pain':
+			if self.hit == False:
+				self.hit = True
+				hero.hp -= 1
+				if hero.hp <= 0:
+					hero.son.clear_text ()
+					hero.son.change_text (3, 'Вас съел скелет.')
+					hero.son.change_text (2, 'Вы умерли и столкнулись с чем-то принципиально инаковым.')
+					hero.son.change_text (4, 'О вас больше никто не вспомнит.')
+					self.son.change_text (6, 'Нажмите ESC, чтобы выйти.')
+					hero.status = 'dead'
+					hero.kill ()
+					hero.move = False
+
+					hero.collide_control = False
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+
+
+		if self.add_information == 'go':
+			self.hit = False
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+
 
 	def battle_action (self, hero):
 
@@ -326,7 +442,7 @@ class SkeletLord (Monster):
 class ZombiLord (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
-		self.tree = text.lord
+		self.tree = textus
 		self.lbolt = False
 		self.mname = 'Зомби Лорд'
 		#self.image.fill ((220,130,100))
@@ -334,6 +450,19 @@ class ZombiLord (Monster):
 		self.image = image.load('images/zombi.png')
 		self.image.set_colorkey ((254,254,254))
 		self.item = items.silver_key
+		self.quest = False
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if self.quest == True:
+			for i in hero.quest.keys():
+				if i == 'мёртвая вода':
+					for a in hero.inv:
+						if a == items.death_water:
+							self.branch = 5
+							self.quest = False
+							self.s = 1
+							self.n = 0
+							break
 
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:
@@ -353,3 +482,46 @@ class ZombiLord (Monster):
 			hero.collide_control = False
 			hero.start_conv = True
 
+		if self.add_information == 'quest' and self.control.k_e == True:
+			hero.move = True
+			hero.quest['мёртвая вода']= True
+			self.control.k_e = False
+			self.quest = True
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы получили квест: найти мёртвой воды!')
+
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+
+		if self.add_information == 'water' and self.control.k_e == True:
+			hero.move = True
+			hero.quest['мёртвая вода']= 'Done'
+			self.control.k_e = False
+
+			hero.inv.append (self.item)
+			hero.inv.remove(items.death_water)
+			
+			hero.son.clear_text ()
+			hero.son.change_text (3, 'Вы отдали предмет: %s ' % items.death_water.name)			
+			hero.son.change_text (2, 'Вы получили предмет: %s ' % self.item.name)
+			self.quest = False
+			hero.son.change_text (5, 'Вы проявили доброту и человеченость + 50 опыта!')
+			hero.char_value['2exp'] += 50
+			self.item = items.no_item
+			self.hp +=5
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
