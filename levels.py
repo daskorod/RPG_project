@@ -16,7 +16,7 @@ import img
 class _dungeon1(SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self,  lev, battle, son, control)
-		self.block_group, self.background = self.create (create_level = constructor.create_dungeon1)
+		self.block_group, self.background, self.decor = self.create (create_level = constructor.create_dungeon1)
 		self.name = '- - - Подземелье - - -'
 		self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 
@@ -27,7 +27,7 @@ class _dungeon1(SuperLevel):
 class _dungeon2 (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.block_group, self.background = self.create (create_level = constructor.create_dungeon2)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon2)
 		self.name = '- - - Подземелье 2 этаж - - -'
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 	def stage_content (self, hero):
@@ -39,7 +39,7 @@ class _dungeon2 (SuperLevel):
 class _dungeon3 (SuperLevel):
 	def __init__ (self,  lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.block_group, self.background = self.create (create_level = constructor.create_dungeon3)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon3)
 		self.name = '- - - Тронный зал- - -'
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 
@@ -50,7 +50,7 @@ class _end (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.auto = False
-		self.block_group, self.background = self.create (create_level = constructor.create_level_city)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.name = '- - - Окраины города - - -'
@@ -64,7 +64,7 @@ class _platz (SuperLevel):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.name = '- Главная площадь -'		
 		self.auto = False
-		self.block_group, self.background = self.create (create_level = constructor.create_level_city)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 
@@ -76,7 +76,7 @@ class _tavern (SuperLevel):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.name = '- Таверна "Приют героев" -'
 		self.auto = False		
-		self.block_group, self.background = self.create (create_level = constructor.create_level_city, create_interior = constructor.create_interior_tavern, floor = classes.WoodFloor)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city, create_interior = constructor.create_interior_tavern, floor = classes.WoodFloor)
 		#self.back = False
 
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
@@ -89,7 +89,7 @@ class _temple (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.auto = False
-		self.block_group, self.background = self.create (create_level = constructor.create_level_city)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 		self.name = '- - - Храм Единого - - -'

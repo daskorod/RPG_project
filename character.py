@@ -112,7 +112,7 @@ class Hero(pygame.sprite.Sprite):
 		#map
 		self.location_list = location_list
 		self.locations_dict = locations_dict
-		self.location = locations_dict['dungeon2']
+		self.location = locations_dict['end']
 		self.level_mark = 0
 
 		#move

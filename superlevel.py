@@ -24,7 +24,7 @@ class SuperLevel ():
 		self.control = control	
 		self.auto = True	
 		
-		self.block_group, self.background = self.create ()
+		self.block_group, self.background, self.decor = self.create ()
 
 		self.level_width = len(lev[0])*PF_WIDTH
 		self.level_height = len(lev)*PF_HEIGHT
@@ -211,7 +211,7 @@ class SuperLevel ():
 # create interior - create WALLS, GROUND and other landscapes object.
 
 		sprites = create_level (self.lev, self.battle, self.control, self.son, self.techname)
-		interior, ground, walls = create_interior (self.lev, floor)
+		interior, ground, walls, decor = create_interior (self.lev, floor)
 		addition = []
 
 		if self.auto == True and self.control.auto == True:
@@ -226,7 +226,10 @@ class SuperLevel ():
 		for i in addition:
 			sprites.add (i)
 
-		return sprites, ground
+		#for i in decor:
+
+
+		return sprites, ground, decor
 
 
 	def render_stage (self, hero):
@@ -239,9 +242,13 @@ class SuperLevel ():
 			for b in self.background:
 				adventure_screen.blit(b.image, self.camera.apply (b))
 
+
 		#rendering map`s objects
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))
+
+		for i in self.decor:
+			adventure_screen.blit(i.image, self.camera.apply (i))
 
 		try:
 			pos = self.camera.apply(hero.etwas)

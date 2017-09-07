@@ -171,14 +171,16 @@ def create_level_city (level, battle, control, son, locationname):
                             mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son, 100)
                             sprite_group.add (mn)
 # exit from temple
-                     if col == 'p':
-                            pr = classes.PortalS (x,y,'platz', (11,1))
-                            sprite_group.add (pr)
-#enter into temple
-                     if col == 'e':
-                            pr = classes.PortalS (x,y,'temple', (10,4))
-                            sprite_group.add (pr)
 
+#enter into temple
+
+                     if col == 'p':
+                            pr = classes.PortalLink (x,y, 'platzfromtemle', 'intemplefromlpatz', 'L', locationname )
+                            sprite_group.add (pr)
+                            
+                     if col == 'e':
+                            pr = classes.PortalLink (x,y, 'intemplefromlpatz', 'platzfromtemle', 'D', locationname )
+                            sprite_group.add (pr)
 #path to end of the city
                      if col == 'o':
                             pr = classes.PortalS (x,y,'end', (1,4))
@@ -222,7 +224,14 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'R':
                             ding = classes.Ding (x,y, 'images/tiles/pilar.png', 'Монументальная колонна, поддерживающая потолок.')
                             sprite_group.add (ding)
-
+                            
+                     if col == 'T':
+                            pr = classes.PortalLink (x,y, 'End', 'Platz', 'L', locationname )
+                            sprite_group.add (pr)
+                            
+                     if col == 'Y':
+                            pr = classes.PortalLink (x,y, 'Platz', 'End', 'R', locationname )
+                            sprite_group.add (pr)
 
                      x += 45
               x = 0
@@ -239,14 +248,19 @@ def create_interior_standart (level, grType):
        interior =[]
        walls = []
        ground = []
+       decor = []
 
        x = 0
        y = 0
 
        for row in level:
               for col in row:
-                    if col != '0' and col != '-':
+                    if col != '0' and col != '-' and col != '!' and col != '@' :
                             ground.append(grType(x,y))
+                    if col == '!':
+                            decor.append(classes.Ding(x,y, 'images/tiles/house.png', 'дом'))
+                    if col == '@':
+                            decor.append(classes.Ding(x,y, 'images/tiles/temple3.png', 'дом'))
                     x +=45
               x = 0
               for col in row:
@@ -284,7 +298,7 @@ def create_interior_standart (level, grType):
        x = 0
        y = 0
 
-       return  interior, ground, walls
+       return  interior, ground, walls, decor
 
 
 
@@ -369,6 +383,7 @@ def create_interior_tavern (level, grType):
        interior =[]
        walls = []
        ground = []
+       decor = []
 
        x = 0
        y = 0
@@ -457,4 +472,4 @@ def create_interior_tavern (level, grType):
        x = 0
        y = 0
 
-       return  interior, ground, walls
+       return  interior, ground, walls, decor

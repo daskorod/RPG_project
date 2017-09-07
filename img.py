@@ -11,7 +11,7 @@ pave_stone1 = image.load('images/tiles/floor_stone.png')
 pave_stone2 = image.load('images/tiles/floor_stone2.png')
 pavestones_city = [pave_stone1, pave_stone2]
 done = True
-
+house = image.load('images/tiles/house.png')
 
 pave_wood1 = image.load('images/tavern/base.png')
 pave_wood2 = image.load('images/tavern/crack.png')
