@@ -310,6 +310,6 @@ class SuperLevel ():
 
 	def stage_loop (self, hero):
 		self.general_stuff (hero)
-		self.stage_content (hero)
-		self.render_stage (hero)
 
+		self.render_stage (hero)
+		self.stage_content (hero)

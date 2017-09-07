@@ -16,7 +16,7 @@ house = image.load('images/tiles/house.png')
 pave_wood1 = image.load('images/tavern/base.png')
 pave_wood2 = image.load('images/tavern/crack.png')
 pave_tavern = [pave_wood1, pave_wood2]
-
+arrow = image.load('images/arrow_map.png')
 
 wall_stone1 = image.load('images/tavern/stone_wall.png')
 wall_stone2 = image.load('images/tavern/stone_wall_l.png')

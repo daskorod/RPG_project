@@ -11,6 +11,8 @@ import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.
 import img
 import functions
 
+stuff = []
+
 def create_dungeon1 (level, battle, control, son, locationname):
 
        sprite_group = sprite.Group ()
@@ -26,18 +28,24 @@ def create_dungeon1 (level, battle, control, son, locationname):
                             z = classes.Zombi (x/45,y/45,battle, text_data.zombisad.text, control, 10,0,10,1, son,20, item = items.hp_potion)
                             sprite_group.add (z)
 
-                     if col == 'e':
-                            e = classes.PortalS (x,y, 'end', (15,4))
-                            sprite_group.add (e)
+#                    if col == 'e':
+#                           e = classes.PortalS (x,y, 'end', (15,4))
+#                           sprite_group.add (e)
 
                      if col == 'w':
                             e = classes.PortalS (x,y, 'dungeon2', (2,15))
                             sprite_group.add (e)
 
+                     if col == 'e':
+                            pr = classes.PortalLink (x,y, 'fromdungtoend', 'todung1', 'U', locationname )
+                            sprite_group.add (pr)
+
                      if col == 's':
                             s = classes.MinorChest2 (x,y, 'open', items.garbage )
                             sprite_group.add (s)
-
+                     if col == 'O':
+                            well = classes.Obstacle(x,y, img.obstacles)  
+                            sprite_group.add (well)
 
                      x += 45
               x = 0
@@ -181,6 +189,7 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'e':
                             pr = classes.PortalLink (x,y, 'intemplefromlpatz', 'platzfromtemle', 'D', locationname )
                             sprite_group.add (pr)
+                            stuff.append (pr)
 #path to end of the city
                      if col == 'o':
                             pr = classes.PortalS (x,y,'end', (1,4))
@@ -190,9 +199,15 @@ def create_level_city (level, battle, control, son, locationname):
                             pr = classes.PortalS (x,y,'platz', (21,4))
                             sprite_group.add (pr)
 #from end to dung
+#                    if col == 'w':
+#                           pr = classes.PortalS (x,y, 'dungeon1', (1,4))
+#                           sprite_group.add (pr)
+
                      if col == 'w':
-                            pr = classes.PortalS (x,y, 'dungeon1', (1,4))
+                            pr = classes.PortalLink (x,y, 'todung1', 'fromdungtoend', 'D', locationname )
                             sprite_group.add (pr)
+                            stuff.append (pr)
+                            
 
 
                      if col == 'g':
@@ -202,10 +217,11 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'r':
                             pr = classes.PortalLink (x,y, 'TavernOutdoor', 'TavernInside', 'D', locationname )
                             sprite_group.add (pr)
-                            
+                            stuff.append (pr)
                      if col == 'y':
                             pr = classes.PortalLink (x,y, 'TavernInside', 'TavernOutdoor', 'U', locationname )
                             sprite_group.add (pr)
+                            
                      if col == 'b':
                             b = npc.Barmen (x/45,y/45,battle, text_data.barmen_dict.text, control, 8,5,7,4, son, 80)
                             sprite_group.add (b)
@@ -232,6 +248,12 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'Y':
                             pr = classes.PortalLink (x,y, 'Platz', 'End', 'R', locationname )
                             sprite_group.add (pr)
+                     if col == 'O':
+                            well = classes.Obstacle(x,y, img.obstacles)  
+                            sprite_group.add (well)
+                     if col == "=":
+                            pf = classes.Nothing (x,y)
+                            sprite_group.add (pf)
 
                      x += 45
               x = 0
@@ -255,12 +277,14 @@ def create_interior_standart (level, grType):
 
        for row in level:
               for col in row:
-                    if col != '0' and col != '-' and col != '!' and col != '@' :
+                    if col != '0' and col != '-' and col != '!' and col != '@' and col != '#':
                             ground.append(grType(x,y))
                     if col == '!':
                             decor.append(classes.Ding(x,y, 'images/tiles/house.png', 'дом'))
                     if col == '@':
                             decor.append(classes.Ding(x,y, 'images/tiles/temple3.png', 'дом'))
+                    if col == '#':
+                            decor.append(classes.Ding(x,y, 'images/tiles/old_house.png', 'дом'))
                     x +=45
               x = 0
               for col in row:

@@ -4,6 +4,8 @@ import constructor
 import classes
 import screens
 import img
+#import time
+#import math
 #functions.create_level
 #timer = pygame.time.Clock  ()
 
@@ -54,9 +56,23 @@ class _end (SuperLevel):
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.name = '- - - Окраины города - - -'
-
+		self.x = 0
+		self.up = True
 	def stage_content (self, hero):
 		pass
+		if self.up == True:
+			self.x +=1
+		else:
+			self.x -=1
+
+		if self.x > 6:
+			self.up = False
+
+		if self.x < -6:
+			self.up = True
+
+		pos = self.camera.apply(constructor.stuff[0])
+		screens.adventure_screen.blit (img.arrow, (pos.x+20,pos.y+10+self.x))
 		#classes.slashAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x, self.camera.apply(hero).y))
 
 class _platz (SuperLevel):
@@ -67,9 +83,26 @@ class _platz (SuperLevel):
 		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
-
+		self.x = 0
+		self.up = True		
 	def stage_content (self, hero):
 		pass
+		if self.up == True:
+			self.x +=1
+		else:
+			self.x -=1
+
+		if self.x > 6:
+			self.up = False
+
+		if self.x < -6:
+			self.up = True
+
+		pos = self.camera.apply(constructor.stuff[1])
+		screens.adventure_screen.blit (img.arrow, (pos.x+20,pos.y+10+self.x))
+
+		pos2 = self.camera.apply(constructor.stuff[2])
+		screens.adventure_screen.blit (img.arrow, (pos2.x+12,pos2.y+10+self.x))
 
 class _tavern (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
@@ -88,7 +121,7 @@ class _tavern (SuperLevel):
 class _temple (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.auto = False
+		self.auto = True
 		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)

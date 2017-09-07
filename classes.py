@@ -37,7 +37,7 @@ class Zombi (Monster):
 			for i in hero.journal:
 				if i.name == 'Порядок магнитуд':
 					self.branch = 0
-					self.order = True
+					self.order_special = True
 
 	def dialog_special (self, hero):
 		
@@ -58,7 +58,7 @@ class Zombi (Monster):
 					if i.name == 'Хлам':
 						hero.inv.remove(i)
 
-		if self.add_information == 'solve' and self.control.k_e == True:
+		if self.add_information == 'solve':
 
 			hero.move = True
 			self.control.k_e = False
@@ -72,7 +72,7 @@ class Zombi (Monster):
 				self.s = 1
 				self.n = 0
 				
-		if self.add_information == 'quest' and self.control.k_e == True:
+		if self.add_information == 'quest':
 			hero.quest['zombisad'] = 'is'
 			hero.move = True
 			self.control.k_e = False
@@ -161,6 +161,29 @@ class PlatformBlack(sprite.Sprite):
 		hero.son.clear_text ()
 		hero.son.change_text (1, 'Тьма.')
 
+class Nothing(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+
+		self.image = Surface ((1,1))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "block"
+
+
+	def interaction (self,hero):
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
+		hero.son.clear_text ()
+		hero.son.change_text (1, 'Нет прохода')
 
 class Pavestone(sprite.Sprite):
 	def __init__(self, x, y):
@@ -795,7 +818,7 @@ class Ding(Platform):
 		#sprite.Sprite.__init__(self)
 		Platform.__init__(self, x, y)
 		self.image = image.load(img)
-		self.image.set_colorkey ((255,255,255))
+		self.image.set_colorkey ((0,127,14))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))
 		self.rect = self.image.get_rect()
@@ -1339,7 +1362,7 @@ class MinorChest2(sprite.Sprite):
 
 			hero.son.change_text_tree (hero.view.render_text ('В сундуке находится: ' + self.items_name, 'Нажмите E, чтобы всё забрать...'))
 
-		if self.add_information == 'end_chest' and hero.control.k_e == True:
+		if self.add_information == 'end_chest':
 			hero.move = True
 			hero.control.k_e = False
 			hero.son.clear_text ()
@@ -1351,7 +1374,7 @@ class MinorChest2(sprite.Sprite):
 			for i in self.inside:
 				hero.inv.append(i)
 
-		if self.add_information == 'end' and hero.control.k_e == True:
+		if self.add_information == 'end':
 
 			hero.move = True
 			hero.control.k_e = False
