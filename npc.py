@@ -29,6 +29,8 @@ class Gilbert (classes.Monk):
 		self.image.set_colorkey ((254,254,254))
 		self.g = 1000
 		self.order = True
+		self.quest = False
+
 
 
 	def dialog_special (self, hero):

@@ -1,4 +1,7 @@
-﻿import text_data.final_dict
+﻿
+
+import text_data.final_dict, text_data.inception_dict
+
 
 class Event ():
 	def __init__ (self, text):
@@ -72,3 +75,4 @@ class Event ():
 
 
 final = Event(text_data.final_dict.text)
+inception = Event(text_data.inception_dict.text)

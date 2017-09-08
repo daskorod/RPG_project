@@ -11,6 +11,7 @@ import items
 import ideas
 import img
 import math
+import event
 
 time = 0.2
 
@@ -82,7 +83,7 @@ animlist = [heroAnim, heroAnim_l, heroAnim_r, heroAnim_u]
 #heroAnim.blit (adventure_screen, (self.camera.apply(self.hero)))
 class Hero(pygame.sprite.Sprite):
 
-	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son, location_list, locations_dict):
+	def __init__(self, x, y, battle, control, compose_text, at, ac, hp, dem ,son, location_list, locations_dict, test_arg):
 		pygame.sprite.Sprite.__init__(self)
 
 		#BASE
@@ -91,6 +92,7 @@ class Hero(pygame.sprite.Sprite):
 		#self.image = heroAnim
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = heroAnim.getImagesFromSpriteSheet()
+		self.test_arg = test_arg
 		self.standlist = [standd, standl, standr, standu]
 		#pygame.image.load ('images/anim/stand.png')
 		self.control = control
@@ -98,6 +100,7 @@ class Hero(pygame.sprite.Sprite):
 		self.name = 'Рихтер'
 		self.dustAnim = dustAnim
 		self.slashAnim = slashAnim
+		self.inception = True
 		
 		self.image = pygame.Surface ((45,45))
 		self.image.fill ((100,200,230))
@@ -112,7 +115,7 @@ class Hero(pygame.sprite.Sprite):
 		#map
 		self.location_list = location_list
 		self.locations_dict = locations_dict
-		self.location = locations_dict['end']
+		self.location = locations_dict['platz']
 		self.level_mark = 0
 
 		#move
@@ -124,8 +127,8 @@ class Hero(pygame.sprite.Sprite):
 		#CHARACTERSTICS
 		self.exp_old = 0
 		self.level = 1
-		self.sp = 3
-		self.sp_max = 3
+		self.sp = 2
+		self.sp_max = 2
 		self.at = at 
 		self.ac = ac
 		self.hp = hp
@@ -212,6 +215,10 @@ class Hero(pygame.sprite.Sprite):
 		self.journal_index_pos = 0
 		self.journal_question = False
 		self.journal_quit = False
+
+		if self.test_arg == True:
+			self.gold +=1000
+			self.sp +=2
 
 		#ChAr options
 		self.char_flag = False
@@ -911,19 +918,25 @@ class Hero(pygame.sprite.Sprite):
 
 
 	def transcendental_apperception (self):
-		
-		if self.control.k_space == True:
-			self.control.k_space = False
-			self.level_mark +=1
-			try:
-				self.location = self.location_list[self.level_mark]
-			except:
-				self.location = self.location_list[0]
-				self.level_mark = 0
+		if self.test_arg == True:
+
+			if self.control.k_space == True:
+				self.control.k_space = False
+				self.level_mark +=1
+				try:
+					self.location = self.location_list[self.level_mark]
+				except:
+					self.location = self.location_list[0]
+					self.level_mark = 0
 
 		self.update (self.location.block_group)
 		self.location.stage_loop (self)
-	#	if self.inception = 
+		if self.inception == True:
+			self.inception = False
+			self.collide_control = True
+			self.move = False
+			self.etwas = event.inception
+
 		if self.collide_control == True and self.etwas.agression == True:
 			functions.combat (self, self.etwas)			
 

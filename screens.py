@@ -23,6 +23,7 @@ high_screen = Surface ((810, 22))
 inventory_screen = Surface ((380,380))
 char_screen = Surface ((380,380))
 journal_screen = Surface ((380,380))
+start_screen_text_surface = pygame.Surface ((200, 100))	
 
 
 def main_interface (level):
@@ -40,4 +41,4 @@ def main_interface (level):
 
 	instrumental_screen.blit (information_screen, (180,10))
 	information_screen.fill ((black))
-	high_screen.blit(fonts.font5.render (level.name, True, (250,250,250)),(600,0))
+	high_screen.blit(fonts.font5.render (level.name, True, (250,250,250)),(580,0))

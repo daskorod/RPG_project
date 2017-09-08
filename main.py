@@ -9,7 +9,7 @@ import level_data
 from constants import *
 import camera
 import functions
-
+import menu
 import sys
 
 
@@ -20,13 +20,19 @@ pygame.key.get_repeat ()
 
 #main function
 
-
+menu.menu_loop()
+menu.help_loop()
 
 def main_loop():
 	while True:
 		control.control () #control loop, control of events, keys press
 		hero.transcendental_apperception () #construct and render all the world from the character itself
 		pygame.display.update() #update the screen
+
+#def menu_loop():
+
+
+
 
 def levels_constructor (classlevellist):
 	levels_list = []
@@ -51,10 +57,14 @@ def create_class_levels_list(levelsmodule):
 son = functions.Son ()
 control = controller.Holy_Spirit () 
 
+test_arg = False
+
 if len(sys.argv)>1:
 	if sys.argv[1] == 'test':
 		print ('Test mode')
 		control.auto = False
+		test_arg = True
+
 
 battle = functions.Battle () #to delete
 
@@ -66,7 +76,7 @@ print ('\n',levels_list, '\n\n', levels_dict,'\n')
 
 
 #create hero
-hero = character.Hero (5,5, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict)
+hero = character.Hero (10,10, battle, control, compose_text, 6,6,6,1, son, levels_list, levels_dict, test_arg)
 
 
 #start game
