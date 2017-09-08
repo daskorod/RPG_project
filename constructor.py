@@ -7,11 +7,12 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict
+import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict
 import img
 import functions
 
 stuff = []
+addition = []
 
 def create_dungeon1 (level, battle, control, son, locationname):
 
@@ -104,6 +105,8 @@ def create_dungeon2 (level, battle, control, son, locationname):
                      if col == 'U':
                             pr = classes.GoldDoor (x,y)
                             sprite_group.add (pr)
+                            dec = classes.Ding(x,y, 'images/tiles/door_open.png', 'Открытая дверь')
+                            addition.append(dec)
                      if col == 'I':
                             well = monster.ZombiLord(x/45,y/45,battle, text_data.zombi_lord_dict.text, control, 15,5,16,4, son, 250)  
                             sprite_group.add (well)      
@@ -151,10 +154,10 @@ def create_dungeon3 (level, battle, control, son, locationname):
                             pr = classes.PortalLink (x,y, 'dung2', 'dung3', 'U', locationname )
                             sprite_group.add (pr)
                      if col == 'T':
-                            pr = classes.Throne (x,y)
+                            pr = monster.SkeletKing (x/45,y/45, battle, text_data.skeleton_king_dict.text, control, 12, 8, 15, 4, son, 100)
                             sprite_group.add (pr)
                      if col == 'S':
-                            pr = classes.DingSpecial (x,y, img.kubert, text.door_gold, functions.dialog_special, functions.dialog_special1)
+                            pr = classes.DingSpecial (x,y, img.kubert, text_data.corpse_dict.text, functions.dialog_special, functions.interaction_special)
                             sprite_group.add (pr)
                      x += 45
               x = 0
@@ -183,7 +186,7 @@ def create_level_city (level, battle, control, son, locationname):
 #enter into temple
 
                      if col == 'p':
-                            pr = classes.PortalLink (x,y, 'platzfromtemle', 'intemplefromlpatz', 'L', locationname )
+                            pr = classes.PortalLink (x,y, 'platzfromtemle', 'intemplefromlpatz', 'U', locationname )
                             sprite_group.add (pr)
                             
                      if col == 'e':

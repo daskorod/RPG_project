@@ -124,8 +124,8 @@ class Hero(pygame.sprite.Sprite):
 		#CHARACTERSTICS
 		self.exp_old = 0
 		self.level = 1
-		self.sp = 2
-		self.sp_max = 2
+		self.sp = 3
+		self.sp_max = 3
 		self.at = at 
 		self.ac = ac
 		self.hp = hp
@@ -371,7 +371,7 @@ class Hero(pygame.sprite.Sprite):
 
 
 	def to_next_level(self, current_level):
-		level_table = {1:100,2:200,3:400,4:700,5:1000}
+		level_table = {1:100,2:200,3:400,4:700,5:1000,6:2000,7:50000,8:100000,9:200000,10:500000}
 		return level_table[current_level]
 
 
@@ -720,7 +720,7 @@ class Hero(pygame.sprite.Sprite):
 		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
 		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
 		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
-		high_screen.blit(fonts.font5.render ('Сл. ур. '+str(self.next_level), True, (250,250,250)),(350,0))
+		high_screen.blit(fonts.font5.render ('Сл. ур. '+str(self.next_level), True, (250,250,250)),(340,0))
 
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
@@ -923,7 +923,7 @@ class Hero(pygame.sprite.Sprite):
 
 		self.update (self.location.block_group)
 		self.location.stage_loop (self)
-
+	#	if self.inception = 
 		if self.collide_control == True and self.etwas.agression == True:
 			functions.combat (self, self.etwas)			
 
@@ -1023,45 +1023,46 @@ class Hero(pygame.sprite.Sprite):
 
 												
 	def battle_action_main (self):
-		#self.son.change_text (7, 'Вы получили 20 монет')
-		self.press_to_kill_fun ()
-
-		if self.turn_main == True and self.etwas.status != 'killed':
-
-			self.son.change_text (1, "Что будете делать?")
-			self.son.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
+		if self.is_death == False and self.etwas.status != 'killed':
+			#self.son.change_text (7, 'Вы получили 20 монет')
+			self.press_to_kill_fun ()
 	
-			if self.control.k_1 == True:
-				self.mx = random.choice ((20, 40, 80,120,140,160,180))
-				self.turn_main = False
-				self.control.k_1 = False
-				self.assault = True
-				self.dice_fun = True
-				self.son.clear_text ()
-
+			if self.turn_main == True :
 	
-			if self.control.k_2 == True:
-				self.turn_main = False
-				self.control.k_2 = False
-				self.special = True
-				self.son.clear_text ()
 				self.son.change_text (1, "Что будете делать?")
-				self.son.change_text (3, "1 - изгонение нежити; 2 - лечение; 3 - назад")
-
-			if self.control.k_3 == True:
-				self.turn_main = False
-				self.control.k_3 = False
-				self.flee = True
-				self.son.clear_text ()
-
-		if self.assault == True and self.etwas.status != 'killed':
-			self.assault_fun (self.etwas)
-
-		if self.flee == True and self.etwas.status != 'killed':
-			self.flee_fun ()
-
-		if self.special == True and self.etwas.status != 'killed':
-			self.special_fun ()
+				self.son.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
+		
+				if self.control.k_1 == True:
+					self.mx = random.choice ((20, 40, 80,120,140,160,180))
+					self.turn_main = False
+					self.control.k_1 = False
+					self.assault = True
+					self.dice_fun = True
+					self.son.clear_text ()
+	
+		
+				if self.control.k_2 == True:
+					self.turn_main = False
+					self.control.k_2 = False
+					self.special = True
+					self.son.clear_text ()
+					self.son.change_text (1, "Что будете делать?")
+					self.son.change_text (3, "1 - изгонение нежити; 2 - лечение; 3 - назад")
+	
+				if self.control.k_3 == True:
+					self.turn_main = False
+					self.control.k_3 = False
+					self.flee = True
+					self.son.clear_text ()
+	
+			if self.assault == True:
+				self.assault_fun (self.etwas)
+	
+			if self.flee == True:
+				self.flee_fun ()
+	
+			if self.special == True:
+				self.special_fun ()
 
 
 		
@@ -1071,7 +1072,7 @@ class Hero(pygame.sprite.Sprite):
 			self.press_to_kill = False
 			self.control.k_e = False
 			self.etwas.hp = 0
-
+			self.dustAnim.play()
 	#def pos_definition(self):
 
 
@@ -1086,10 +1087,17 @@ class Hero(pygame.sprite.Sprite):
 				if self.etwas.hp <= 100 and self.sp >0:
 					self.sp -= 1
 					self.press_to_kill = True
-					self.son.change_text (1, "Монстры рассылпался в прах!")
-					self.son.change_text (3, "Нажмите Е")
-					self.dustAnim.play()
-					self.etwas.kill()
+					self.son.change_text (1, "Вы шепчете слова молитвы:")
+					self.son.change_text (2, "'Да воскреснет Бог, и расточатся врази Его,")
+					self.son.change_text (3, "и да бежат от лица Его ненавидящии Его. Яко исчезает дым, да исчезнут;")
+					self.son.change_text (4, "яко тает воск от лица огня, тако да погибнут беси от лица любящих Бога")
+					self.son.change_text (5, "и знаменующихся крестным знамением...'")
+
+					
+					self.son.change_text (7, "Нажмите Е")
+					
+					#self.etwas.hp = 0
+					#self.etwas.kill()
 
 				elif self.etwas.hp > 100 or self.sp<=0:
 					self.back = True

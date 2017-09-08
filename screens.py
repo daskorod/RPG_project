@@ -40,4 +40,4 @@ def main_interface (level):
 
 	instrumental_screen.blit (information_screen, (180,10))
 	information_screen.fill ((black))
-	high_screen.blit(fonts.font5.render (level.name, True, (250,250,250)),(500,0))
+	high_screen.blit(fonts.font5.render (level.name, True, (250,250,250)),(600,0))

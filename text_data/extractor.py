@@ -8,6 +8,7 @@ def compose (filename):
   textbar = []
   
   empty = 'Нажмите E'
+  end = 'Взаимодействие завершено (можете идти)'
   branch = 0
   
   for i in a:
@@ -56,6 +57,7 @@ def compose (filename):
       digit_key = int(key)
   
       value, add_information = generalls[branch_number][key]
+
       try:
         answer_key = 'a'+key
         answer = generalls[branch_number][answer_key]
@@ -63,10 +65,14 @@ def compose (filename):
         answer = empty
       if len(generalls[branch_number][key][1]) == 2:
         value1, value2 = value
+        if value2 == 'end':
+          answer = end
         textbar[branch_number][digit_key] = (value1, value2, answer, add_information)
       else:
+        if add_information == 'end':
+          answer = end
         textbar[branch_number][digit_key] = (value, add_information, answer)
-      
+        
   
       value, add_information = generalls[branch_number][key]
 

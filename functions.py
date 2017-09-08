@@ -9,70 +9,23 @@ import text_data.zombisad, text_data.monk
 #import npc
 
 
-def dialog_special1(self, hero):
+def interaction_special(self, hero):
 	pass
 
 def dialog_special(self, hero):
-		if self.add_information == 'open':
+		if self.add_information == 'take' and hero.control.k_e == True:
 			hero.move = True
 			hero.control.k_e = False
 			hero.son.clear_text ()
-			hero.son.change_text (1, 'Вы открыли эту никчёмную дверь!')
-			self.kill ()
+			hero.son.change_text (1, 'Вы получили предмет: %s' % items.dogma.name)
+			hero.inv.append(items.dogma)
 			hero.collide_control = False
 			hero.start_conv = True
-
-		if self.add_information == 'key':
-			for i in hero.inv:
-				if i.name == 'Серебряный ключ':
-					for i in hero.inv:
-						if i.name ==  'Золотой ключ':
-							hero.move = True
-							hero.control.k_e = False
-							hero.son.clear_text ()
-							hero.son.change_text (1, 'Вы вставили серебряный и золотой ключи в замочные скважины и провернули их.')
-							hero.son.change_text (2, 'Раздался лёгкий щелчок и дверь отворилась.')
-
-							hero.son.change_text (4, 'Вы открыли эту жалкую дверь!')
-							self.kill ()
-							hero.collide_control = False
-							hero.start_conv = True
-							hero.char_value['2exp']+=50
-							break
-					else:
-						hero.move = True
-						hero.control.k_e = False
-						hero.son.clear_text ()
-						hero.son.change_text (1, 'Один из ключей, который вы вставили подошёл.')
-						hero.son.change_text (2, 'К сожалению, там две замочных скважины, а значит и два замка.')
-						hero.son.change_text (3, 'Не переживайте, поищите ещё. Может что и найдёте.')
-						hero.collide_control = False
-						hero.start_conv = True
-
-				elif i.name == 'Золотой ключ':
-					for i in hero.inv:
-						if i.name ==  'Серебряный ключ':
-							hero.move = True
-							hero.control.k_e = False
-							hero.son.clear_text ()
-							hero.son.change_text (1, 'Вы вставили серебряный и золотой ключи в замочные скважины и провернули их.')
-							hero.son.change_text (2, 'Раздался лёгкий щелчок и дверь отворилась.')
-
-							hero.son.change_text (4, 'Вы открыли эту жалкую дверь!')
-							self.kill ()
-							hero.collide_control = False
-							hero.start_conv = True
-							hero.char_value['2exp']+=50
-							break
-					else:
-						hero.move = True
-						hero.control.k_e = False
-						hero.son.clear_text ()
-						hero.son.change_text (1, 'Один из ключей, который вы вставили подошёл.')
-						hero.son.change_text (2, 'К сожалению, там две замочных скважины, а значит и два замка.')
-						hero.son.change_text (3, 'Не переживайте, поищите ещё. Может что и найдёте.')
-						hero.collide_control = False
-						hero.start_conv = True	
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
 
 		if self.add_information == 'end':
 
@@ -81,8 +34,13 @@ def dialog_special(self, hero):
 			hero.collide_control = False
 			hero.start_conv = True
 			hero.view.a = 0
-			self.s = 1
-			self.n = 0
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+
+
 
 def journal_update (self, hero, add_information, concept):
 		if self.add_information == add_information and self.control.k_e == True:
@@ -174,7 +132,7 @@ class Compose_dialog_tree ():
 
 		self.n = (self.a * 7)
 
-		if self.control.down == True and self.a < int((len(all_strokes)) // 7):
+		if self.control.down == True and self.a < int((len(all_strokes)) // 8):
 			self.control.down = False
 			self.a = self.a+1
 
@@ -182,7 +140,7 @@ class Compose_dialog_tree ():
 			self.control.up = False
 			self.a = self.a-1
 
-		if self.a < int((len(all_strokes)) // 7):
+		if self.a < int((len(all_strokes)) // 8):
 			information_screen.blit (self.arrowDw, (600, 70))
 		if self.a !=0:
 			information_screen.blit (self.arrowUp, (600, 0))

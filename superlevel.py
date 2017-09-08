@@ -10,7 +10,8 @@ import camera
 import constructor
 import img
 timer = pygame.time.Clock  ()
-
+import event
+import text_data.corpse_dict
 
 class SuperLevel ():
 	def __init__ (self, lev, battle, son, control):
@@ -31,6 +32,8 @@ class SuperLevel ():
 		self.camera = camera.Camera (self.level_width, self.level_height, 840, 420)
 	#	self.x_hero = (self.camera.apply(self.hero))
 		self.back = True
+		self.event = event.Event(text_data.corpse_dict.text)
+		self.inception = True
 
 
 
@@ -231,9 +234,10 @@ class SuperLevel ():
 
 		return sprites, ground, decor
 
-
+	def additional_content(self,hero):
+		pass
 	def render_stage (self, hero):
-		
+
 		main_interface (self)
 
 		#render background
@@ -242,7 +246,7 @@ class SuperLevel ():
 			for b in self.background:
 				adventure_screen.blit(b.image, self.camera.apply (b))
 
-
+		self.additional_content(hero)
 		#rendering map`s objects
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))
@@ -298,7 +302,11 @@ class SuperLevel ():
 		#camera
 		self.camera.update(hero)
 
-
+		#if self.inception == True:
+		#	hero.etwas = self.event
+		#	hero.collide_control = True
+		#	hero.move = False
+		#	self.inception = False
 		pos = self.camera.apply(hero)
 		#timer
 		self.a = timer.get_fps()		
@@ -309,6 +317,7 @@ class SuperLevel ():
 		pass
 
 	def stage_loop (self, hero):
+
 		self.general_stuff (hero)
 
 		self.render_stage (hero)

@@ -226,15 +226,15 @@ class Monster (sprite.Sprite):
 			hero.start_conv = True
 			hero.view.a = 0
 
-			a = random.randint (1,6)
+#			a = random.randint (1,6)
 			self.branch_do = 'done'
 			self.s = 1
 			self.n = 0
-
-			if a >3:
-				self.branch = 1
-			if a <=3:
-				self.branch = 2
+			self.branch = self.branch_id
+#			if a >3:
+#				self.branch = 1
+#			if a <=3:
+#				self.branch = 2
 
 		if self.add_information == 'passage' and self.control.k_e == True:
 
@@ -254,6 +254,8 @@ class Monster (sprite.Sprite):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+
+				
 	def battle_action (self, hero):
 		if hero.monster_turn == True:
 			self.son.clear_text ()
@@ -281,7 +283,7 @@ class Monster (sprite.Sprite):
 			hero.monster_turn = False
 			self.wait_for_next_turn = True
 
-		if self.control.k_e == True and self.wait_for_next_turn == True and self.control.e_cntrl == True:
+		if self.control.k_e == True and self.wait_for_next_turn == True and self.control.e_cntrl == True and hero.is_death == False:
 			self.control.k_e = False
 			hero.turn_main = True
 			self.son.clear_text ()
@@ -447,6 +449,7 @@ class ZombiLord (Monster):
 		self.mname = 'Зомби Лорд'
 		#self.image.fill ((220,130,100))
 		self.ll = False
+
 		self.image = image.load('images/zombi.png')
 		self.image.set_colorkey ((254,254,254))
 		self.item = items.silver_key
@@ -525,3 +528,56 @@ class ZombiLord (Monster):
 				self.n = 0
 			hero.collide_control = False
 			hero.start_conv = True
+
+
+class SkeletKing (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Скелет Король'
+		#self.image.fill ((100,100,100))
+		self.ll = False
+		self.image = image.load('images/tiles/throne.png')
+		self.image.set_colorkey ((254,254,254))
+		#self.item = items.silver_key		
+		self.rect = self.image.get_rect()
+		self.rect.x = x*PF_WIDTH
+		self.rect.y = y*PF_HEIGHT
+
+
+		#self.image.fill ((220,130,100))
+
+		self.quest = False
+		self.order = True
+		self.check_for_courage = False
+
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if hero.sp > 2 and self.check_for_courage == False:
+			self.branch = 1
+			self.check_for_courage = True
+
+	def death_check (self, hero):
+
+		if self.hp <= 0:
+
+
+				self.son.clear_text ()
+				hero.char_value['2exp'] += self.exp
+				self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
+				self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
+				gold = random.randint(1,30)
+				#self.son.change_text (5, "Так же вы нашли немного золотишка: %s " % str(gold) )
+				#hero.gold +=gold
+#				self.son.change_text (5, "С трупа вы забрали: %s " % self.item.name)	
+				#self.status = 'killed'
+				hero.turn_main = True
+				hero.move = True
+				self.agression = False
+				self.hp = 15
+				#self.kill ()
+				hero.collide_control = False
+
+	def dialog_special (self, hero):
+		pass

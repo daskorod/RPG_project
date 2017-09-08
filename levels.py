@@ -32,8 +32,12 @@ class _dungeon2 (SuperLevel):
 		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon2)
 		self.name = '- - - Подземелье 2 этаж - - -'
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
-	def stage_content (self, hero):
 
+	def additional_content(self, hero):
+		for i in constructor.addition:
+			screens.adventure_screen.blit(i.image, self.camera.apply (i))
+		
+	def stage_content (self, hero):
 		img.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 		#classes.boltAnim.stop()
@@ -54,7 +58,7 @@ class _end (SuperLevel):
 		self.auto = False
 		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
 		self.back = True
-		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
+		self.camera = camera.Camera (self.level_width, self.level_height, 780, 360)
 		self.name = '- - - Окраины города - - -'
 		self.x = 0
 		self.up = True
@@ -121,7 +125,7 @@ class _tavern (SuperLevel):
 class _temple (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.auto = True
+		self.auto = False
 		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
