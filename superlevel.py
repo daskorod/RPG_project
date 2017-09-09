@@ -250,6 +250,8 @@ class SuperLevel ():
 		#rendering map`s objects
 		for b in self.block_group:
 			adventure_screen.blit(b.image, self.camera.apply (b))
+			if b.__class__.__name__ == 'PortalLink':
+				b.animation(self.camera)
 
 		for i in self.decor:
 			adventure_screen.blit(i.image, self.camera.apply (i))

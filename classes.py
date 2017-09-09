@@ -1211,59 +1211,59 @@ class MinorChest2(sprite.Sprite):
 			self.n = 0
 			self.branch = 0
 
-class Portal2(sprite.Sprite):
-	def __init__(self, x, y,control):
-		sprite.Sprite.__init__(self)
-		self.image=image.load('images/portal.png')
-		#self.image.set_colorkey ((255,255,255))
-		#self.image = Surface ((45,45))
-		#self.image.fill ((200,30,70))
-		self.rect = Rect (0,0, 45,45)
-		self.rect.x = x
-		self.rect.y = y
-		self.name = "portal"
-		self.control = control
-	def interaction (self, hero):
-		#self.control.stage1_flag = False
-		#self.control.stage2_flag = True
-		hero.location = hero.locations_dict['end']
-		hero.rect.x = 675
-		hero.rect.y = 180
-		#hero.son.change_text (1, self.description)
-
-class Portal (sprite.Sprite):
-	def __init__(self, x, y,control):
-		sprite.Sprite.__init__(self)
-		self.image=image.load('images/portal.png')
-		#self.image.set_colorkey ((255,255,255))
-		#self.image = Surface ((45,45))
-		#self.image.fill ((200,30,70))
-		self.rect = Rect (0,0, 45,45)
-		self.rect.x = x
-		self.rect.y = y
-		self.name = "portal"
-		self.control = control
-	def interaction (self, hero):
-		#self.control.stage2_flag = False
-		#self.control.stage1_flag = True
-		hero.location = hero.locations_dict['1']
-		hero.rect.x = 45
-		hero.rect.y = 45
-
-class PortalS (sprite.Sprite):
-	def __init__(self, x, y, loc, coordinates):
-		sprite.Sprite.__init__(self)
-		self.image=image.load('images/portal.png')
-		self.rect = Rect (0,0, 45,45)
-		self.rect.x = x
-		self.rect.y = y
-		self.name = "portal"
-		self.loc_num = loc
-		self.px, self.py = coordinates
-
-	def interaction (self, hero):
-		hero.location = hero.locations_dict[self.loc_num]
-		hero.rect.x, hero.rect.y = self.px*45, self.py*45
+#class Portal2(sprite.Sprite):
+#	def __init__(self, x, y,control):
+#		sprite.Sprite.__init__(self)
+#		self.image=image.load('images/portal.png')
+#		#self.image.set_colorkey ((255,255,255))
+#		#self.image = Surface ((45,45))
+#		#self.image.fill ((200,30,70))
+#		self.rect = Rect (0,0, 45,45)
+#		self.rect.x = x
+#		self.rect.y = y
+#		self.name = "portal"
+#		self.control = control
+#	def interaction (self, hero):
+#		#self.control.stage1_flag = False
+#		#self.control.stage2_flag = True
+#		hero.location = hero.locations_dict['end']
+#		hero.rect.x = 675
+#		hero.rect.y = 180
+#		#hero.son.change_text (1, self.description)
+#
+#class Portal (sprite.Sprite):
+#	def __init__(self, x, y,control):
+#		sprite.Sprite.__init__(self)
+#		self.image=image.load('images/portal.png')
+#		#self.image.set_colorkey ((255,255,255))
+#		#self.image = Surface ((45,45))
+#		#self.image.fill ((200,30,70))
+#		self.rect = Rect (0,0, 45,45)
+#		self.rect.x = x
+#		self.rect.y = y
+#		self.name = "portal"
+#		self.control = control
+#	def interaction (self, hero):
+#		#self.control.stage2_flag = False
+#		#self.control.stage1_flag = True
+#		hero.location = hero.locations_dict['1']
+#		hero.rect.x = 45
+#		hero.rect.y = 45
+#
+#class PortalS (sprite.Sprite):
+#	def __init__(self, x, y, loc, coordinates):
+#		sprite.Sprite.__init__(self)
+#		self.image=image.load('images/portal.png')
+#		self.rect = Rect (0,0, 45,45)
+#		self.rect.x = x
+#		self.rect.y = y
+#		self.name = "portal"
+#		self.loc_num = loc
+#		self.px, self.py = coordinates
+#
+#	def interaction (self, hero):
+#		hero.location = hero.locations_dict[self.loc_num]
+#		hero.rect.x, hero.rect.y = self.px*45, self.py*45
 
 class PortalLink (sprite.Sprite):
 	def __init__(self, x, y, name, link, exitside, locationname):
@@ -1276,6 +1276,40 @@ class PortalLink (sprite.Sprite):
 		self.link = link
 		self.exitside = exitside
 		self.locationname = locationname
+		self.x = 0
+		self.up = True
+		self.y = 0
+	def animation(self, camera):
+		#self.y = random.randint(1,3)
+		
+		if self.up == True:
+			self.x +=1
+		else:
+			self.x -=1
+
+		if self.x > 6:
+			self.up = False
+			#self.y = random.randint(1,6)
+		if self.x < -6:
+			self.up = True		
+			#self.y = random.randint(1,6)
+		pos = camera.apply(self)
+
+		if self.exitside == 'L':
+
+			screens.adventure_screen.blit (img.arrowr, (pos.x+10+self.x,pos.y+10+self.y))
+
+		elif self.exitside == 'R':
+
+			screens.adventure_screen.blit (img.arrowl, (pos.x+10+self.x,pos.y+10+self.y))
+
+		elif self.exitside == 'D':
+
+			screens.adventure_screen.blit (img.arrow2, (pos.x+10+self.y,pos.y+5+self.x))
+
+		elif self.exitside == 'U':
+
+			screens.adventure_screen.blit (img.arrowd, (pos.x+10+self.y,pos.y+5+self.x))				
 
 	def interaction (self, hero):
 		portal = self.find_object_of_bounded_portal(hero)

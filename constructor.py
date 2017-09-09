@@ -34,8 +34,9 @@ def create_dungeon1 (level, battle, control, son, locationname):
 #                           sprite_group.add (e)
 
                      if col == 'w':
-                            e = classes.PortalS (x,y, 'dungeon2', (2,15))
-                            sprite_group.add (e)
+
+                            pr = classes.PortalLink (x,y, 'dung2fromdung1', 'dung1fromdung2', 'L', locationname )
+                            sprite_group.add (pr)
 
                      if col == 'e':
                             pr = classes.PortalLink (x,y, 'fromdungtoend', 'todung1', 'U', locationname )
@@ -71,9 +72,9 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             sprite_group.add (z)
 
                      if col == 'e':
-                            e = classes.PortalS (x,y, 'dungeon1', (11,4))
-                            sprite_group.add (e)
 
+                            pr = classes.PortalLink (x,y, 'dung2fromdung1', 'dung1fromdung2', 'R', locationname )
+                            sprite_group.add (pr)
                      if col == 'w':
                             e = classes.PortalS (x,y, 'dungeon3', (1,4))
                             sprite_group.add (e)
