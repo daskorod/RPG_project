@@ -34,6 +34,7 @@ class SuperLevel ():
 		self.back = True
 		self.event = event.Event(text_data.corpse_dict.text)
 		self.inception = True
+		self.render_information = True
 
 
 
@@ -236,6 +237,15 @@ class SuperLevel ():
 
 	def additional_content(self,hero):
 		pass
+	def render_location_info (self):
+		self.son.change_text (1, '')
+		self.son.change_text (2, '')
+		self.son.change_text (3, '')		
+		self.son.change_text (4, '')
+		self.son.change_text (5, '')
+		self.son.change_text (6, '')		
+		self.son.change_text (7, '')
+
 	def render_stage (self, hero):
 
 		main_interface (self)
@@ -273,6 +283,18 @@ class SuperLevel ():
 
 		#render text_information
 		self.son.render_text ()
+
+		if self.render_information == True:
+			self.son.clear_text()
+			self.render_location_info ()
+			self.render_information = False
+			for i in hero.location_list:
+				if i.__class__.__name__ != self.__class__.__name__:
+
+					i.render_information = True
+
+
+
 		hero.render_information ()
 
 	#def get_coordinates(self,hero):

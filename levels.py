@@ -22,6 +22,14 @@ class _dungeon1(SuperLevel):
 		self.name = '- - - Подземелье - - -'
 		self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 
+	def render_location_info (self):
+		
+
+		self.son.change_text (2, 'Вы спустились в жуткое и мрачное подземелье.')
+		self.son.change_text (3, 'Откуда-то из глубины коридора пахнет затхлостью и смертью')		
+		self.son.change_text (4, 'Стены сложены из старых камный, влажных на ощупь,')
+		self.son.change_text (5, 'кое-где поросших мхом. Пол покрыт трещинами, мусором и пылью.')
+
 	def stage_content (self, hero):
 		pass
 
@@ -32,6 +40,13 @@ class _dungeon2 (SuperLevel):
 		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon2)
 		self.name = '- - - Подземелье 2 этаж - - -'
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Вы спустились ещё глубже...')
+		self.son.change_text (3, 'Здесь всё гораздо суше. Однако дышать ещё менее приятно.')
+		self.son.change_text (4, 'Вентиляции никакой, пыли полно. ')		
+
 
 	def additional_content(self, hero):
 		for i in constructor.addition:
@@ -49,6 +64,16 @@ class _dungeon3 (SuperLevel):
 		self.name = '- - - Тронный зал- - -'
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 
+	def render_location_info (self):
+		
+		self.son.change_text (1, 'Вы вышли в непонятный зал. По периметру его оссвещают')
+		self.son.change_text (2, 'факелы, которые горят вечным необжигающим пламенем.')
+		self.son.change_text (3, 'В центре возвышается странного рода трон.')		
+		self.son.change_text (4, 'Вы чувствуете тревогу, которая, при приближении к ')
+		self.son.change_text (5, 'центру зала усиливается. Что-то нечеловеческое находистя')
+		self.son.change_text (6, 'здесь, что-то, что инстинктивно заставляет вас бежать прочь,')		
+		self.son.change_text (7, 'не разбирая дороги.')
+
 	def stage_content (self, hero):
 		pass
 
@@ -62,6 +87,18 @@ class _end (SuperLevel):
 		self.name = '- - - Окраины города - - -'
 		self.x = 0
 		self.up = True
+
+	def render_location_info (self):
+
+		self.son.change_text (1, 'Вы оказались на городских окраинах.')
+		self.son.change_text (2, '')
+		self.son.change_text (3, 'Обстановка здесь не самая лучшая. Разруха, бандитизм.')		
+		self.son.change_text (4, 'Нормальных людей здесь не встретишь - всё какие-то')
+		self.son.change_text (5, 'сомнительные элементы. Бомжи, нищие, больные, психопаты -')
+		self.son.change_text (6, 'все неучтённые системой элементы. Божьи люди, короче.')		
+		self.son.change_text (7, 'Блаженны нищие духом, ибо их есть Царство Небесное.')
+
+
 	def stage_content (self, hero):
 		pass
 		if self.up == True:
@@ -88,7 +125,20 @@ class _platz (SuperLevel):
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.x = 0
-		self.up = True		
+		self.up = True	
+
+
+	def render_location_info (self):
+		
+		self.son.change_text (1, 'Главная площадь представляет собой печальное зрелище.')
+		self.son.change_text (2, 'Здесь практически никого нет.')
+		self.son.change_text (3, 'Даже в праздники эта площадь не знает народа.')		
+		self.son.change_text (4, 'Редкий люд, обитающий в городе, занят делом,')
+		self.son.change_text (5, 'чтобы заработать себе на кусок хлеба.')
+		self.son.change_text (6, 'На улицах этого проклятого города, же слишком опасно,')		
+		self.son.change_text (7, 'чтобы лишний раз шляться где попало.')
+
+
 	def stage_content (self, hero):
 		pass
 		if self.up == True:
@@ -118,6 +168,17 @@ class _tavern (SuperLevel):
 
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Таверна - отдушина для путника.')
+		self.son.change_text (3, 'Вам в лицо пахнуло жаром, жиром и потом.')
+		self.son.change_text (4, 'В таверне есть народ - в основном это заезжие люди.')		
+		self.son.change_text (5, 'Здесь можно хорошенько покушать и отдохнуть.')
+		self.son.change_text (6, 'Если, конечно, у вас есть деньажат...')
+
+
+
 	def stage_content (self, hero):
 		pass
 
@@ -130,6 +191,13 @@ class _temple (SuperLevel):
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 		self.name = '- - - Храм Единого - - -'
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Огромное и величественное здание храма наполняет покоем')
+		self.son.change_text (3, 'вашу душу. Все плохие мысли уходят. Вся жизнь начинает')
+		self.son.change_text (4, 'казаться мелкой и незначительной, по сравнению с вечностью,')		
+		self.son.change_text (5, 'которая ждёт каждого, родившегося в этом бренном мире.')
 
 	def stage_content (self, hero):
 		pass

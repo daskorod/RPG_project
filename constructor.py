@@ -35,7 +35,7 @@ def create_dungeon1 (level, battle, control, son, locationname):
 
                      if col == 'w':
 
-                            pr = classes.PortalLink (x,y, 'dung2fromdung1', 'dung1fromdung2', 'L', locationname )
+                            pr = classes.PortalLink (x,y, 'dung1fromdung2', 'dung2fromdung1', 'L', locationname )
                             sprite_group.add (pr)
 
                      if col == 'e':
