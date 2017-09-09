@@ -115,7 +115,11 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             sprite_group.add (well)
                      if col == 'P':
                             cupboard = classes.Cupboard2(x,y)  
-                            sprite_group.add (cupboard)          
+                            sprite_group.add (cupboard)
+                     if col == 'A':
+                            s = classes.MinorChest (x,y, 'open', items.old_axe )
+                            sprite_group.add (s)
+  
          
                      x += 45
               x = 0

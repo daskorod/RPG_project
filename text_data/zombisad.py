@@ -99,7 +99,7 @@ ahave1110 = '1 - слушать дальше; 2 - уйти'
 have11110 = 'Завершив свой рассказ зомби растянул свой рот в страшной улыбке, после чего весь раскис и оплыл на землю, превратившись в лужу.'
 zevil0 = 'Вы видите страшного отвратительного зомби. Его единственный глаз болтается на глазном нерве. Внутри копошатся мухи. Что вы сделаете?'
 azevil0 = '1. В бой! 2. Убежать.'
-
+war = 'Нажмите E'
 text = [
 
 {
@@ -111,29 +111,29 @@ text = [
      21110 : (zp30, 'end', empty, ('go', 1)),
      2110 : (zp2110, 'next', azp2110),
       12110 : (zp30, 'quest', empty,('go', 1)),
-      22110 : (zp20, 'war', empty),
+      22110 : (zp20, 'war', war),
     210: (zp210, 'next', azp210),
      1210 : (zp1210, 'next', azp1210),
       11210 : (zp11210, 'next', azp11210),
           111210 : (zp30, 'end', empty, ('go', 1)),
-          211210 : (zp20, 'war', empty),      
+          211210 : (zp20, 'war', war),      
       21210 : (zp21210, 'next', azp11210),
           121210 : (zp30, 'end', empty, ('go', 1)),
-          221210 : (zp20, 'war', empty),
+          221210 : (zp20, 'war', war),
       31210 : (zp31210, 'solve', empty, ('go', 1)),
      2210 : (zp2210, 'next', azp2210),
       12210 : (zp12210, 'quest', empty, ('go',2)),
-      22210 : (zp20, "war", empty),
+      22210 : (zp20, "war", war),
     310: (zp310, 'next', azp310),
      1310 : (zp1310, 'quest', empty, ('go', 2)),
      2310 : (zp2310, 'end', empty, ('go', 1)),    
-  20: (zp20, "war", empty),
+  20: (zp20, "war", war),
   30: (zp30, 'end', empty, ('go', 0)), 
   11110 : (zp11110, 'next', azp11110),
-111110 : (zp111110, 'war', empty),
+111110 : (zp111110, 'war', war),
 211110 : (zp211110, 'next', azp211110),
 1211110: (zp1211110, 'end', empty, ('go', 2)),
-2211110 : (zp2211110, 'war', empty),
+2211110 : (zp2211110, 'war', war),
 311110 : (zp311110, 'next', azp311110),
 1311110 : (zp1311110, 'solve', empty, ('go', 1)),
 2311110 : (zp1211110, 'end', empty, ('go', 1))
@@ -142,13 +142,13 @@ text = [
 {
   0: (zsad0, 'next', azsad0),
    10: (zp30, 'end', empty,('go', 1)),
-   20: (zp20, "war", empty)
+   20: (zp20, "war", war)
 },
 
 {
   0: (zhap0, 'next', azsad0),
    10: (zp30, 'end', empty,('go', 1)),
-   20: (zp20, "war", empty)
+   20: (zp20, "war", war)
 },
 
 {
@@ -157,11 +157,11 @@ text = [
     110: (have110, 'next', ahave110),
       1110:(have1110, 'next', ahave110),
         11110:(have11110, 'zombidead', empty),
-        21110:(have210, 'war', empty),
-      2110:(have210, 'war', empty),
+        21110:(have210, 'war', war),
+      2110:(have210, 'war', war),
 
-    210: (have210, 'war', empty),
-   20: (have20, "war", empty)
+    210: (have210, 'war', war),
+   20: (have20, "war", war)
 }
 
 
@@ -170,7 +170,7 @@ text = [
 {
   0: (zevil0, 'next', azevil0),
    20: (zp30, 'end', empty,('go', 4)),
-   10: (zp20, "war", empty)
+   10: (zp20, "war", war)
 },
 ]
 

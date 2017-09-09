@@ -1,5 +1,4 @@
 import pygame
-
 pygame.font.init ()
 
 font1= pygame.font.Font ("fonts/georgia.ttf", 24)

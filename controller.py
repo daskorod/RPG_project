@@ -32,6 +32,7 @@ class Holy_Spirit ():
 #		self.direction = [R,L,U,D]
 		self.current_location = ''
 		self.move_cntrl = False
+		self.e_lock = False
 		
 	def control (self):
 			if self.k_esc == True:
@@ -101,9 +102,10 @@ class Holy_Spirit ():
 
 					if e.key == pygame.K_n:
 						self.k_n = True
-					if e.key == pygame.K_e:
+					if e.key == pygame.K_e and self.e_lock == False:
 						#self.e_cntrl = False
 						self.k_e = True
+						self.e_lock = True
 
 					if e.key == pygame.K_i:
 						self.k_i = True
@@ -137,6 +139,7 @@ class Holy_Spirit ():
 					if e.key == pygame.K_e:
 						self.e_cntrl = True
 						self.k_e = False
+						self.e_lock = False
 					if e.key == pygame.K_i:
 						self.k_i = False
 					if e.key == pygame.K_c:

@@ -8,6 +8,32 @@ import items
 import text_data.zombisad, text_data.monk
 #import npc
 
+def end_dialog(self, hero):
+	hero.move = True
+	hero.control.k_e = False
+	hero.collide_control = False
+	hero.start_conv = True
+	hero.view.a = 0
+	if self.branch_do == 'go':
+		self.branch_do = 'done'
+		self.branch = self.branch_id
+		self.s = 1
+		self.n = 0
+		
+def war(self, hero):
+			hero.son.clear_text ()
+			hero.control.k_e = False
+			self.agression = True
+			hero.turn_main = True
+			hero.start_conv = True
+			hero.view.a = 0
+
+#			a = random.randint (1,6)
+			self.branch_do = 'done'
+			self.s = 1
+			self.n = 0
+			self.branch = self.branch_id
+#			if a >3:
 
 def interaction_special(self, hero):
 	pass

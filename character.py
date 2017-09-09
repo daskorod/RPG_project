@@ -12,6 +12,7 @@ import ideas
 import img
 import math
 import event
+import menu
 
 time = 0.2
 
@@ -928,6 +929,11 @@ class Hero(pygame.sprite.Sprite):
 				except:
 					self.location = self.location_list[0]
 					self.level_mark = 0
+		else:
+			if self.control.k_space == True:
+				self.control.k_space = False
+				
+				menu.help_loop()
 
 		self.update (self.location.block_group)
 		self.location.stage_loop (self)
@@ -1041,8 +1047,8 @@ class Hero(pygame.sprite.Sprite):
 			self.press_to_kill_fun ()
 	
 			if self.turn_main == True :
-	
-				self.son.change_text (1, "Что будете делать?")
+				self.son.clear_text()
+				self.son.change_text (1, "Вам угрожает %s . Что будете делать?" % self.etwas.mname.strip())
 				self.son.change_text (3, "1 - атаковать; 2 - спец.способность; 3 - убегать")
 		
 				if self.control.k_1 == True:

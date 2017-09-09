@@ -21,7 +21,7 @@ pygame.key.get_repeat ()
 #main function
 
 menu.menu_loop()
-menu.help_loop()
+#menu.help_loop()
 
 def main_loop():
 	while True:

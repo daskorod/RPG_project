@@ -1,14 +1,19 @@
 ''' Текстовый файл для анализа должен быть в кодировке ANSI почему-то я не знаю почему. Если он в utf-8, то в сохранённом словаре появляются кракозябры'''
 
 
-def compose (filename):
+def compose (filename,status):
   a = open (filename)
   
   generalls = []
   textbar = []
   
   empty = 'Нажмите E'
-  end = 'Взаимодействие завершено (можете идти)'
+  if status == 'live':
+    end = 'Диалог завершён. (Можете идти).'
+  elif status == 'object':
+    end = 'Взаимодействие завершено. (Можете идти).'
+  elif status == 'event':
+    end = '(Можете идти).'
   branch = 0
   
   for i in a:

@@ -32,23 +32,6 @@ class Event ():
 				self.s = 1
 				self.n = 0
 
-		if self.add_information == 'war' and hero.control.k_e == True:
-			self.son.clear_text ()
-			hero.control.k_e = False
-			self.agression = True
-			hero.turn_main = True
-			hero.start_conv = True
-			hero.view.a = 0
-
-#			a = random.randint (1,6)
-			self.branch_do = 'done'
-			self.s = 1
-			self.n = 0
-			self.branch = self.branch_id
-#			if a >3:
-#				self.branch = 1
-#			if a <=3:
-#				self.branch = 2
 
 		if self.add_information == 'passage' and hero.control.k_e == True:
 

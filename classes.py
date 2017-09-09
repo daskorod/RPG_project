@@ -17,6 +17,7 @@ import img
 import items
 import text_data.well_dict
 import event
+from functions import end_dialog
 
 class Zombi (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp, item = items.no_item):
@@ -96,6 +97,7 @@ class Skelet (Monster):
 		self.mname = '   Скелет'
 		self.order = False
 		self.item = items.rope
+		self.quest = False
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
@@ -104,8 +106,68 @@ class Skelet (Monster):
 				if i.name == 'Порядок магнитуд':
 					self.branch = 1
 					self.order = True
+		for i in hero.quest:
+			if i == 'axe':
+				if items.old_axe in hero.inv:
+
+					self.branch = 3
+				else:
+					self.branch = 2
+	def dialog_special (self, hero):
+
+		if self.add_information == 'fault' and self.control.k_e == True:
+			functions.war(self,hero)
+
+		elif self.add_information == 'turn' and self.control.k_e == True:
 
 
+			if hero.sp > random.randint(1,6):
+				hero.inv.append (self.item)
+				hero.dustAnim.play()
+				hero.son.clear_text ()
+				hero.son.change_text (3, 'Скелет рассыпается в прах.')
+				hero.son.change_text (4, 'В куче праха вы видите верёвку, которую забираете с собой.')
+				self.kill()
+				end_dialog (self,hero)
+				hero.char_value['2exp'] += 60				
+
+			elif hero.sp < random.randint(1,6):
+				self.add_information = 'fault'
+				hero.son.clear_text ()
+				hero.son.change_text (3, 'Вы чувствуете страх и неуверенность, ваши слова звучат фальшиво.')
+				hero.son.change_text (4, 'Вы видите как зловещий череп ухмыляется. Вы перестаёте понимать')
+				hero.son.change_text (5, 'его речь. Теперь это для вас лишь злобное чудовище.')
+
+				hero.son.change_text (5, 'Нажмите E')
+
+
+		elif self.add_information == 'solve' and self.quest == False:
+			self.quest = True
+			self.hp = self.hp//3
+
+		elif self.add_information == 'solve'  and self.control.k_e == True:
+
+			self.son.clear_text ()
+			self.son.change_text(2, 'Вы помогли скелету в его странных стремлениях')	
+			self.son.change_text(3, '+ 50 опыта.')	
+			self.son.change_text(5, 'Вы получаете вещь и это: %s' % self.item.name.lower())
+			self.son.change_text(4, 'Вы отдали скелету нечто: %s' % items.old_axe.name.lower())	
+
+
+
+			hero.inv.remove(items.old_axe)
+			hero.inv.append(self.item)
+			self.item = items.old_axe
+			hero.char_value['2exp'] +=50
+			self.rect.x = self.rect.x + 25
+			end_dialog (self,hero)
+				
+		elif self.add_information == 'quest'and self.control.k_e == True:
+			hero.quest['axe'] = 'is'
+			self.son.clear_text ()
+			self.son.change_text(3, 'Вы подписались на то, что найдёте топор, коим скелет')	
+			self.son.change_text(4, 'был убит. Где ж его теперь сыскать-то?')
+			end_dialog (self,hero)
 
 
 
@@ -914,6 +976,7 @@ class Trap(sprite.Sprite):
 		hero.check_for_death()
 		self.kill()
 
+#test treasure chest
 class Chest(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
@@ -978,124 +1041,7 @@ class Chest(sprite.Sprite):
 			self.n = 0
 			self.branch = 0
 
-class MinorChestOld(sprite.Sprite):
-	def __init__(self, x, y, status, *item):
-		sprite.Sprite.__init__(self)
-		self.image=image.load('images/chest2.png')
-		self.image.set_colorkey ((255,255,255))
-		#self.image = Surface ((45,45))
-		#self.image.fill ((200,30,70))
-		self.rect = Rect (0,0, 45,45)
-		self.rect.x = x
-		self.rect.y = y
-		self.name = "chest"
-		self.status = status
-		self.items = item
-		self.inside = []
-		for i in self.items:
-			self.inside.append (i)
-
-		self.items_name = ''
-
-		for i in self.items:
-			self.items_name = self.items_name + i.name + ', '
-		self.items_name = self.items_name[:-2] + '.'
-
-		#conversation data
-		self.tree = text.mchest
-		self.n = 0
-		self.s = 1
-		self.add_information = "none"
-		self.agression = False
-		self.branch = 0
-		self.branch_do = ''
-		self.branch_id = ''
-
-	def interaction (self, hero):
-
-		if hero.control.right == True:
-			hero.rect.x -= 1
-		elif hero.control.left == True:
-			hero.rect.x += 1
-		elif hero.control.up == True:
-			hero.rect.y += 1
-		elif hero.control.down == True:
-			hero.rect.y -= 1
-		hero.move = False
-		hero.collide_control = True
-
-	def dialog_special (self, hero):
-		pass
-
-	def dialog_options (self,hero):
-
-		self.dialog_special (hero)
-		if self.add_information == 'end_chest':
-
-			hero.son.change_text_tree (hero.view.render_text ('В сундуке находится: ' + self.items_name, 'Нажмите E, чтобы забрать вещи...'))
-		if self.add_information == 'end_chest' and hero.control.k_e == True:
-			hero.move = True
-
-			hero.control.k_e = False
-
-			hero.son.clear_text ()
-
-
-
-
-			hero.collide_control = False
-			hero.start_conv = True
-
-			empty_space = 0
-			for item in hero.inv:
-				if item.name == 'Ничего':
-					empty_space += 1
-
-			if empty_space >= len (self.inside):
-				self.kill ()
-				hero.son.change_text (4, 'Вы взяли все вещи...')
-				counter = 0
-				for i in self.inside:
-					for item in hero.inv:
-						if item.name == 'Ничего':
-							hero.inv.pop (counter)
-							hero.inv.insert (counter, i)
-							break
-						counter += 1
-					counter = 0
-
-			if empty_space < len (self.inside):
-				hero.son.change_text (4, 'Вы взяли не всё, слишком много добра. Не убирается...')
-				counter = 0
-				taken = 0
-				for i in self.inside:
-					if taken > empty_space:
-						break
-					for item in hero.inv:
-						if item.name == 'Ничего':
-							hero.inv.pop (counter)
-							hero.inv.insert (counter, i)
-							self.inside.remove(i)
-							taken += 1
-							break
-						counter += 1
-					counter = 0
-
-				self.items_name = ''
-				for i in self.inside:
-					self.items_name = self.items_name + i.name + ', '
-				self.items_name = self.items_name[:-2] + '.'
-
-		if self.add_information == 'end' and hero.control.k_e == True:
-
-			hero.move = True
-			hero.control.k_e = False
-			hero.collide_control = False
-			hero.start_conv = True
-			hero.view.a = 0
-			self.s = 1
-			self.n = 0
-			self.branch = 0
+#BASIC CHEST
 
 class MinorChest(sprite.Sprite):
 	def __init__(self, x, y, status, *item):
@@ -1111,6 +1057,7 @@ class MinorChest(sprite.Sprite):
 		self.status = status
 		self.items = item
 		self.inside = []
+		self.gold = random.randint(1,50)
 		for i in self.items:
 			self.inside.append (i)
 
@@ -1154,14 +1101,14 @@ class MinorChest(sprite.Sprite):
 			hero.son.change_text_tree (hero.view.render_text ('В сундуке находится: ' + self.items_name, 'Нажмите E, чтобы всё забрать...'))
 
 		if self.add_information == 'end_chest' and hero.control.k_e == True:
-			hero.move = True
-			hero.control.k_e = False
+			end_dialog (self,hero)
 			hero.son.clear_text ()
-			hero.collide_control = False
-			hero.start_conv = True
+
 
 			self.kill ()
-			hero.son.change_text (4, 'Вы взяли все вещи...')
+			hero.son.change_text (3, 'Вы взяли все вещи...')
+			hero.son.change_text (4, 'Вы нашли немного денег: %s ' % str(self.gold))	
+			hero.gold += self.gold		
 			for i in self.inside:
 				hero.inv.append(i)
 
@@ -1178,6 +1125,7 @@ class MinorChest(sprite.Sprite):
 			self.n = 0
 			self.branch = 0
 
+#quest chest for the sad zombie
 class MinorChest2(sprite.Sprite):
 	def __init__(self, x, y, status, *item):
 		sprite.Sprite.__init__(self)
