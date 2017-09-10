@@ -324,25 +324,28 @@ class SkeletLord (Monster):
 			hero.start_conv = True
 
 		if self.add_information == 'dance':
+
 			if self.branch_do == 'go':
 				self.branch_do = 'done'
 				self.branch = 5
 				self.s = 1
 				self.n = 0
 
-		if self.add_information == 'key':
+		if self.add_information == 'key' and self.control.k_e == True:
 			
-			hero.inv.append (self.item)
-			self.item = items.no_item
+
 			hero.collide_control = False
 			hero.start_conv = True
 			hero.move = True
 			self.control.k_e = False
 
 			hero.son.clear_text ()
-			hero.son.change_text (5, 'Вы получили %s' % self.item.name)
-			hero.son.change_text (4, 'Скелет-лорд протягивает вам ключик.')
-
+			hero.son.change_text (4, 'Вы получили %s' % self.item.name)
+			hero.son.change_text (3, 'Скелет-лорд протягивает вам ключик.')
+			hero.char_value['2exp'] += 50
+			hero.inv.append (self.item)
+			
+			self.item = items.no_item
 			if self.branch_do == 'go':
 				self.branch_do = 'done'
 				self.branch = 6
