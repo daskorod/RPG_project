@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict
+import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict
 import img
 import functions
 
@@ -262,6 +262,17 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == "=":
                             pf = classes.Nothing (x,y)
                             sprite_group.add (pf)
+                     if col == 'P':
+                            pr = classes.PortalLink (x,y, 'TempleFromCell', 'TempleInCell', 'D', locationname )
+                            sprite_group.add (pr)
+                            
+                     if col == 'A':
+                            pr = classes.PortalLink (x,y, 'TempleInCell', 'TempleFromCell', 'U', locationname )
+                            sprite_group.add (pr)                           
+
+                     if col == 'S':
+                            mn = npc.Martin (x/45,y/45,battle, text_data.martin_dict.text, control, 4,5,7,1, son, 100)
+                            sprite_group.add (mn)
 
                      x += 45
               x = 0
