@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict
+import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict
 import img
 import functions
 
@@ -273,6 +273,35 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'S':
                             mn = npc.Martin (x/45,y/45,battle, text_data.martin_dict.text, control, 4,5,7,1, son, 100)
                             sprite_group.add (mn)
+                     if col == 'D':
+                            pr = classes.PortalLink (x,y, 'PlatzFromStill', 'PlatzToStill', 'U', locationname )
+                            sprite_group.add (pr)
+                            
+                     if col == 'F':
+                            pr = classes.PortalLink (x,y, 'PlatzToStill', 'PlatzFromStill', 'D', locationname )
+                            sprite_group.add (pr)                           
+
+                     if col == 'G':
+                            mn = npc.Rouge (x/45,y/45,battle, text_data.rouge_dict.text, control, 6,9,4,1, son, 30)
+                            sprite_group.add (mn)
+
+                     if col == 'H':
+                            pr = classes.PortalLink (x,y, 'PlatzFromTower', 'PlatzToTower', 'R', locationname )
+                            sprite_group.add (pr)
+                            
+                     if col == 'J':
+                            pr = classes.PortalLink (x,y, 'PlatzToTower', 'PlatzFromTower', 'L', locationname )
+                            sprite_group.add (pr)  
+
+                     if col == 'K':
+                            pr = classes.PortalLink (x,y, 'Tower1', 'TowerOut', 'U', locationname )
+                            sprite_group.add (pr)
+                            
+                     if col == 'L':
+                            pr = classes.PortalLink (x,y, 'TowerOut', 'Tower1', 'D', locationname )
+                            sprite_group.add (pr)  
+                            stuff.append(pr)   
+
 
                      x += 45
               x = 0
@@ -296,14 +325,18 @@ def create_interior_standart (level, grType):
 
        for row in level:
               for col in row:
-                    if col != '0' and col != '-' and col != '!' and col != '@' and col != '#':
+                    if col != '0' and col != '-' and col != '!' and col != '@' and col != '#'  and col != '$' and col != '%' :
                             ground.append(grType(x,y))
                     if col == '!':
-                            decor.append(classes.Ding(x,y, 'images/tiles/house.png', 'дом'))
+                            decor.append(classes.Ding(x,y, 'images/tiles/house.png', 'таверна'))
                     if col == '@':
-                            decor.append(classes.Ding(x,y, 'images/tiles/temple3.png', 'дом'))
+                            decor.append(classes.Ding(x,y, 'images/tiles/temple3.png', 'храм'))
                     if col == '#':
-                            decor.append(classes.Ding(x,y, 'images/tiles/old_house.png', 'дом'))
+                            decor.append(classes.Ding(x,y, 'images/tiles/old_house.png', 'старый дом'))
+                    if col == '$':
+                            decor.append(classes.Ding(x,y, 'images/tiles/t_house2.png', 'дом воров'))
+                    if col == '%':
+                            decor.append(classes.Ding(x,y, 'images/tiles/tower7.png', 'башня'))
                     x +=45
               x = 0
               for col in row:

@@ -937,11 +937,11 @@ class Hero(pygame.sprite.Sprite):
 
 		self.update (self.location.block_group)
 		self.location.stage_loop (self)
-		if self.inception == True:
-			self.inception = False
-			self.collide_control = True
-			self.move = False
-			self.etwas = event.inception
+#		if self.inception == True:
+#			self.inception = False
+#			self.collide_control = True
+#			self.move = False
+#			self.etwas = event.inception
 
 		if self.collide_control == True and self.etwas.agression == True:
 			functions.combat (self, self.etwas)			

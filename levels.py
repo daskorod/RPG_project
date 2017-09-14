@@ -218,3 +218,97 @@ class _cell (SuperLevel):
 
 	def stage_content (self, hero):
 		pass
+
+class _still (SuperLevel):
+	def __init__ (self,lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.name = '- Тихий квартал -'		
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		self.back = True
+		self.camera = camera.Camera (self.level_width, self.level_height, 735, 420)
+		self.x = 0
+		self.up = True	
+
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Вы вошли в очень мирный и тихий квартал.')
+		self.son.change_text (3, 'Здесь как-то спокойно и чисто. Опрятные дома,')
+		self.son.change_text (4, 'опрятные улочки - ничто не вызывает подозрений.')		
+	
+
+
+	def stage_content (self, hero):
+		pass
+#		if self.up == True:
+#			self.x +=1
+#		else:
+#			self.x -=1
+#
+#		if self.x > 6:
+#			self.up = False
+#
+#		if self.x < -6:
+#			self.up = True
+#
+#		pos = self.camera.apply(constructor.stuff[1])
+#		screens.adventure_screen.blit (img.arrow, (pos.x+20,pos.y+10+self.x))
+#
+#		pos2 = self.camera.apply(constructor.stuff[2])
+#		screens.adventure_screen.blit (img.arrow, (pos2.x+12,pos2.y+10+self.x))
+
+class _toweroutside (SuperLevel):
+	def __init__ (self,lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.name = '- Главная площадь -'		
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		self.back = True
+		self.camera = camera.Camera (self.level_width, self.level_height, 735, 420)
+		self.x = 0
+		self.up = True	
+
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Вы подошли к большой башне и серого камня.')
+		self.son.change_text (3, 'На её вершине виден флаг с изображением волчьего оскала.')
+		self.son.change_text (3, 'Здесь находится имперская администрация города.')
+	
+	
+
+
+	def stage_content (self, hero):
+		pass
+		if self.up == True:
+			self.x +=1
+		else:
+			self.x -=1
+
+		if self.x > 6:
+			self.up = False
+
+		if self.x < -6:
+			self.up = True
+
+		pos = self.camera.apply(constructor.stuff[3])
+		screens.adventure_screen.blit (img.arrow, (pos.x+20,pos.y+10+self.x))
+
+class _tower1 (SuperLevel):
+	def __init__ (self, lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
+		self.name = '- - - Башня - - -'
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Большое холодное пространство первого этажа башни')
+		self.son.change_text (3, 'сковало вашу душу страхом. Закон, власть и бюрократическая')
+		self.son.change_text (4, 'сила словно растворены в самом воздухе этого помещения.')		
+
+	def stage_content (self, hero):
+		pass

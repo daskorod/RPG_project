@@ -529,3 +529,75 @@ class Martin (classes.Monk):
 			self.control.k_e = False
 			hero.turn_main = True
 			self.son.clear_text ()
+
+class Rouge (classes.Monk):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Вор'
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/tiles/rouge.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+
+		self.order = True
+		self.quest = False
+
+
+
+	def dialog_special (self, hero):
+		if self.add_information == 'gold' and self.control.k_e == True:
+			self.control.k_e = False
+			if hero.gold >= 20:
+				hero.gold -= 20
+
+				self.branch = 4
+				self.s = 1
+				self.n = 0
+
+			else:
+				self.branch = 6
+				self.s = 1
+				self.n = 0
+
+
+
+		if self.add_information == 'gelassenheit' and self.control.k_e == True:
+			hero.move = True
+			x = 0
+			for i in hero.journal:
+				if i.name == 'Пусто':
+					hero.journal[x] = ideas.gelassenheit
+					break
+				x +=1
+
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы записали концепцию Отрешённости в свой дневничок.')
+			hero.son.change_text (3, 'Теперь вы по-другому будете относиться к внутреннему и внешнему.')
+			hero.son.change_text (4, 'Кто знает, до чего вас это доведёт?')
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+
+		if self.add_information == 'passage' and self.control.k_e == True:
+
+
+			self.control.k_e = False
+
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
