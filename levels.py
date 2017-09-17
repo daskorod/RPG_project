@@ -200,6 +200,7 @@ class _temple (SuperLevel):
 		self.son.change_text (5, 'которая ждёт каждого, родившегося в этом бренном мире.')
 
 	def stage_content (self, hero):
+		img.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 		pass
 
 class _cell (SuperLevel):

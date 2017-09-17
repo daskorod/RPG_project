@@ -25,7 +25,7 @@ def menu_loop ():
 		x = 225
 		up = True
 
-		main_image = pygame.image.load ('images/main_pic2.gif')
+		main_image = pygame.image.load ('images/main_pic5.gif')
 
 		while done1:
 

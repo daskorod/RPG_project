@@ -1452,21 +1452,19 @@ class Monk (Monster):
 
 
 	def battle_action (self, hero):
-		self.g += 1
+
 		if self.lbolt == True:
-			self.g = 185
 
 			self.lbolt = False
 
 
-		if self.g > 190 and self.g< 240:
+
 			
 #			x_hero.x -=49
 #			x_hero.y -=80
 #			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
-			boltAnim.play ()
-			if self.g==239:
-				boltAnim.stop()
+			img.fireAnim.play ()
+
 
 		if hero.monster_turn == True:
 			self.son.clear_text ()
@@ -1477,12 +1475,12 @@ class Monk (Monster):
 			self.son.change_text (2, '"Возврати меч твой в его место, ибо')
 			self.son.change_text (3, 'все, взявшие меч, мечом погибнут." ... ')
 			self.son.change_text (5, 'Нажмите Е')
-			self.lbolt = True
+			#self.lbolt = True
 			self.ll = True
 
 		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
 			self.ll = False
-			self.lbolt = False
+			self.lbolt = True
 			self.son.clear_text ()
 			self.son.change_text (1, "... вас охватывает пламя.")
 			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
