@@ -13,6 +13,17 @@ import img
 import math
 import event
 import menu
+import sys
+
+
+test_arg = False
+
+if len(sys.argv)>1:
+	if sys.argv[1] == 'test':
+		print ('Test mode')
+		control.auto = False
+		test_arg = True
+
 
 time = 0.2
 
@@ -937,11 +948,11 @@ class Hero(pygame.sprite.Sprite):
 
 		self.update (self.location.block_group)
 		self.location.stage_loop (self)
-#		if self.inception == True:
-#			self.inception = False
-#			self.collide_control = True
-#			self.move = False
-#			self.etwas = event.inception
+		if self.inception == True and test_arg == False:
+			self.inception = False
+			self.collide_control = True
+			self.move = False
+			self.etwas = event.inception
 
 		if self.collide_control == True and self.etwas.agression == True:
 			functions.combat (self, self.etwas)			

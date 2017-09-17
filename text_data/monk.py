@@ -50,9 +50,9 @@ text = [
      3110 : (i3110, 'end', empty, ('go', 3)),
     210: (i210, 'end', empty, ('go', 3)),
     310: (i310, 'end', empty, ('go', 3)),
-    410: (i410, 'war', empty, ('go', 3)),    
+    410: (i410, 'war', end, ('go', 3)),    
   20: (i20, "end", empty, ('go', 3)),
-  30: (i410, 'war', empty) 
+  30: (i410, 'war', end) 
 
     },
 
@@ -78,9 +78,9 @@ text = [
      3110 : (i3110, 'end', empty, ('go', 3)),
     210: (i210, 'end', empty, ('go', 3)),
     310: (i310, 'end', empty, ('go', 3)),
-    410: (i410, 'war', empty, ('go', 3)),    
+    410: (i410, 'war', end, ('go', 3)),    
   20: (i20, "end", empty, ('go', 3)),
-  30: (i410, 'war', empty) 
+  30: (i410, 'war', end) 
 
     },
   {

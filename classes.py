@@ -1381,9 +1381,9 @@ class Monk (Monster):
 		self.mname = 'Отец Изольд'
 		#self.image.fill ((220,130,100))
 		self.ll = False
-		self.image = image.load('images/priest.png')
+		self.image = image.load('images/priest2.png')
 		self.icon = pygame.image.load ('images/priest_av.png')
-		self.image.set_colorkey ((254,254,254))
+		#self.image.set_colorkey ((254,254,254))
 		self.g = 1000
 		self.order = True
 		self.quest = False
