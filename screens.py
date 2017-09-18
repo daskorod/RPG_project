@@ -14,8 +14,11 @@ if len(sys.argv)>1:
 		#test_arg = True
 		window = display.set_mode((860,634),pygame.FULLSCREEN)
 
+	else:
+		window = display.set_mode((860, 634))
+
 else:
-	window = display.set_mode((860, 634))
+	window = display.set_mode((860, 634))	
 #display.toggle_fullscreen()
 #
 

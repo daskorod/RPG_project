@@ -16,6 +16,7 @@ from monster import Monster
 import classes
 import ideas
 
+
 class Gilbert (classes.Monk):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
@@ -673,3 +674,23 @@ class Augustine (classes.Monk):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+
+class Guard (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Стражник'
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/guard.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+
+		self.order = True
+		self.quest = False
+
+
+
+	def dialog_special (self, hero):
+		pass

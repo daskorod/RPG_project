@@ -21,7 +21,7 @@ test_arg = False
 if len(sys.argv)>1:
 	if sys.argv[1] == 'test':
 		print ('Test mode')
-		control.auto = False
+
 		test_arg = True
 
 

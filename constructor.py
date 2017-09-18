@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict
+import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict
 import img
 import functions
 
@@ -39,7 +39,7 @@ def create_dungeon1 (level, battle, control, son, locationname):
                             sprite_group.add (pr)
 
                      if col == 'e':
-                            pr = classes.PortalLink (x,y, 'fromdungtoend', 'todung1', 'U', locationname )
+                            pr = classes.PortalLink (x,y, 'oldhousefromdung', 'todung1', 'U', locationname )
                             sprite_group.add (pr)
 
                      if col == 's':
@@ -212,7 +212,7 @@ def create_level_city (level, battle, control, son, locationname):
 #                           sprite_group.add (pr)
 
                      if col == 'w':
-                            pr = classes.PortalLink (x,y, 'todung1', 'fromdungtoend', 'D', locationname )
+                            pr = classes.PortalLink (x,y, 'HoldHouseToEnd', 'OldHouseFromEnd', 'D', locationname )
                             sprite_group.add (pr)
                             stuff.append (pr)
                             
@@ -304,6 +304,36 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'Z':
                             pr = npc.Augustine (x/45,y/45,battle, text_data.august_dict.text, control, 6,5,8,2, son, 130)
                             sprite_group.add (pr)  
+                     if col == 'X':
+                            pr = classes.PortalLink (x,y, 'OldHouseFromEnd', 'HoldHouseToEnd', 'U', locationname )
+                            sprite_group.add (pr)
+
+                     if col == 'C':
+                            pr = classes.PortalLink (x,y, 'todung1', 'oldhousefromdung', 'D', locationname )
+                            sprite_group.add (pr)
+                     if col == 'V':
+                            mn = npc.Guard (x/45,y/45,battle, text_data.guard_dict.text, control, 7,6,6,2, son, 50)
+                            sprite_group.add (mn)
+                     x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+       return sprite_group
+
+def create_level_city2 (level, battle, control, son, locationname):
+       sprite_group = sprite.Group ()
+
+       x = 0
+       y = 0
+
+       for row in level:
+
+              for col in row:
+                           
+                     if col == "m":
+                            mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son, 100)
+                            sprite_group.add (mn)
 
 
                      x += 45
@@ -312,8 +342,6 @@ def create_level_city (level, battle, control, son, locationname):
        x = 0
        y = 0
        return sprite_group
-
-
 
 #Функция для создание дверей, стен, стандартных сундуков и свечей - стандартных объектов, не предполагающих настройки
 def create_interior_standart (level, grType):
@@ -340,6 +368,10 @@ def create_interior_standart (level, grType):
                             decor.append(classes.Ding(x,y, 'images/tiles/t_house2.png', 'дом воров'))
                     if col == '%':
                             decor.append(classes.Ding(x,y, 'images/tiles/tower7.png', 'башня'))
+                    if col == 'C':
+                            ding = classes.Ding2 (x,y, 'images/tiles/pit.png', 'Яма')
+                           
+                            ground.append(ding)
                     x +=45
               x = 0
               for col in row:

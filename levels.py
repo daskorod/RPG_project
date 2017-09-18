@@ -313,3 +313,25 @@ class _tower1 (SuperLevel):
 
 	def stage_content (self, hero):
 		pass
+
+
+class _oldhouse (SuperLevel):
+	def __init__ (self, lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		self.back = True
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 460)
+		self.name = '- - - Старый дом  - - -'
+		self.x = 0
+		self.up = True
+
+	def render_location_info (self):
+
+		self.son.change_text (2, 'Старый удушливый и разваливающийся дом.')
+		self.son.change_text (3, 'Внутри очень подозрительно. Кругом какие-то отбросы и испражнения;')
+		self.son.change_text (4, 'пахнет затхлостью, смертью и разложением.')
+
+
+	def stage_content (self, hero):
+		pass

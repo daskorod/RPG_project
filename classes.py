@@ -893,6 +893,23 @@ class Ding(Platform):
 		Platform.interaction (self, hero)
 		hero.son.change_text (1, self.text)
 
+class Ding2(Platform):
+	def __init__(self, x, y, img, text):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load(img)
+		#self.image.set_colorkey ((0,127,14))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.text = text
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.change_text (1, self.text)
+
 class Obstacle(Platform):
 	def __init__(self, x, y, random_set):
 		#sprite.Sprite.__init__(self)
