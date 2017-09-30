@@ -39,7 +39,7 @@ inventory_screen = Surface ((380,380))
 char_screen = Surface ((380,380))
 journal_screen = Surface ((380,380))
 start_screen_text_surface = pygame.Surface ((300, 100))	
-
+start_screen_version_surface = pygame.Surface ((300, 100))	
 
 def main_interface (level):
 	window.blit(start_screen, (10, 10))

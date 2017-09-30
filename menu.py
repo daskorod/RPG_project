@@ -43,10 +43,14 @@ def menu_loop ():
 			start_screen.fill ((black))
 
 			start_screen.blit(screens.start_screen_text_surface, (300, 510))
+			start_screen.blit(screens.start_screen_version_surface, (700, 570))
 
 			screens.start_screen_text_surface.fill ((black))
 			screens.start_screen_text_surface.blit(fonts.font2.render (menu_text,True, (x,x,x)), (10,10))
-			
+			screens.start_screen_version_surface.fill ((black))
+			screens.start_screen_version_surface.blit(fonts.font3.render (version,True, (200,200,200)), (50,10))	
+
+
 			start_screen.blit (main_image, (120, 40))
 			start_screen.blit (text_image, (120, 430))
 
@@ -77,7 +81,7 @@ def load ():
 			start_screen.fill ((black))
 			start_screen.blit(screens.start_screen_text_surface, (320, 310))
 			screens.start_screen_text_surface.fill ((black))
-			screens.start_screen_text_surface.blit(fonts.font2.render ("        ЗАГРУЗКА ...",True, (x,x,x)), (10,10))
+			screens.start_screen_text_surface.blit(fonts.font2.render ("    ЗАГРУЗКА ...",True, (x,x,x)), (10,10))
 		
 			pygame.display.update() 
 
@@ -120,91 +124,6 @@ def splittext (text):
 	return stroke_compendium
 
 
-
-def intro_loop ():
-
-		done1 = True
-		time = 0
-		x = 225
-		up = True
-		time2 = 0
-		count = 0
-		sound1 = pygame.mixer.Sound('sound/7.ogg')
-		sound1.set_volume(0.01)
-		time3 = 0
-		end = False
-		intro = pygame.image.load ('images/intro/3.png')
-		text_to_print_compendium = [str() for x in range(6)]
-		stroke_compendium = splittext ('В начале сотворил Бог небо и землю... Земля же была безвидна и пуста, и тьма над бездною, и Дух Божий носился над водою. И сказал Бог: да будет свет. И стал свет. И увидел Бог свет, что он хорош, и отделил Бог свет от тьмы.')
-
-		while done1:
-
-			for e in pygame.event.get ():
-					if e.type == pygame.QUIT:
-							sys.exit ()
-
-					if e.type == pygame.KEYDOWN:
-						if e.key == pygame.K_SPACE:
-
-							done1 = False
-
-			screens.window.blit(start_screen, (10, 10))
-			start_screen.fill ((black))
-			start_screen.blit (intro_screen, (120,20))
-			intro_screen.fill ((black))
-
-			start_screen.blit(screens.start_screen_text_surface, (530, 570))
-
-			screens.start_screen_text_surface.fill ((black))
-
-			
-
-			start_screen.blit (screens.text_intro_screen, (120, 430))
-			screens.text_intro_screen.fill ((black))
-			intro_screen.blit (intro, (0, 40-time2))
-			text2 = text1[:time2]
-			
-
-			if end != True:
-				sound1.play()
-
-			if end == True:
-				screens.start_screen_text_surface.blit(fonts.font2.render ("     SPACE - >",True, (x,x,x)), (10,10))
-
-
-			text_to_print_compendium[count] = stroke_compendium[count][:time3]
-			if len(stroke_compendium[count])<time3:
-				
-				if len(stroke_compendium)>count+1:
-					count +=1
-					time3 = 0
-				else:
-					end = True
-					
-
-
-			for i in range(6):
-
-				screens.text_intro_screen.blit(fonts.underdog.render (text_to_print_compendium[i], True, (white)), (10,10+i*20))
-
-
-			if up == True:
-				x = x - 5
-			if up == False:
-				x = x + 5
-	
-			if x > 210:
-				up = True
-			if x < 10:
-				up = False
-
-			timer.tick (30)
-			time = time + 1
-			time3 = time3 + 1
-			if time2 < 300:
-				time2 = int(time//3)
-
-			pygame.display.update() 
 
 def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_scroll = 10000, speed_mod = 3):
 
