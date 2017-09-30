@@ -25,7 +25,8 @@ def menu_loop ():
 		x = 225
 		up = True
 
-		main_image = pygame.image.load ('images/main_pic7.gif')
+		main_image = pygame.image.load ('images/main_pic_de.gif')
+		text_image = pygame.image.load ('images/logo_text.gif')
 
 		while done1:
 
@@ -41,12 +42,14 @@ def menu_loop ():
 			screens.window.blit(start_screen, (10, 10))
 			start_screen.fill ((black))
 
-			start_screen.blit(screens.start_screen_text_surface, (300, 530))
+			start_screen.blit(screens.start_screen_text_surface, (300, 510))
 
 			screens.start_screen_text_surface.fill ((black))
 			screens.start_screen_text_surface.blit(fonts.font2.render (menu_text,True, (x,x,x)), (10,10))
 			
-			start_screen.blit (main_image, (120, 100))
+			start_screen.blit (main_image, (120, 40))
+			start_screen.blit (text_image, (120, 430))
+
 			if up == True:
 				x = x - 5
 			if up == False:
@@ -75,6 +78,22 @@ def load ():
 			start_screen.blit(screens.start_screen_text_surface, (320, 310))
 			screens.start_screen_text_surface.fill ((black))
 			screens.start_screen_text_surface.blit(fonts.font2.render ("        ЗАГРУЗКА ...",True, (x,x,x)), (10,10))
+		
+			pygame.display.update() 
+
+def pause ():
+
+		done1 = True
+		time = 0
+		x = 225
+		up = True
+		while time < 10:
+			time = time+1
+			screens.window.blit(start_screen, (10, 10))
+			start_screen.fill ((black))
+			start_screen.blit(screens.start_screen_text_surface, (320, 310))
+			screens.start_screen_text_surface.fill ((black))
+			#screens.start_screen_text_surface.blit(fonts.font2.render ("        ЗАГРУЗКА ...",True, (x,x,x)), (10,10))
 		
 			pygame.display.update() 
 
@@ -134,7 +153,7 @@ def intro_loop ():
 			start_screen.blit (intro_screen, (120,20))
 			intro_screen.fill ((black))
 
-			start_screen.blit(screens.start_screen_text_surface, (500, 570))
+			start_screen.blit(screens.start_screen_text_surface, (530, 570))
 
 			screens.start_screen_text_surface.fill ((black))
 
@@ -150,7 +169,7 @@ def intro_loop ():
 				sound1.play()
 
 			if end == True:
-				screens.start_screen_text_surface.blit(fonts.font2.render ("дальше (space) ->",True, (x,x,x)), (10,10))
+				screens.start_screen_text_surface.blit(fonts.font2.render ("     SPACE - >",True, (x,x,x)), (10,10))
 
 
 			text_to_print_compendium[count] = stroke_compendium[count][:time3]
@@ -187,7 +206,7 @@ def intro_loop ():
 
 			pygame.display.update() 
 
-def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_scroll = 10000):
+def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_scroll = 10000, speed_mod = 3):
 
 		done1 = True
 		time = 0
@@ -202,7 +221,7 @@ def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_
 		intro = pygame.image.load (pic)
 		text_to_print_compendium = [str() for x in range(6)]
 		stroke_compendium = splittext (text)
-
+		time4 = 0
 		while done1:
 
 
@@ -212,7 +231,7 @@ def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_
 			start_screen.blit (intro_screen, (120,20))
 			intro_screen.fill ((black))
 
-			start_screen.blit(screens.start_screen_text_surface, (500, 570))
+			start_screen.blit(screens.start_screen_text_surface, (560, 570))
 
 			screens.start_screen_text_surface.fill ((black))
 
@@ -225,18 +244,26 @@ def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_
 			
 
 			if end != True:
-				sound1.play()
+				try:
+
+					if stroke_compendium[count][time3-1] != ' ':
+
+						sound1.play()
+				except:
+					pass
 
 			if end == True:
-				screens.start_screen_text_surface.blit(fonts.font2.render ("дальше (space) ->",True, (x,x,x)), (10,10))
+				screens.start_screen_text_surface.blit(fonts.font2.render ("           SPACE ",True, (x,x,x)), (10,10))
 
 
 			text_to_print_compendium[count] = stroke_compendium[count][:time3]
+
 			if len(stroke_compendium[count])<time3:
 				
 				if len(stroke_compendium)>count+1:
 					count +=1
 					time3 = 0
+					time4 = 0
 				else:
 					end = True
 					
@@ -258,10 +285,13 @@ def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_
 				up = False
 
 			timer.tick (30)
+			time4 = time4 + 1
 			time = time + 1
-			time3 = time3 + 1
+			time3 = time3 + 2
+
 			if time2 < time_scroll:
-				time2 = int(time//3)
+				time2 = int(time//speed_mod)
+
 
 			for e in pygame.event.get ():
 					if e.type == pygame.QUIT:
