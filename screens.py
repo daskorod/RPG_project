@@ -25,6 +25,7 @@ else:
 
 display.set_caption('Giperborea')
 
+text_intro_screen = Surface ((600, 150))
 start_screen = Surface((840, 630))
 #background = image.load ('images/back.png')
 adventure_screen = Surface ((840, 420))
@@ -37,7 +38,7 @@ high_screen = Surface ((810, 22))
 inventory_screen = Surface ((380,380))
 char_screen = Surface ((380,380))
 journal_screen = Surface ((380,380))
-start_screen_text_surface = pygame.Surface ((200, 100))	
+start_screen_text_surface = pygame.Surface ((300, 100))	
 
 
 def main_interface (level):

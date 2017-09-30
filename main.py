@@ -12,15 +12,34 @@ import functions
 import menu
 import sys
 
+test_arg = False
+
+if len(sys.argv)>1:
+	if sys.argv[1] == 'test':
+		print ('Test mode')
+
+		test_arg = True
 
 
 #global settings
 pygame.key.set_repeat(100,100)
 pygame.key.get_repeat ()
+menu.menu_loop()
 
 #main function
+if test_arg == False:
 
-menu.menu_loop()
+	menu.intro_loop()
+	menu.experiment_loop('И упал с неба денница, сын зари! разбился о землю, попиравший народы. Низвержен он ныне в ад, в 	глубины преисподней. Тот, который говорил: "взойду на небо, выше звезд Божиих вознесу престол мой... взойду на высоты 	облачные, буду подобен Всевышнему".', 'images/intro/DL2.png')
+	
+	#menu.experiment_loop('И упал с неба денница, сын зари! разбился о землю, попиравший народы. Низвержен он ныне в ад, в 	глубины преисподней. Тот, который говорил: "взойду на небо, выше звезд Божиих вознесу престол мой... взойду на выстоы 	облачные, буду подобен Всевышнему".', 'images/intro/DL2.gif')
+	
+	menu.experiment_loop('Много времени прошло с тех времён. Память о первой Войне Сил, проходившей в небесах, сохранилась 	только в легендах и священных текстах. Но зло в сердцах людей дало свои всходы. Сыны зла начали войну на Земле против 	людей света.', 'images/intro/cl.png', pic_x = 10, time_scroll = 50) 
+	
+	menu.experiment_loop('Эта была вторая Война Сил, которая была столь разрушительна, что большая часть мира превратилась в 	безлюдную пустошь, наполненную тварями, порождёнными Войной...', 'images/intro/2.gif',time_scroll = 50) 
+	
+menu.load()
+
 #menu.help_loop()
 
 def main_loop():
@@ -57,13 +76,11 @@ def create_class_levels_list(levelsmodule):
 son = functions.Son ()
 control = controller.Holy_Spirit () 
 
-test_arg = False
-
 if len(sys.argv)>1:
 	if sys.argv[1] == 'test':
-		print ('Test mode')
+
 		control.auto = False
-		test_arg = True
+
 
 
 battle = functions.Battle () #to delete

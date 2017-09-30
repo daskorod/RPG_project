@@ -8,6 +8,10 @@ import items
 import text_data.zombisad, text_data.monk
 #import npc
 
+
+
+
+
 def end_dialog(self, hero):
 	hero.move = True
 	hero.control.k_e = False
