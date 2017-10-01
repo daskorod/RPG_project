@@ -183,7 +183,7 @@ class Compose_dialog_tree ():
 			self.control.up = False
 			self.a = self.a-1
 
-		if self.a < int((len(all_strokes)+1) // 8):
+		if self.a < int((len(all_strokes)+1) // 9):
 			information_screen.blit (self.arrowDw, (600, 70))
 		if self.a !=0:
 			information_screen.blit (self.arrowUp, (600, 0))

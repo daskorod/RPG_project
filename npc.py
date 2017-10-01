@@ -139,6 +139,7 @@ class Gilbert (classes.Monk):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+				
 			hero.collide_control = False
 			hero.start_conv = True
 
