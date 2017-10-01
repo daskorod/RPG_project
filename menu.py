@@ -104,8 +104,7 @@ def pause ():
 text1 = 'В начале сотворил Бог небо и землю...'
 
 
-pygame.mixer.pre_init (44100, -16, 1, 2512)
-pygame.mixer.init()
+
 
 #stroke_compendium = [str() for x in range(6)]
 

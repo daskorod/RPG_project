@@ -15,6 +15,8 @@ import controller
 from monster import Monster
 import classes
 import ideas
+from functions import end_dialog, war, br_change, br_auto
+import items
 
 
 class Gilbert (classes.Monk):
@@ -22,6 +24,7 @@ class Gilbert (classes.Monk):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = textus
 		self.lbolt = False
+		self.race = 'human'
 		self.mname = 'Отец Гильберт'
 		#self.image.fill ((220,130,100))
 		self.ll = False
@@ -294,6 +297,7 @@ class Barmen (classes.Monster):
 		self.tree = textus
 		self.lbolt = False
 		self.mname = 'Бармен'
+		self.race = 'human'
 		self.image = Surface ((45,45))
 		self.image.fill ((220,130,100))
 		self.ll = False
@@ -415,6 +419,7 @@ class Martin (classes.Monk):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = textus
 		self.lbolt = False
+		self.race = 'human'
 		self.mname = 'Отец Мартин'
 		#self.image.fill ((220,130,100))
 		self.ll = False
@@ -609,6 +614,7 @@ class Augustine (classes.Monk):
 		self.tree = textus
 		self.lbolt = False
 		self.mname = 'Августин'
+		self.race = 'human'
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/priest.png')
@@ -681,6 +687,7 @@ class Guard (Monster):
 		self.tree = textus
 		self.lbolt = False
 		self.mname = 'Стражник'
+		self.race = 'human'
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/guard.png')
@@ -689,8 +696,69 @@ class Guard (Monster):
 
 		self.order = True
 		self.quest = False
+		self.second = False
+		self.step_away = False
 
-
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if self.step_away == False:
+			if items.permit in hero.inv and self.second == False:
+				br_change(self, 11)
+			elif items.permit in hero.inv and self.second == True:
+				br_change(self, 10)
+			elif hero.gold>200 in hero.inv and self.second == True:
+				br_change(self, 8)
+			elif self.second == True:
+				br_change(self, 9)
 
 	def dialog_special (self, hero):
-		pass
+		if self.add_information == 'what':
+			
+			if hero.gold <20:
+				br_change(self, 2)
+			else:
+				br_change(self, 1)
+		if self.add_information == 'doc' and self.control.k_e == True:
+			self.control.k_e = False
+			if items.doc in hero.inv:
+				br_change(self, 7)
+			else:
+				br_change(self, 4)
+
+		if self.add_information == 'arrest':
+			pass
+			#переход на локацию башня, или тюрьма.
+
+		if self.add_information == 'briber':
+			
+			if hero.gold <100:
+				br_change(self, 6)
+			else:
+				br_change(self, 5)
+
+		if self.add_information == 'open':
+			self.rect.x += 45
+			self.step_away = True			
+			br_auto (self)
+			end_dialog (self, hero)
+
+		if self.add_information == 'second':
+
+			self.second = True			
+			br_auto (self)
+			end_dialog (self, hero)
+
+		if self.add_information == 'briebery_gold':
+			hero.gold -= 100
+
+			self.second = True			
+
+			end_dialog (self, hero)
+
+		if self.add_information == 'briebery_200' and self.control.k_e == True:
+			self.control.k_e = False
+			hero.gold -= 200
+			self.rect.x += 45
+			self.step_away = True	
+			self.second = True			
+			br_auto (self)

@@ -37,6 +37,7 @@ class Monster (sprite.Sprite):
 		#BASE DATA
 		self.image=image.load('images/zombi.png')
 		#self.image.set_colorkey ((255,255,255))
+		self.race = 'undead'
 
 
 		self.rect = Rect (0,0, 45,45)

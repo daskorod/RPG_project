@@ -22,14 +22,16 @@ if len(sys.argv)>1:
 
 
 #global settings
+#pygame.mixer.pre_init (44100, -16, 1, 2512)
+#pygame.mixer.init()
 pygame.key.set_repeat(100,100)
 pygame.key.get_repeat ()
-menu.menu_loop()
+
 menu.pause()
 
 #main function
 if test_arg == False:
-
+	menu.menu_loop()
 	#menu.intro_loop()
 	menu.experiment_loop ('В начале сотворил Бог небо и землю... Земля же была безвидна и пуста, и тьма над бездною, и Дух Божий носился над водою. И сказал Бог: да будет свет. И стал свет. И увидел Бог свет, что он хорош, и отделил Бог свет от тьмы.', 'images/intro/3.png', pic_x = 0, pic_y = 40, time_scroll = 200)
 

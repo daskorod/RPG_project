@@ -14,6 +14,7 @@ import math
 import event
 import menu
 import sys
+import sounds
 
 
 test_arg = False
@@ -870,6 +871,7 @@ class Hero(pygame.sprite.Sprite):
 
 
 		if self.move == True:
+			
 		
 			if self.control.right == True:
 
@@ -884,11 +886,12 @@ class Hero(pygame.sprite.Sprite):
 	
 				else:
 					self.rect.x += self.velo
-	
+					sounds.footstep.play()
 				self.control.right = False
 
 	
 			if self.control.left == True:
+
 				self.direction = 1
 				self.rect.x -= self.back_move
 				self.etwas = self.collide(array)
@@ -898,10 +901,11 @@ class Hero(pygame.sprite.Sprite):
 	
 				else:
 					self.rect.x -= self.velo
-	
+					sounds.footstep.play()
 				self.control.left = False
 	
 			if self.control.up == True:
+				
 				self.direction = 3
 				self.rect.y -= self.back_move
 				self.etwas = self.collide(array)
@@ -911,10 +915,12 @@ class Hero(pygame.sprite.Sprite):
 	
 				else:
 					self.rect.y -= self.velo
-	
+					sounds.footstep.play()
+					
 				self.control.up = False
 	
 			if self.control.down == True:
+				
 				self.direction = 0
 				self.rect.y += self.back_move
 				self.etwas = self.collide(array)
@@ -924,7 +930,7 @@ class Hero(pygame.sprite.Sprite):
 	
 				else:
 					self.rect.y += self.velo
-	
+					sounds.footstep.play()
 				self.control.down = False
 			self.anima = animlist[self.direction]
 

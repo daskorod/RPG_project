@@ -23,7 +23,20 @@ def end_dialog(self, hero):
 		self.branch = self.branch_id
 		self.s = 1
 		self.n = 0
-		
+
+def br_change(self, branch):
+	self.branch = branch
+	self.s = 1
+	self.n = 0
+
+def br_auto(self):
+	if self.branch_do == 'go':
+		self.branch_do = 'done'
+		self.branch = self.branch_id
+		self.s = 1
+		self.n = 0
+
+
 def war(self, hero):
 			hero.son.clear_text ()
 			hero.control.k_e = False
