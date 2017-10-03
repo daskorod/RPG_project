@@ -38,6 +38,7 @@ class Monster (sprite.Sprite):
 		self.image=image.load('images/zombi.png')
 		#self.image.set_colorkey ((255,255,255))
 		self.race = 'undead'
+		self.flee = True
 
 
 		self.rect = Rect (0,0, 45,45)
@@ -118,7 +119,8 @@ class Monster (sprite.Sprite):
 		monster_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(90,140))
 		monster_screen.blit(self.at_ic,(5,145))
 		monster_screen.blit(self.ac_ic,(75,145))
-
+	def special_death (self,hero):
+		pass
 	def death_check (self, hero):
 
 		if self.hp <= 0:
@@ -153,6 +155,7 @@ class Monster (sprite.Sprite):
 				hero.move = True
 				self.kill ()
 				hero.collide_control = False
+			self.special_death(hero)
 
 	def interaction (self, hero):
 		if self.order == False:

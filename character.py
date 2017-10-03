@@ -185,6 +185,7 @@ class Hero(pygame.sprite.Sprite):
 		self.monster_turn = False
 		self.press_to_kill = False
 		self.go_left = False # В бою движение меча
+		self.not_flee = False
 
 		#TECH
 		self.marker = classes.Marker (self.mx,self.my)
@@ -959,6 +960,9 @@ class Hero(pygame.sprite.Sprite):
 			self.collide_control = True
 			self.move = False
 			self.etwas = event.inception
+		elif self.inception == True and test_arg == True:
+			self.char_value['7points'] +=10
+			self.inception = False
 
 		if self.collide_control == True and self.etwas.agression == True:
 			functions.combat (self, self.etwas)			
@@ -1085,12 +1089,18 @@ class Hero(pygame.sprite.Sprite):
 					self.son.change_text (1, "Что будете делать?")
 					self.son.change_text (3, "1 - изгонение нежити; 2 - лечение; 3 - назад")
 	
-				if self.control.k_3 == True:
+				if self.control.k_3 == True and self.etwas.flee == True:
 					self.turn_main = False
 					self.control.k_3 = False
 					self.flee = True
 					self.son.clear_text ()
-	
+
+				if self.control.k_3 == True and self.etwas.flee == False:
+					self.turn_main = False
+					self.control.k_3 = False
+					self.not_flee = True
+					self.son.clear_text ()	
+
 			if self.assault == True:
 				self.assault_fun (self.etwas)
 	
@@ -1100,8 +1110,19 @@ class Hero(pygame.sprite.Sprite):
 			if self.special == True:
 				self.special_fun ()
 
+			if self.not_flee == True:
+				self.not_flee_fun()
 
-		
+
+	def not_flee_fun (self):
+			self.son.clear_text ()
+			self.son.change_text (1, "Бежать некуда. Обложили!")
+			self.son.change_text (2, "Придётся продолжать сражаться.")
+			self.son.change_text (4, "Нажмите E для продолжения.")			
+			if self.control.k_e == True:
+				self.turn_main = True
+				self.control.k_e = False
+				self.not_flee = False
 
 	def press_to_kill_fun (self):
 		if self.press_to_kill == True and self.control.k_e == True:
@@ -1116,7 +1137,7 @@ class Hero(pygame.sprite.Sprite):
 	def special_fun (self):
 
 
-			if self.control.k_1 == True:
+			if self.control.k_1 == True and self.etwas.race == 'undead':
 				self.control.k_1 = False
 				self.son.clear_text ()
 

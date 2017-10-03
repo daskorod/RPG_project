@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict
+import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict
 import img
 import functions
 
@@ -314,6 +314,9 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'V':
                             mn = npc.Guard (x/45,y/45,battle, text_data.guard_dict.text, control, 7,6,6,2, son, 50)
                             sprite_group.add (mn)
+                     if col == 'B':
+                            mn = npc.Guard2 (x/45,y/45,battle, text_data.guard2_dict.text, control, 7,6,6,2, son, 50)
+                            sprite_group.add (mn)                            
                      x += 45
               x = 0
               y += 45

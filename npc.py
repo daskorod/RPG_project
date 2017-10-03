@@ -678,6 +678,64 @@ class Augustine (classes.Monk):
 			end_dialog (self, hero)
 			hero.death()
 
+
+		if self.add_information == 'war' and self.control.k_e == True:
+			self.control.k_e = False
+			self.agression = True
+			#self.agression = True
+			hero.turn_main = True
+			hero.start_conv = True
+			hero.view.a = 0
+			hero.direction = 2
+
+			for i in hero.locations_dict['tower1'].block_group:
+				if i.__class__.__name__ == 'Guard2':
+					i.agression = True
+					hero.etwas = i			
+
+#			a = random.randint (1,6)
+
+
+	def dialog_options (self,hero):
+		self.dialog_special (hero)
+
+		if self.add_information == 'end':
+
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+
+
+
+		if self.add_information == 'passage' and self.control.k_e == True:
+
+
+			self.control.k_e = False
+
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+				hero.view.a = 0
+
+		if self.add_information == 'go':
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+				hero.view.a = 0
+
 class Guard (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
@@ -760,3 +818,170 @@ class Guard (Monster):
 			self.step_away = True	
 			self.second = True			
 			br_auto (self)
+
+
+class Guard2 (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Стражник'
+		self.race = 'human'
+		self.flee = False
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/guard.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+
+		self.order = True
+		self.quest = False
+		self.second = False
+		self.step_away = False
+		self.priest_action = False
+		self.wait_for_priest_turn = False
+		self.priest_turn = False
+		self.heal = False
+
+#	def interaction (self, hero):
+		#Monster.interaction (self, hero)
+	def special_death (self,hero):
+		hero.collide_control = True
+		for i in hero.locations_dict['tower1'].block_group:
+			if i.__class__.__name__ == 'Augustine':
+				i.agression = True
+				hero.etwas = i	
+
+	def dialog_special (self, hero):
+		if self.add_information == 'what':
+			
+			if hero.gold <20:
+				br_change(self, 2)
+			else:
+				br_change(self, 1)
+		if self.add_information == 'doc' and self.control.k_e == True:
+			self.control.k_e = False
+			if items.doc in hero.inv:
+				br_change(self, 7)
+			else:
+				br_change(self, 4)
+
+		if self.add_information == 'arrest' and self.control.k_e == True:
+			end_dialog (self, hero)
+			hero.death()
+			#переход на локацию башня, или тюрьма.
+
+		if self.add_information == 'briber':
+			
+			if hero.gold <100:
+				br_change(self, 6)
+			else:
+				br_change(self, 5)
+
+		if self.add_information == 'open':
+			self.rect.x += 45
+			self.step_away = True			
+			br_auto (self)
+			end_dialog (self, hero)
+
+		if self.add_information == 'second':
+
+			self.second = True			
+			br_auto (self)
+			end_dialog (self, hero)
+
+		if self.add_information == 'briebery_gold':
+			hero.gold -= 100
+
+			self.second = True			
+
+			end_dialog (self, hero)
+
+		if self.add_information == 'briebery_200' and self.control.k_e == True:
+			self.control.k_e = False
+			hero.gold -= 200
+			self.rect.x += 45
+			self.step_away = True	
+			self.second = True			
+			br_auto (self)
+
+	def battle_action (self, hero):
+		if hero.monster_turn == True:
+			self.son.clear_text ()
+			a = random.randint (1,6)
+			b = random.randint (1,6)
+			c = self.at + a 
+			d = hero.ac + b
+		
+			self.son.change_text (1, "Атака монстра: "+str(c) + "  Защита ваша: "+ str(d))
+			if c >= d:
+				
+				if int(c/d)>1:
+					hero.hp = hero.hp - self.damage*int(c/d)
+					self.son.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
+					self.son.change_text (5, 'Критический урон: '+str(self.damage*int(c/d)))
+					
+				else:
+					self.son.change_text (4, "Монстр попал и нанес сокрушительный удар!")
+					hero.hp = hero.hp - self.damage
+					self.son.change_text (5, 'Урон: '+str(self.damage))
+			elif c<d:
+				self.son.change_text (4, 'Вы уклонились!')	
+		
+			self.son.change_text (7, 'Нажмите Е')
+			hero.monster_turn = False
+			self.priest_turn = True
+
+		if self.priest_turn == True and self.control.k_e == True:
+			self.control.k_e = False
+#			self.wait_for_priest_turn = False
+			self.son.clear_text ()
+			a = random.randint (1,3)
+			#boltAnim.blit (adventure_screen, (100, 100))
+		
+			self.son.change_text (1, "Священник тем временем бормотал слова молитв...")
+			#self.son.change_text (2, "")
+			self.son.change_text (3, 'Нажмите Е')
+		
+			self.lbolt = True
+			self.priest_turn = False
+			self.heal = True
+
+		if self.heal == True and self.control.k_e == True:
+			self.control.k_e = False
+			self.son.clear_text ()
+			a = random.randint (1,3)
+			#boltAnim.blit (adventure_screen, (100, 100))
+		
+			self.son.change_text (1, "Раны на стражнике начали затягиваться!")
+			#self.son.change_text (2, "")
+			self.son.change_text (3, 'Нажмите Е')
+			self.hp += a
+			if self.hp > 7:
+				self.hp = 7
+		
+			self.heal = False
+			self.wait_for_next_turn = True
+						
+#			self.ll = False
+#			img.boltAnim.play ()
+#			self.son.clear_text ()
+#			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
+#			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
+#			hero.hp -= a
+#			self.son.change_text (4, 'Нажмите Е')
+#			self.wait_for_next_turn = True
+#			hero.monster_turn = False
+#			self.control.k_e = False
+
+#		if self.control.k_e == True and self.wait_for_priest_turn == True:
+#			self.priest_turn = True
+#			self.control.k_e = False
+#
+#			self.son.clear_text ()	
+
+		if self.control.k_e == True and self.wait_for_next_turn == True and self.control.e_cntrl == True and hero.is_death == False:
+			self.wait_for_next_turn = False
+			self.control.k_e = False
+			hero.turn_main = True
+			self.son.clear_text ()
