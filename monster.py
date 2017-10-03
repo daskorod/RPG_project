@@ -248,6 +248,7 @@ class Monster (sprite.Sprite):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+				hero.view.a = 0
 
 		if self.add_information == 'go':
 			if self.branch_do == 'go':
@@ -255,6 +256,7 @@ class Monster (sprite.Sprite):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+				hero.view.a = 0
 
 				
 	def battle_action (self, hero):

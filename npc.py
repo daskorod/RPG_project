@@ -476,18 +476,18 @@ class Martin (classes.Monk):
 			hero.start_conv = True
 
 
-		if self.add_information == 'passage' and self.control.k_e == True:
-
-
-			self.control.k_e = False
-
-
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-
+#		if self.add_information == 'passage' and self.control.k_e == True:
+#
+#
+#			self.control.k_e = False
+#
+#
+#			if self.branch_do == 'go':
+#				self.branch_do = 'done'
+#				self.branch = self.branch_id
+#				self.s = 1
+#				self.n = 0
+#
 
 	def battle_action (self, hero):
 		self.g += 1
@@ -628,59 +628,55 @@ class Augustine (classes.Monk):
 
 
 	def dialog_special (self, hero):
-		if self.add_information == 'gold' and self.control.k_e == True:
+#		if self.add_information == 'passage' and self.control.k_e == True:
+#			self.control.k_e = False
+#
+#			if self.branch_do == 'go':
+#				self.branch_do = 'done'
+#				self.branch = self.branch_id
+#				self.s = 1
+#				self.n = 0
+
+		if self.add_information == 'quest1':
+			
+			hero.quest['gov1'] = True
+			hero.inv.append (items.doc)
+			end_dialog (self, hero)
+
+
+		if self.add_information == 'arrest' and self.control.k_e == True:
 			self.control.k_e = False
-			if hero.gold >= 20:
-				hero.gold -= 20
-
-				self.branch = 4
-				self.s = 1
-				self.n = 0
-
+			if hero.gold <30:
+				br_change(self, 4)
 			else:
-				self.branch = 6
-				self.s = 1
-				self.n = 0
 
+				br_change(self, 3)
 
+			#переход на локацию башня, или тюрьма.
 
-		if self.add_information == 'gelassenheit' and self.control.k_e == True:
-			hero.move = True
-			x = 0
-			for i in hero.journal:
-				if i.name == 'Пусто':
-					hero.journal[x] = ideas.gelassenheit
-					break
-				x +=1
+		if self.add_information == 'yel':
+			
+			if hero.gold <30:
+				br_change(self, 6)
+			else:
+				hero.gold -= 30
+				br_change(self, 7)
+				hero.inv.append (items.doc)
 
+		if self.add_information == 'red':
+			
+			if hero.gold <200:
+				br_change(self, 6)
+			else:
+				hero.gold -= 200
+				br_change(self, 7)
+				hero.inv.append (items.doc)
 
+		if self.add_information == 'prison' and self.control.k_e == True:
 			self.control.k_e = False
-
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Вы записали концепцию Отрешённости в свой дневничок.')
-			hero.son.change_text (3, 'Теперь вы по-другому будете относиться к внутреннему и внешнему.')
-			hero.son.change_text (4, 'Кто знает, до чего вас это доведёт?')
-
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-			hero.collide_control = False
-			hero.start_conv = True
-
-
-		if self.add_information == 'passage' and self.control.k_e == True:
-
-
-			self.control.k_e = False
-
-
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
+			
+			end_dialog (self, hero)
+			hero.death()
 
 class Guard (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
@@ -726,8 +722,9 @@ class Guard (Monster):
 			else:
 				br_change(self, 4)
 
-		if self.add_information == 'arrest':
-			pass
+		if self.add_information == 'arrest' and self.control.k_e == True:
+			end_dialog (self, hero)
+			hero.death()
 			#переход на локацию башня, или тюрьма.
 
 		if self.add_information == 'briber':
