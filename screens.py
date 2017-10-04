@@ -20,8 +20,8 @@ if len(sys.argv)>1:
 else:
 	window = display.set_mode((860, 634))	
 #display.toggle_fullscreen()
-#
 
+#window = display.set_mode((860,634),pygame.FULLSCREEN)
 
 display.set_caption('Giperborea')
 

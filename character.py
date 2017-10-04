@@ -887,7 +887,7 @@ class Hero(pygame.sprite.Sprite):
 	
 				else:
 					self.rect.x += self.velo
-					sounds.footstep.play()
+					#sounds.footstep.play()
 				self.control.right = False
 
 	

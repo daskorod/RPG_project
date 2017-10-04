@@ -335,3 +335,50 @@ class _oldhouse (SuperLevel):
 
 	def stage_content (self, hero):
 		pass
+
+
+class _park2 (SuperLevel):
+	def __init__ (self,lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.name = '- Парк -'		
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2)
+		self.back = True
+		self.camera = camera.Camera (self.level_width, self.level_height, 735, 420)
+		self.x = 0
+		self.up = True	
+
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Мирный и тихий парк.')
+		self.son.change_text (3, 'Здесь можно упокоиться навечно.')
+		self.son.change_text (4, '')		
+	
+
+
+	def stage_content (self, hero):
+		pass
+
+class _strange (SuperLevel):
+	def __init__ (self,lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.name = '- Тупиковая улица -'		
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2)
+		self.back = True
+		self.camera = camera.Camera (self.level_width, self.level_height, 735, 420)
+		self.x = 0
+		self.up = True	
+
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Интересное местечко.')
+		self.son.change_text (3, 'Только тут никого нет. Полная тишина.')
+	
+	
+
+
+	def stage_content (self, hero):
+		pass

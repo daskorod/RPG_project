@@ -259,9 +259,7 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'O':
                             well = classes.Obstacle(x,y, img.obstacles)  
                             sprite_group.add (well)
-                     if col == "=":
-                            pf = classes.Nothing (x,y)
-                            sprite_group.add (pf)
+
                      if col == 'P':
                             pr = classes.PortalLink (x,y, 'TempleFromCell', 'TempleInCell', 'D', locationname )
                             sprite_group.add (pr)
@@ -316,7 +314,13 @@ def create_level_city (level, battle, control, son, locationname):
                             sprite_group.add (mn)
                      if col == 'B':
                             mn = npc.Guard2 (x/45,y/45,battle, text_data.guard2_dict.text, control, 7,6,6,2, son, 50)
-                            sprite_group.add (mn)                            
+                            sprite_group.add (mn)   
+                     if col == 'N':
+                            pr = classes.PortalLink (x,y, 'towerplatz', 'still2', 'U', locationname )
+                            sprite_group.add (pr) 
+                     if col == 'M':
+                            pr = classes.PortalLink (x,y, 'park1', 'still1', 'R', locationname )
+                            sprite_group.add (pr)                           
                      x += 45
               x = 0
               y += 45
@@ -337,8 +341,24 @@ def create_level_city2 (level, battle, control, son, locationname):
                      if col == "m":
                             mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son, 100)
                             sprite_group.add (mn)
-
-
+                     if col == 'Q':
+                            ding = classes.Ding2 (x,y, 'images/tiles/wood2.png', 'Красивое и мощное дерево.')
+                            sprite_group.add (ding)
+                     if col == 'W':
+                            pr = classes.PortalLink (x,y, 'still2', 'towerplatz', 'D', locationname )
+                            sprite_group.add (pr)  
+                     if col == 'O':
+                            well = classes.Obstacle(x,y, img.obstacles)  
+                            sprite_group.add (well)
+                     if col == 'E':
+                            pr = classes.PortalLink (x,y, 'park', 'strange', 'U', locationname )
+                            sprite_group.add (pr)  
+                     if col == 'R':
+                            pr = classes.PortalLink (x,y, 'strange', 'park', 'D', locationname )
+                            sprite_group.add (pr)
+                     if col == 'T':
+                            pr = classes.PortalLink (x,y, 'still1', 'park1', 'L', locationname )
+                            sprite_group.add (pr)                                
                      x += 45
               x = 0
               y += 45
@@ -359,7 +379,7 @@ def create_interior_standart (level, grType):
 
        for row in level:
               for col in row:
-                    if col != '0' and col != '-' and col != '!' and col != '@' and col != '#'  and col != '$' and col != '%' :
+                    if col != '0' and col != '-' and col != '!' and col != '@' and col != '#'  and col != '$' and col != '%':
                             ground.append(grType(x,y))
                     if col == '!':
                             decor.append(classes.Ding(x,y, 'images/tiles/house.png', 'таверна'))
@@ -373,8 +393,9 @@ def create_interior_standart (level, grType):
                             decor.append(classes.Ding(x,y, 'images/tiles/tower7.png', 'башня'))
                     if col == 'C':
                             ding = classes.Ding2 (x,y, 'images/tiles/pit.png', 'Яма')
-                           
-                            ground.append(ding)
+                    if col == '^':
+                            decor.append(classes.Ding2(x,y, 'images/tiles/str_house.png', 'Странный дом'))                          
+                            #ground.append(ding)
                     x +=45
               x = 0
               for col in row:
@@ -386,7 +407,9 @@ def create_interior_standart (level, grType):
                     if col == "-":
                             pf = classes.Platform (x,y)
                             walls.append (pf)
-
+                    if col == "=":
+                            pf = classes.Nothing (x,y)
+                            interior.append (pf)
                     if col == "d":
                             door = classes.Door (x,y)
                             interior.append (door)
