@@ -1,13 +1,10 @@
 #! /usr/bin/env python3
 import pygame
-
 from constants import *
 import fonts
-
 import sys
-
-
 import screens
+import sounds 
 
 timer = pygame.time.Clock  ()
 
@@ -270,5 +267,115 @@ def help_loop ():
 
 			timer.tick (30)
 			time = time + 1
+
+			pygame.display.update() 
+
+
+def ending (text, pic, end_num, end_black = False, pic_x = 50, pic_y = 20, time_scroll = 10000, speed_mod = 3):
+
+		done1 = True
+		time = 0
+		x = 225
+		up = True
+		time2 = 0
+		count = 0
+		sound1 = sounds.prints
+		
+		time3 = 0
+		end = False
+		intro = pygame.image.load (pic)
+		text_to_print_compendium = [str() for x in range(6)]
+		stroke_compendium = splittext (text)
+		time4 = 0
+		while done1:
+
+
+
+			screens.window.blit(start_screen, (10, 10))
+			start_screen.fill ((black))
+			start_screen.blit (intro_screen, (120,20))
+			intro_screen.fill ((black))
+
+			start_screen.blit(screens.start_screen_text_surface, (560, 570))
+
+			start_screen.blit(screens.start_screen_version_surface, (320, 400))
+			screens.start_screen_text_surface.fill ((black))
+			screens.start_screen_version_surface.fill ((black))
+			
+
+			start_screen.blit (screens.text_intro_screen, (120, 430))
+			screens.text_intro_screen.fill ((black))
+			intro_screen.blit (intro, (pic_x, pic_y-time2))
+			text2 = text1[:time2]
+			
+
+			if end != True:
+				try:
+
+					if stroke_compendium[count][time3-1] != ' ':
+
+						sound1.play()
+				except:
+					pass
+			screens.start_screen_version_surface.blit(fonts.underdog.render ("КОНЦОВКА № %d" % end_num,True, (200,200,200)), (10,0))
+			if end == True:
+				screens.start_screen_text_surface.blit(fonts.font2.render ("   Нажмите   ESC ",True, (x,x,x)), (10,10))
+
+
+			text_to_print_compendium[count] = stroke_compendium[count][:time3]
+
+			if len(stroke_compendium[count])<time3:
+				
+				if len(stroke_compendium)>count+1:
+					count +=1
+					time3 = 0
+					time4 = 0
+				else:
+					end = True
+					
+
+
+			for i in range(6):
+
+				screens.text_intro_screen.blit(fonts.underdog.render (text_to_print_compendium[i], True, (white)), (10,10+i*20))
+
+
+			if up == True:
+				x = x - 5
+			if up == False:
+				x = x + 5
+	
+			if x > 210:
+				up = True
+			if x < 10:
+				up = False
+
+			timer.tick (30)
+			time4 = time4 + 1
+			time = time + 1
+			time3 = time3 + 2
+
+			if time2 < time_scroll:
+				time2 = int(time//speed_mod)
+
+
+			for e in pygame.event.get ():
+					if e.type == pygame.QUIT:
+						sys.exit ()
+					if e.type == pygame.KEYDOWN:						
+						if e.key == pygame.K_ESCAPE:
+							sys.exit ()
+
+					#if e.type == pygame.KEYDOWN:
+						#if e.key == pygame.K_SPACE:
+							#sys.exit ()
+							#done1 = False
+#							if end_black == True:
+#								screens.window.blit(start_screen, (10, 10))
+#								start_screen.fill ((black))
+#								start_screen.blit(screens.start_screen_text_surface, (300, 510))
+#								screens.start_screen_text_surface.fill ((black))
+#	
+#								screens.start_screen_text_surface.blit(fonts.font2.render ("ЗАГРУЗКА...",True, (255,255,255)), (10,10))
 
 			pygame.display.update() 

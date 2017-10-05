@@ -17,6 +17,8 @@ import classes
 import ideas
 from functions import end_dialog, war, br_change, br_auto
 import items
+import ends
+import menu
 
 
 class Gilbert (classes.Monk):
@@ -676,8 +678,8 @@ class Augustine (classes.Monk):
 			self.control.k_e = False
 			
 			end_dialog (self, hero)
-			hero.death()
-
+			#hero.death()
+			menu.ending ('Вы закончили свою жизнь в тюрьме. Вас посадили за решётку и забыли за ненадобностью. Кормили вас скудно. От холода и голода вы заболели и вскоре умерли. Лёжа на гнилой соломе вы прошептали ваши последние слова "еды..." и испустили дух.', 'images/end/prison.png', 2, pic_x = 50, time_scroll = 40, pic_y = 60, speed_mod = 5)
 
 		if self.add_information == 'war' and self.control.k_e == True:
 			self.control.k_e = False
@@ -782,7 +784,8 @@ class Guard (Monster):
 
 		if self.add_information == 'arrest' and self.control.k_e == True:
 			end_dialog (self, hero)
-			hero.death()
+			menu.ending ('Вы закончили свою жизнь в тюрьме. Вас посадили за решётку и забыли за ненадобностью. Кормили вас скудно. От холода и голода вы заболели и вскоре умерли. Лёжа на гнилой соломе вы прошептали ваши последние слова "еды..." и испустили дух.', 'images/end/prison.png', 2, pic_x = 50, time_scroll = 40, pic_y = 60, speed_mod = 5)
+			
 			#переход на локацию башня, или тюрьма.
 
 		if self.add_information == 'briber':
@@ -868,7 +871,9 @@ class Guard2 (Monster):
 
 		if self.add_information == 'arrest' and self.control.k_e == True:
 			end_dialog (self, hero)
-			hero.death()
+			menu.ending ('Вы закончили свою жизнь в тюрьме. Вас посадили за решётку и забыли за ненадобностью. Кормили вас скудно. От холода и голода вы заболели и вскоре умерли. Лёжа на гнилой соломе вы прошептали ваши последние слова "еды..." и испустили дух.', 'images/end/prison.png', 2, pic_x = 50, time_scroll = 40, pic_y = 60, speed_mod = 5)
+			
+			
 			#переход на локацию башня, или тюрьма.
 
 		if self.add_information == 'briber':

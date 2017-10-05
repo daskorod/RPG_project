@@ -27,6 +27,7 @@ if len(sys.argv)>1:
 pygame.key.set_repeat(100,100)
 pygame.key.get_repeat ()
 
+
 menu.pause()
 
 #main function

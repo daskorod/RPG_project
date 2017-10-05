@@ -15,6 +15,7 @@ import event
 import menu
 import sys
 import sounds
+import ends
 
 
 test_arg = False
@@ -848,6 +849,11 @@ class Hero(pygame.sprite.Sprite):
 		self.update_char()
 		#self.location.stage_loop ()
 		
+		if self.is_death == True and self.control.k_space == True:
+			self.control.k_space = False
+
+			menu.ending ('Вы умерли, ваше задание провалено. Если оно конечно было. Видимо никакой вы не избранный, а лишь пыль на краю вечности. Никчёмный и неважный человек, раздавленный маховиком событий.', 'images/tiles/dead.png', 1, pic_x = 90, time_scroll = 50, speed_mod = 5)
+
 		if self.move == False:
 			self.anima.stop ()
 
@@ -980,10 +986,12 @@ class Hero(pygame.sprite.Sprite):
 		#self.son.change_text (1, 'Вы умерли.')
 		#self.son.change_text (2, 'На ваших костях упыри будут танцевать джигу.')
 		self.auto_text (random.choice([('Теперь вы мертвы.', "Ваши кости нынче объедают шакалы и никто не вспомнит вашего имени.", "Вы канули в пучину бесконечности."),("Вы почили в бозе.", "Но мир этого даже не заметил", "Ведь вы из себя практически ничего не пресдтавляли.", "Ведь вы - песчинка на берегу неизбежности."),("Вы сгинули в пучине бесконечности.", "А мир всё также продолжал существовать.", "Что есть вы, что нет - ему без разницы.")]))
-		self.son.change_text (6, 'Нажмите ESC, чтобы выйти.')
+		self.son.change_text (6, 'Нажмите SPACE.')
 		self.status = 'dead'
 		self.kill ()
 		self.move = False
+		self.control.k_e = False
+
 
 	def end_text (self):
 		pass
