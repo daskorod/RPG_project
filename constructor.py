@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict
+import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict
 import img
 import functions
 
@@ -358,7 +358,10 @@ def create_level_city2 (level, battle, control, son, locationname):
                             sprite_group.add (pr)
                      if col == 'T':
                             pr = classes.PortalLink (x,y, 'still1', 'park1', 'L', locationname )
-                            sprite_group.add (pr)                                
+                            sprite_group.add (pr)
+                     if col == "Y":
+                            mn = npc.Hermit (x/45,y/45,battle, text_data.hermit_dict.text, control, 8,9,8,2, son, 200)
+                            sprite_group.add (mn)                                                            
                      x += 45
               x = 0
               y += 45
@@ -393,6 +396,7 @@ def create_interior_standart (level, grType):
                             decor.append(classes.Ding(x,y, 'images/tiles/tower7.png', 'башня'))
                     if col == 'C':
                             ding = classes.Ding2 (x,y, 'images/tiles/pit.png', 'Яма')
+                            ground.append(ding)
                     if col == '^':
                             decor.append(classes.Ding2(x,y, 'images/tiles/str_house.png', 'Странный дом'))                          
                             #ground.append(ding)

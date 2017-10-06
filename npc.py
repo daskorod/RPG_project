@@ -990,3 +990,77 @@ class Guard2 (Monster):
 			self.control.k_e = False
 			hero.turn_main = True
 			self.son.clear_text ()
+
+
+class Hermit (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Отшельник'
+		self.race = 'human'
+		self.flee = False
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/hermit.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+
+		self.order = True
+		self.quest = False
+		self.second = False
+		self.step_away = False
+		self.priest_action = False
+		self.wait_for_priest_turn = False
+		self.priest_turn = False
+		self.heal = False
+
+#	def interaction (self, hero):
+		#Monster.interaction (self, hero)
+#	def special_death (self,hero):
+#		hero.collide_control = True
+#		for i in hero.locations_dict['tower1'].block_group:
+#			if i.__class__.__name__ == 'Augustine':
+#				i.agression = True
+#				hero.etwas = i	
+
+	def dialog_special (self, hero):
+		if self.add_information == 'reductio':
+			hero.move = True
+			x = 0
+			for i in hero.journal:
+				if i.name == 'Пусто':
+					hero.journal[x] = ideas.reductio
+					break
+				x +=1
+
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы записали концепцию Редукции в свой дневничок.')
+			hero.son.change_text (3, 'Может быть теперь при встрече с чем-то неразрешимым и тёмным')
+			hero.son.change_text (4, 'вам удастся свести его к чему-то более простому и ясному?')
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'thing' and self.control.k_e == True:
+			self.control.k_e = False
+			hero.inv.append(items.bottle)
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы взяли странную бутылку у старика.')
+			hero.son.change_text (3, 'Кто знает, может вам её лучше выбросить?')
+
+		if self.add_information == 'learn':
+			if ideas.reductio in hero.journal:
+				br_change(self, 4)
+			else:
+				br_change(self, 3)
+			

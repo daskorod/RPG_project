@@ -55,8 +55,6 @@ def main_loop():
 #def menu_loop():
 
 
-
-
 def levels_constructor (classlevellist):
 	levels_list = []
 	levels_dict= {}

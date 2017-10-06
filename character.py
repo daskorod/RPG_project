@@ -945,7 +945,7 @@ class Hero(pygame.sprite.Sprite):
 	def transcendental_apperception (self):
 		if self.test_arg == True:
 
-			if self.control.k_space == True:
+			if self.control.k_space == True and self.is_death != True:
 				self.control.k_space = False
 				self.level_mark +=1
 				try:
@@ -954,7 +954,7 @@ class Hero(pygame.sprite.Sprite):
 					self.location = self.location_list[0]
 					self.level_mark = 0
 		else:
-			if self.control.k_space == True:
+			if self.control.k_space == True and self.is_death != True:
 				self.control.k_space = False
 				
 				menu.help_loop()
