@@ -314,6 +314,23 @@ class _tower1 (SuperLevel):
 	def stage_content (self, hero):
 		pass
 
+class _tower2 (SuperLevel):
+	def __init__ (self, lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
+		self.name = '- - - Башня 2- - -'
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Большое холодное пространство второго этажа башни')
+		self.son.change_text (3, 'сковало вашу душу страхом. Закон, власть и бюрократическая')
+		self.son.change_text (4, 'вдвойне страшны здесь.')		
+
+	def stage_content (self, hero):
+		pass
 
 class _oldhouse (SuperLevel):
 	def __init__ (self, lev, battle, son, control):

@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict
+import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict
 import img
 import functions
 
@@ -320,7 +320,22 @@ def create_level_city (level, battle, control, son, locationname):
                             sprite_group.add (pr) 
                      if col == 'M':
                             pr = classes.PortalLink (x,y, 'park1', 'still1', 'R', locationname )
-                            sprite_group.add (pr)                           
+                            sprite_group.add (pr)
+                     if col == 'й':
+                            pr = classes.PortalLink (x,y, 'tower1', 'tower2', 'D', locationname )
+                            sprite_group.add (pr) 
+                     if col == 'ц':
+                            pr = classes.PortalLink (x,y, 'tower2', 'tower1', 'U', locationname )
+                            sprite_group.add (pr)  
+                     if col == 'у':
+                            s = classes.MinorChest (x,y, 'open', items.hp_potion )
+                            sprite_group.add (s)
+                     if col == 'к':
+                            pr = npc.Peidron (x/45,y/45,battle, text_data.peid_dict.text, control, 12,10,8,3, son, 330)
+                            sprite_group.add (pr)
+                     if col == 'е':
+                            pr = npc.Merch (x/45,y/45,battle, text_data.merch_dict.text, control, 5,5,5,1, son, 10)
+                            sprite_group.add (pr)                              
                      x += 45
               x = 0
               y += 45
@@ -341,27 +356,28 @@ def create_level_city2 (level, battle, control, son, locationname):
                      if col == "m":
                             mn = classes.Monk (x/45,y/45,battle, text_data.monk.text, control, 4,5,7,1, son, 100)
                             sprite_group.add (mn)
-                     if col == 'Q':
+                     elif col == 'Q':
                             ding = classes.Ding2 (x,y, 'images/tiles/wood2.png', 'Красивое и мощное дерево.')
                             sprite_group.add (ding)
-                     if col == 'W':
+                     elif col == 'W':
                             pr = classes.PortalLink (x,y, 'still2', 'towerplatz', 'D', locationname )
                             sprite_group.add (pr)  
-                     if col == 'O':
+                     elif col == 'O':
                             well = classes.Obstacle(x,y, img.obstacles)  
                             sprite_group.add (well)
-                     if col == 'E':
+                     elif col == 'E':
                             pr = classes.PortalLink (x,y, 'park', 'strange', 'U', locationname )
                             sprite_group.add (pr)  
-                     if col == 'R':
+                     elif col == 'R':
                             pr = classes.PortalLink (x,y, 'strange', 'park', 'D', locationname )
                             sprite_group.add (pr)
-                     if col == 'T':
+                     elif col == 'T':
                             pr = classes.PortalLink (x,y, 'still1', 'park1', 'L', locationname )
                             sprite_group.add (pr)
-                     if col == "Y":
+                     elif col == "Y":
                             mn = npc.Hermit (x/45,y/45,battle, text_data.hermit_dict.text, control, 8,9,8,2, son, 200)
-                            sprite_group.add (mn)                                                            
+                            sprite_group.add (mn)
+                                                            
                      x += 45
               x = 0
               y += 45
@@ -398,7 +414,11 @@ def create_interior_standart (level, grType):
                             ding = classes.Ding2 (x,y, 'images/tiles/pit.png', 'Яма')
                             ground.append(ding)
                     if col == '^':
-                            decor.append(classes.Ding2(x,y, 'images/tiles/str_house.png', 'Странный дом'))                          
+                            decor.append(classes.Ding2(x,y, 'images/tiles/str_house.png', 'Странный дом'))
+                    if col == 'й':
+                            ground.append(classes.Ding2(x,y, 'images/tiles/lad_up.png', 'Странный дом'))
+                    if col == 'ц':
+                            ground.append(classes.Ding2(x,y, 'images/tiles/lad_down.png', 'Странный дом'))                               
                             #ground.append(ding)
                     x +=45
               x = 0
