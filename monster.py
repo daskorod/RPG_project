@@ -16,6 +16,8 @@ import classes
 import img
 import items
 import text_data.skelet_lord2_dict
+from functions import end_dialog, war, br_change, br_auto
+import ideas
 
 class Bar(sprite.Sprite):
 	def __init__(self, xs, ys, color):
@@ -553,6 +555,7 @@ class SkeletKing (Monster):
 		self.rect = self.image.get_rect()
 		self.rect.x = x*PF_WIDTH
 		self.rect.y = y*PF_HEIGHT
+		self.reducted = False
 
 
 		#self.image.fill ((220,130,100))
@@ -560,12 +563,20 @@ class SkeletKing (Monster):
 		self.quest = False
 		self.order = True
 		self.check_for_courage = False
+		self.one_death = False
+		self.light1 = True
+		self.light2 = True
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
+		self.light1 = True
+
+		self.light2 = True
 		if hero.sp > 2 and self.check_for_courage == False:
 			self.branch = 1
 			self.check_for_courage = True
+		if self.one_death == True and ideas.reductio in hero.journal and self.reducted == False:
+			self.branch = 3
 
 	def death_check (self, hero):
 
@@ -587,6 +598,33 @@ class SkeletKing (Monster):
 				self.hp = 15
 				#self.kill ()
 				hero.collide_control = False
+				self.one_death = True
 
 	def dialog_special (self, hero):
-		pass
+		
+		if self.add_information == 'light':
+			if self.light1 == True:
+				img.boltAnim.play ()
+				hero.hp -= random.randint(1,6)
+				self.light1 = False
+
+		if self.add_information == 'light2':
+			if self.light2 == True:
+				img.boltAnim.play ()
+				hero.hp -= random.randint(1,6)
+				self.light2 = False
+
+		if self.add_information == 'idea_of_evil' and self.control.k_e == True:
+			self.control.k_e = False
+			hero.quest['idea_of_evil'] = True
+			hero.char_value['2exp'] += 200
+			self.reducted = True
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Потрясённые открывшимся знанием вы отходите назад.')
+			hero.son.change_text (3, 'Нечеловеческий ужас отпускает вас. Вам даже не верится, что')
+			hero.son.change_text (4, 'это порождение мира-без-нас связано с обычным человеческим злом.')
+			hero.son.change_text (5, 'Но что делать теперь?')
+
+			end_dialog (self, hero)
+

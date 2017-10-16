@@ -1057,7 +1057,7 @@ class Hermit (Monster):
 			hero.son.clear_text ()
 			hero.son.change_text (2, 'Вы взяли странную бутылку у старика.')
 			hero.son.change_text (3, 'Кто знает, может вам её лучше выбросить?')
-
+			end_dialog (self, hero)
 		if self.add_information == 'learn':
 			if ideas.reductio in hero.journal:
 				br_change(self, 4)
@@ -1129,6 +1129,8 @@ class Peidron (Monster):
 			hero.son.clear_text ()
 			hero.son.change_text (2, 'Вы взяли странную бутылку у старика.')
 			hero.son.change_text (3, 'Кто знает, может вам её лучше выбросить?')
+
+			end_dialog (self, hero)
 
 		if self.add_information == 'learn':
 			if ideas.reductio in hero.journal:

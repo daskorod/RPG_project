@@ -507,11 +507,28 @@ class Hero(pygame.sprite.Sprite):
 								self.weapon = self.first
 								#self.at += self.weapon.at_mod
 								self.damage = self.weapon.dem
+# контроль выпивания бутылок
 
 						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].__class__.__name__ == 'Potion':
 									self.hp += random.choice(range(1,self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].value))
 									if self.hp > self.char_value['5hp']:
 										self.hp = self.char_value['5hp']
+									self.inv.pop(self.inv_index_pos)
+
+						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name == 'Странная бутылка':
+									self.inv.pop(self.inv_index_pos)
+									self.inventory_flag = False
+									self.control.k_e = False
+									self.move = True
+									self.inventory_flag = False
+									self.inv_index_pos = 0
+									self.inv_quit = False
+									self.char_value['5hp'] -=1
+									self.char_value['3at'] +=3
+									self.son.clear_text ()
+									self.son.change_text (2, 'Вы выпиваете отвратительное тягучее пойло.')
+									self.son.change_text (3, 'Вы чувствуете странную метаморфозу в своём теле.')
+
 									#self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)] = items.no_item
 					
 

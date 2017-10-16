@@ -75,7 +75,7 @@ class _dungeon3 (SuperLevel):
 		self.son.change_text (7, 'не разбирая дороги.')
 
 	def stage_content (self, hero):
-		pass
+		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 
 class _end (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
