@@ -203,6 +203,25 @@ class _temple (SuperLevel):
 		img.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 		pass
 
+class _lib (SuperLevel):
+	def __init__ (self, lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2)
+		
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
+		self.name = '- - - Библиотека - - -'
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Вы вошли в старую душную храмовую библиотеку.')
+		self.son.change_text (3, 'Тут лишь пыль и покой.')
+
+
+	def stage_content (self, hero):
+		img.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
+		pass
+
 class _cell (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)

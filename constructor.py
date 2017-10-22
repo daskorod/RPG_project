@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict
+import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict
 import img
 import functions
 
@@ -345,7 +345,10 @@ def create_level_city (level, battle, control, son, locationname):
                             sprite_group.add (well)
                      if col == 'ч':
                             ding = classes.Cup (x,y)
-                            sprite_group.add (ding)                              
+                            sprite_group.add (ding) 
+                     if col == 'н':
+                            pr = classes.PortalLink (x,y, 'templlib', 'lib', 'R', locationname )
+                            sprite_group.add (pr)                                 
                      x += 45
               x = 0
               y += 45
@@ -387,7 +390,15 @@ def create_level_city2 (level, battle, control, son, locationname):
                      elif col == "Y":
                             mn = npc.Hermit (x/45,y/45,battle, text_data.hermit_dict.text, control, 8,9,8,2, son, 200)
                             sprite_group.add (mn)
-                                                            
+                     elif col == 'U':
+                            pr = classes.PortalLink (x,y, 'lib', 'templlib', 'L', locationname )
+                            sprite_group.add (pr)
+                     elif col == 'I':
+                            ding = classes.Ding3 (x,y, 'images/tiles/lib_fur.png', ['Шкаф, забитый книгами.','От количества книг начинает болеть голова','Большой шкаф, наполненный книгами на иностранных языках.','Наверное здесь скрываются горы знаний', 'Дискурс господина ещё не сделал свои четверть оборота.'])
+                            sprite_group.add (ding)  
+                     elif col == "P":
+                            mn = npc.Tubus (x/45,y/45,battle, text_data.tubus_dict.text, control, 2,4,14,1, son, 100)
+                            sprite_group.add (mn)                                                          
                      x += 45
               x = 0
               y += 45

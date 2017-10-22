@@ -539,6 +539,19 @@ class Hero(pygame.sprite.Sprite):
 									self.son.change_text (2, 'Вы выпиваете отвратительное тягучее пойло.')
 									self.son.change_text (3, 'Вы чувствуете странную метаморфозу в своём теле.')
 
+						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name == 'Старая книга':
+
+									self.inventory_flag = False
+									self.control.k_e = False
+									self.move = True
+									self.inventory_flag = False
+									self.inv_index_pos = 0
+									self.inv_quit = False
+									self.collide_control = True
+									self.move = False
+									self.etwas = event.old_book									
+
+
 									#self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)] = items.no_item
 					
 
@@ -1172,7 +1185,7 @@ class Hero(pygame.sprite.Sprite):
 	def special_fun (self):
 
 
-			if self.control.k_1 == True and self.etwas.race == 'undead':
+			if self.control.k_1 == True and self.etwas.race == 'undead' and ideas.revelation in self.journal:
 				self.control.k_1 = False
 				self.son.clear_text ()
 
@@ -1202,7 +1215,7 @@ class Hero(pygame.sprite.Sprite):
 				self.special = False
 				self.back = False
 
-			if self.control.k_2 == True:
+			if self.control.k_2 == True and ideas.revelation in self.journal:
 				self.turn_main = False
 				self.control.k_2 = False
 				self.special = True
@@ -1222,6 +1235,15 @@ class Hero(pygame.sprite.Sprite):
 					self.back = True
 					self.son.change_text (1, "Ничего не произошло.")
 					self.son.change_text (3, "Нажмите Е")
+
+			if (self.control.k_2 == True or self.control.k_1 == True) and ideas.revelation not in self.journal:
+				self.control.k_2 = False
+				self.control.k_1 = False
+				self.son.change_text (1, "Ничего не происходит.")
+				self.son.change_text (3, "Теперь вы гностик ")				
+				self.son.change_text (4, "и благодать Святого Духа вас покинула!")
+				self.son.change_text (5, "Нажмите Е")
+				self.back = True				
 
 			if self.control.k_3 == True:
 				self.turn_main = True

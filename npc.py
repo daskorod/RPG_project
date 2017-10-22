@@ -1198,3 +1198,137 @@ class Merch (Monster):
 				br_change(self, 4)
 			else:
 				br_change(self, 3)
+
+class Tubus (classes.Monk):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.race = 'human'
+		self.mname = 'Брат Тубус'
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/priest.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		self.image.set_colorkey ((254,254,254))
+		self.g = 1000
+		self.order = True
+		self.quest = False
+
+
+
+	def dialog_special (self, hero):
+		if self.add_information == 'gold' and self.control.k_e == True:
+			self.control.k_e = False
+			if hero.gold >= 20:
+				hero.gold -= 20
+
+				self.branch = 4
+				self.s = 1
+				self.n = 0
+
+			else:
+				self.branch = 6
+				self.s = 1
+				self.n = 0
+
+		if self.add_information == 'gold_inf' and self.control.k_e == True:
+			self.control.k_e = False
+			if hero.gold >= 20:
+				hero.gold -= 20
+
+				self.branch = 5
+				self.s = 1
+				self.n = 0
+
+			else:
+				self.branch = 13
+				self.s = 1
+				self.n = 0						
+
+		if self.add_information == 'hit' and self.control.k_e == True:
+			hero.move = True
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Потирая кулак вы отошли во свояси.')
+			hero.son.change_text (3, 'Посетители таверны даже не отреагировали.')
+			hero.son.change_text (4, 'Они просто пили своё пиво.')
+			hero.son.change_text (5, 'А вас кольнула булавочкой совесть: правильно ли?')
+
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.quest['gilbert_hit'] = True
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'trinktour' and self.control.k_e == True:
+			hero.move = True
+
+			self.control.k_e = False
+			hero.gold = 0
+			if ideas.gelassenheit not in hero.journal:
+
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Вы долго пили. И пьянствовали. Но для чего?')
+				hero.son.change_text (3, 'Вы и сами не знаете. Вы тупо просадили все деньги.')
+				hero.son.change_text (4, 'Вы и сами уже не помните, что происходило и кто за что платил.')
+				hero.son.change_text (5, 'Теперь у вас лишь головная боль, а впереди много дел.')
+
+				self.branch = 7
+				self.s = 1
+				self.n = 0
+
+
+			if ideas.gelassenheit in hero.journal:
+
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Вы долго пили. И пьянствовали. Но для чего?')
+				hero.son.change_text (3, 'Вспомнив концепцию отрешённости, вы восприняли данную пьянку как нечто пустое.')
+				hero.son.change_text (4, 'Отрешившись от своего тела, потребляющего алкоголь вы обратились к вечности.')
+				hero.son.change_text (5, 'И преисполнились внутреннего спокойствия и силы. ')
+				hero.son.change_text (6, 'На утро вы чувствовали себя отлично. Ваша вера возросла.')
+
+				hero.char_value['6sp'] += 1
+
+
+				self.branch = 12
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'stupid' and self.control.k_e == True:
+			hero.move = True
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы презрительно отозвались об идеях монаха, которые')
+			hero.son.change_text (3, 'он вынашивал у себя под сердцем. Достойный ли это поступок?')
+			hero.son.change_text (4, 'Кто знает? Может вы искренне считали его построения заблужденем?')
+			hero.son.change_text (5, 'Или же проявили невнимание и нетерпение?')
+
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+				
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'magnus' and self.control.k_e == True:
+			hero.move = True
+			x = 0
+			for i in hero.journal:
+				if i.name == 'Пусто':
+					hero.journal[x] = ideas.order_of_magnitude
+					break
+				x +=1

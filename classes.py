@@ -199,7 +199,7 @@ class Platform(sprite.Sprite):
 		elif hero.control.down == True:
 			hero.rect.y -= hero.back_move
 		hero.son.clear_text ()
-		hero.son.change_text (1, 'Холодная мрачная стена, напоминает о смерти.')
+		hero.son.change_text (2, 'Холодная мрачная стена, напоминает о смерти.')
 
 class PlatformBlack(sprite.Sprite):
 	def __init__(self, x, y):
@@ -294,7 +294,8 @@ class TavernWall (Platform):
 
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (3, random.choice (['Каменная кладка, жирная от сальных рук и свечной копоти.', 'Деревянные балки заоптились от времени чадом свечей.',"Стена как стена, добротная крепкая, приятная на ощупь.", "Ничего интересного - просто стена из какого-то грубо обработанного камня."]) )
+		hero.son.clear_text ()
+		hero.son.change_text (2, random.choice (['Каменная кладка, жирная от сальных рук и свечной копоти.', 'Деревянные балки заоптились от времени чадом свечей.',"Стена как стена, добротная крепкая, приятная на ощупь.", "Ничего интересного - просто стена из какого-то грубо обработанного камня."]) )
 
 
 
@@ -748,7 +749,7 @@ class Cup(sprite.Sprite):
 				hero.quest['gold_cup'] += a
 				self.gold += a
 				end_dialog (self, hero)
-				
+
 			elif hero.gold == 0:
 
 				hero.son.clear_text ()
@@ -782,8 +783,43 @@ class Candel(Platform):
 		self.status = 'closed'
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, 'Крутой подсвечник. Да и свечи ничего')
+		hero.son.clear_text ()
+		hero.son.change_text (2, 'Крутой подсвечник. Да и свечи ничего.')
 	#	hero.char_value['2exp'] += 50
+
+
+class Cupboard2 (Platform):
+	def __init__(self, x, y):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load('images/tiles/books.png')
+		self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect = self.image.get_rect()
+
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+
+		self.first = True
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		if self.first == True:
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Книжный шкаф. Очень старый.')
+			hero.son.change_text (4, 'Среди истлевших манускриптов вы нашли более-менее')
+			hero.son.change_text (5, 'целую книгу в чёрном переплёте.')	
+			hero.son.change_text (6, 'Вы взяли её с собой.')				
+			hero.inv.append (items.old_book)
+			self.first = False 
+		else:
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Книжный шкаф. Очень старый.')
+			hero.son.change_text (3, 'На полках пусто, нет ничего интересного.')
+		#hero.char_value['2exp'] +=50
 
 
 class Cupboard (Platform):
@@ -803,29 +839,9 @@ class Cupboard (Platform):
 		self.status = 'closed'
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, 'Книжный шкаф. Очень старый.')
-		hero.son.change_text (2, 'На полках пусто, нет ничего интересного.')
-		#hero.char_value['2exp'] += 50
-
-
-class Cupboard2 (Platform):
-	def __init__(self, x, y):
-		#sprite.Sprite.__init__(self)
-		Platform.__init__(self, x, y)
-		self.image = image.load('images/tiles/books.png')
-		self.image.set_colorkey ((255,255,255))
-		#self.image = Surface ((45,45))
-		#self.image.fill ((100,100,100))
-		self.rect = Rect (0,0, 45,45)
-		self.rect = self.image.get_rect()
-
-		self.rect.x = x
-		self.rect.y = y
-		self.name = ""
-		self.status = 'closed'
-	def interaction (self,hero):
-		Platform.interaction (self, hero)
-		hero.son.change_text (1, 'Книжный шкаф. Очень старый.')
+		hero.son.clear_text ()
+		hero.son.change_text (2, 'Книжный шкаф. Очень старый.')
+		hero.son.change_text (3, 'На полках пусто, нет ничего интересного.')
 		#hero.char_value['2exp'] += 50
 
 
@@ -964,7 +980,7 @@ class Table(Platform):
 		self.name = ""
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, 'Добротный стол. Хоть и обшарпанный.')
+		hero.son.change_text (2, 'Добротный стол. Хоть и обшарпанный.')
 
 class Ding(Platform):
 	def __init__(self, x, y, img, text):
@@ -981,7 +997,7 @@ class Ding(Platform):
 		self.text = text
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, self.text)
+		hero.son.change_text (2, self.text)
 
 class Ding2(Platform):
 	def __init__(self, x, y, img, text):
@@ -998,7 +1014,26 @@ class Ding2(Platform):
 		self.text = text
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, self.text)
+		hero.son.clear_text ()
+		hero.son.change_text (2, self.text)
+
+class Ding3(Platform):
+	def __init__(self, x, y, img, text):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.image = image.load(img)
+		#self.image.set_colorkey ((0,127,14))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((100,100,100))
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.text = text
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.clear_text ()
+		hero.son.change_text (2, random.choice(self.text))
 
 class Obstacle(Platform):
 	def __init__(self, x, y, random_set):
@@ -1017,7 +1052,8 @@ class Obstacle(Platform):
 		self.text = self.choice[1]
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, self.text)
+		hero.son.clear_text ()
+		hero.son.change_text (2, self.text)
 
 class Chair(Platform):
 	def __init__(self, x, y):
@@ -1033,7 +1069,7 @@ class Chair(Platform):
 		self.name = ""
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
-		hero.son.change_text (1, 'Грубо сколоченный стул. Но при этом весьма прочный.')
+		hero.son.change_text (2, 'Грубо сколоченный стул. Но при этом весьма прочный.')
 
 class Marker(sprite.Sprite):
 	def __init__(self,x,y):
