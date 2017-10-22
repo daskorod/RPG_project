@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict
+import text_data.zombisad,text_data.guard_dict, text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict
 import img
 import functions
 
@@ -120,6 +120,10 @@ def create_dungeon2 (level, battle, control, son, locationname):
                      if col == 'A':
                             s = classes.MinorChest (x,y, 'open', items.old_axe )
                             sprite_group.add (s)
+
+                     if col == 'Z':
+                            well = monster.Goblin(x/45,y/45,battle, text_data.goblin_lord_dict.text, control, 6,4,4,1, son, 15)  
+                            sprite_group.add (well)                               
   
          
                      x += 45
@@ -335,7 +339,13 @@ def create_level_city (level, battle, control, son, locationname):
                             sprite_group.add (pr)
                      if col == 'е':
                             pr = npc.Merch (x/45,y/45,battle, text_data.merch_dict.text, control, 5,5,5,1, son, 10)
-                            sprite_group.add (pr)                              
+                            sprite_group.add (pr)  
+                     if col == 'я':
+                            well = monster.Goblin(x/45,y/45,battle, text_data.goblin_lord_dict.text, control, 6,4,4,1, son, 15)  
+                            sprite_group.add (well)
+                     if col == 'ч':
+                            ding = classes.Cup (x,y)
+                            sprite_group.add (ding)                              
                      x += 45
               x = 0
               y += 45
@@ -529,6 +539,7 @@ def create_level_tavern (level, battle, control, son, locationname):
                      if col == 'R':
                             ding = classes.Ding (x,y, 'images/tiles/pilar.png', 'Монументальная колонна, поддерживающая потолок.')
                             sprite_group.add (ding)
+
 
                      x += 45
               x = 0

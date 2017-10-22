@@ -164,7 +164,8 @@ class Hero(pygame.sprite.Sprite):
 
 
 		#QEST
-		self.quest = {}
+		self.quest = {'gold_cup':0}
+		self.donat = False
 		#DIALOG
 
 		self.start_conv = True
@@ -376,6 +377,15 @@ class Hero(pygame.sprite.Sprite):
 		self.ac = self.char_value['4ac']
 		self.level = self.char_value['1lvl']
 		self.exp = self.char_value ['2exp']	
+		if self.move == True:
+			if self.quest['gold_cup'] >= 1000 and self.donat == False:
+				self.char_value['6sp'] +=1
+				self.donat = True
+				self.son.clear_text ()
+				self.son.change_text (2, 'Вы отдаёте последние деньги')
+				self.son.change_text (3, 'и чувствуете, что ваша вера становится крепче.')
+
+
 		self.level_up ()
 
 	def level_up (self):

@@ -15,9 +15,10 @@ import controller
 from monster import Monster
 import img
 import items
-import text_data.well_dict
+import text_data.well_dict, text_data.cup_dict
 import event
 from functions import end_dialog
+from functions import end_dialog, war, br_change, br_auto
 
 class Zombi (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp, item = items.no_item):
@@ -676,6 +677,95 @@ class GoldDoor(sprite.Sprite):
 			self.s = 1
 			self.n = 0
 
+class Cup(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = image.load('images/tiles/cup.png')
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+
+		#conversation data
+		self.tree = text_data.cup_dict.text
+
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+		self.gold = 0
+
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
+
+		hero.move = False
+		hero.collide_control = True
+
+
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		self.dialog_special (hero)
+
+		if self.add_information == 'all':
+			
+
+			if hero.gold != 0:
+				hero.quest['gold_cup'] += hero.gold
+				self.gold += hero.gold
+				hero.gold = 0
+				end_dialog (self, hero)
+
+			elif hero.gold == 0:
+
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Вы хотели пожертвовать деньгу.')
+				hero.son.change_text (3, 'Но у вас ничего нет!')
+
+				end_dialog (self, hero)
+
+		if self.add_information == 'pair':
+			if hero.gold != 0:
+				a = random.randint(1,6)
+				while a>hero.gold:
+					a = random.randint(1,6)
+
+				hero.gold -= a
+				hero.quest['gold_cup'] += a
+				self.gold += a
+				end_dialog (self, hero)
+				
+			elif hero.gold == 0:
+
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Вы хотели пожертвовать деньгу.')
+				hero.son.change_text (3, 'Но у вас ничего нет!')
+
+				end_dialog (self, hero)
+
+		if self.add_information == 'end':
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
 
 class Candel(Platform):
 	def __init__(self, x, y):

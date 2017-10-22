@@ -628,3 +628,20 @@ class SkeletKing (Monster):
 
 			end_dialog (self, hero)
 
+
+class Goblin (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = text_data.skelet_lord2_dict.text
+		self.lbolt = False
+		self.mname = 'Гоблин'
+		#self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/skeleton3.png')
+		self.image.set_colorkey ((254,254,254))
+		self.item = items.faith_potion
+		self.hit = False
+
+	def dialog_special (self, hero):
+		pass
+

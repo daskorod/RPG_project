@@ -85,6 +85,7 @@ class Gilbert (classes.Monk):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+			hero.quest['gilbert_hit'] = True
 			hero.collide_control = False
 			hero.start_conv = True
 
@@ -432,41 +433,42 @@ class Martin (classes.Monk):
 		self.g = 1000
 		self.order = True
 		self.quest = False
+		self.qcheck = False
+		self.gold_quest = False
+		self.first = True
 
 
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if 'gilbert_hit' in hero.quest and self.qcheck == False and self.first == False:
+			self.branch = 2
+			self.qcheck = True
+		elif 'gilbert_hit' in hero.quest and self.qcheck == False and self.first == True:
+			self.branch = 6
+			self.qcheck = True
+		self.first = False
+		if 'martin_gold' in hero.quest and hero.quest['gold_cup'] >= 1000 and self.gold_quest == False:
+			self.branch = 9
+			self.gold_quest = True
 
 	def dialog_special (self, hero):
-		if self.add_information == 'gold' and self.control.k_e == True:
-			self.control.k_e = False
-			if hero.gold >= 20:
-				hero.gold -= 20
+		if self.add_information == 'gold_quest':
+			hero.quest['martin_gold'] = True
 
-				self.branch = 4
-				self.s = 1
-				self.n = 0
-
-			else:
-				self.branch = 6
-				self.s = 1
-				self.n = 0
-
-
-
-		if self.add_information == 'gelassenheit' and self.control.k_e == True:
+		if self.add_information == 'concept' and self.control.k_e == True:
 			hero.move = True
 			x = 0
 			for i in hero.journal:
 				if i.name == 'Пусто':
-					hero.journal[x] = ideas.gelassenheit
+					hero.journal[x] = ideas.dark
 					break
 				x +=1
-
 
 			self.control.k_e = False
 
 			hero.son.clear_text ()
-			hero.son.change_text (2, 'Вы записали концепцию Отрешённости в свой дневничок.')
-			hero.son.change_text (3, 'Теперь вы по-другому будете относиться к внутреннему и внешнему.')
+			hero.son.change_text (2, 'Вы записали концепцию Божественного Мрака в свой дневничок.')
+			hero.son.change_text (3, 'Теперь вы по-другому будете относиться к сущему и не-сущему.')
 			hero.son.change_text (4, 'Кто знает, до чего вас это доведёт?')
 
 			if self.branch_do == 'go':
@@ -477,19 +479,6 @@ class Martin (classes.Monk):
 			hero.collide_control = False
 			hero.start_conv = True
 
-
-#		if self.add_information == 'passage' and self.control.k_e == True:
-#
-#
-#			self.control.k_e = False
-#
-#
-#			if self.branch_do == 'go':
-#				self.branch_do = 'done'
-#				self.branch = self.branch_id
-#				self.s = 1
-#				self.n = 0
-#
 
 	def battle_action (self, hero):
 		self.g += 1
@@ -999,7 +988,7 @@ class Hermit (Monster):
 		self.lbolt = False
 		self.mname = 'Отшельник'
 		self.race = 'human'
-		self.flee = False
+		self.flee = True
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/hermit.png')
