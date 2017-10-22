@@ -15,7 +15,7 @@ import controller
 from monster import Monster
 import img
 import items
-import text_data.well_dict, text_data.cup_dict
+import text_data.well_dict, text_data.cup_dict, text_data.gnosis_door_dict
 import event
 from functions import end_dialog
 from functions import end_dialog, war, br_change, br_auto
@@ -1639,3 +1639,140 @@ class Monk (Monster):
 			self.control.k_e = False
 			hero.turn_main = True
 			self.son.clear_text ()
+
+
+class GnosisDoor(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		#self.image = image.load('images/door_gold.png')
+		#self.image.set_colorkey ((255,255,255))
+		self.image = Surface ((5,5))
+		#self.image.fill ((100,100,100))
+		self.rect = Rect (0,0, 45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.status = 'closed'
+
+		#conversation data
+		self.tree = text_data.gnosis_door_dict.text
+		self.n = 0
+		self.s = 1
+		self.add_information = "none"
+		self.agression = False
+		self.branch = 0
+		self.branch_do = ''
+		self.branch_id = ''
+
+	def interaction (self, hero):
+
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
+
+		hero.move = False
+		hero.collide_control = True
+
+
+	def dialog_special (self, hero):
+		pass
+
+	def dialog_options (self,hero):
+		self.dialog_special (hero)
+		if self.add_information == 'open':
+			hero.move = True
+			hero.control.k_e = False
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вам открыли дверь в загадочный особняк.')
+			self.kill ()
+			hero.collide_control = False
+			hero.start_conv = True
+			for i in hero.locations_dict.keys():
+				for x in hero.locations_dict[i].block_group:
+					try:
+						if x.name == "stranges":
+							x.rect.y+=5
+							break
+					except:
+						pass
+
+
+		if self.add_information == 'end':
+
+			hero.move = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.s = 1
+			self.n = 0
+
+class ZombiBandit (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp, item = items.no_item):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp, item)
+		self.tree = textus
+		self.image=image.load('images/zombi.png')
+		self.image.set_colorkey ((255,255,255))
+		self.mname = ' Зомби бандит'
+		self.order = True
+		self.branch = 0
+		self.order_special = False
+
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if self.order_special == False:
+			for i in hero.journal:
+				if i.name == 'Порядок магнитуд':
+					self.branch = 1
+					self.order_special = True
+
+	def dialog_special (self, hero):
+		
+		if self.add_information == 'zombidead' and self.control.k_e == True:
+			self.kill()
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0	
+			self.son.clear_text ()
+			hero.char_value['2exp'] += 60
+			self.son.change_text(2, 'Поздравляю, вы сделали с зомби что-то ингуманистическое!')	
+			self.son.change_text(4, 'Вы получаете 60 опыта!')	
+			
+		if self.add_information == 'garbage':
+				for i in hero.inv:
+					if i.name == 'Хлам':
+						hero.inv.remove(i)
+
+		if self.add_information == 'solve':
+
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			self.rect.y = self.rect.y + 45
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+				
+		if self.add_information == 'quest':
+			hero.quest['zombisad'] = 'is'
+			hero.move = True
+			self.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0

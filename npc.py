@@ -1134,7 +1134,7 @@ class Merch (Monster):
 		self.lbolt = False
 		self.mname = 'Купец'
 		self.race = 'human'
-		self.flee = False
+		self.flee = True
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/tiles/merch.png')
@@ -1332,3 +1332,63 @@ class Tubus (classes.Monk):
 					hero.journal[x] = ideas.order_of_magnitude
 					break
 				x +=1
+
+class Gnostic (classes.Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Гностик'
+		self.race = 'human'
+		self.image = Surface ((45,45))
+		self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/tiles/barmen.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+		self.matter = 0
+		self.order = True
+
+#	def interaction (self, hero):
+#		Monster.interaction (self, hero)
+
+
+	def dialog_special (self, hero):
+		if self.add_information == 'reductio':
+			hero.move = True
+			x = 0
+			for i in hero.journal:
+				if i.name == 'Пусто':
+					hero.journal[x] = ideas.reductio
+					break
+				x +=1
+
+
+			self.control.k_e = False
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы записали концепцию Редукции в свой дневничок.')
+			hero.son.change_text (3, 'Может быть теперь при встрече с чем-то неразрешимым и тёмным')
+			hero.son.change_text (4, 'вам удастся свести его к чему-то более простому и ясному?')
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			hero.collide_control = False
+			hero.start_conv = True
+
+		if self.add_information == 'thing' and self.control.k_e == True:
+			self.control.k_e = False
+			hero.inv.append(items.bottle)
+
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы взяли странную бутылку у старика.')
+			hero.son.change_text (3, 'Кто знает, может вам её лучше выбросить?')
+
+		if self.add_information == 'learn':
+			if ideas.reductio in hero.journal:
+				br_change(self, 4)
+			else:
+				br_change(self, 3)

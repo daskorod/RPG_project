@@ -7,12 +7,13 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict
+import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict, text_data.gnostic_dict, text_data.zombi_bandit_dict
 import img
 import functions
 
 stuff = []
 addition = []
+stuff_dict = {}
 
 def create_dungeon1 (level, battle, control, son, locationname):
 
@@ -348,7 +349,10 @@ def create_level_city (level, battle, control, son, locationname):
                             sprite_group.add (ding) 
                      if col == 'н':
                             pr = classes.PortalLink (x,y, 'templlib', 'lib', 'R', locationname )
-                            sprite_group.add (pr)                                 
+                            sprite_group.add (pr)     
+                     if col == 'г':
+                            pr = classes.PortalLink (x,y, 'end1', 'end2', 'L', locationname )
+                            sprite_group.add (pr)                               
                      x += 45
               x = 0
               y += 45
@@ -398,7 +402,29 @@ def create_level_city2 (level, battle, control, son, locationname):
                             sprite_group.add (ding)  
                      elif col == "P":
                             mn = npc.Tubus (x/45,y/45,battle, text_data.tubus_dict.text, control, 2,4,14,1, son, 100)
-                            sprite_group.add (mn)                                                          
+                            sprite_group.add (mn)   
+                     elif col == 'A':
+                            pr = classes.PortalLink (x,y-5, 'stranges', 'secta', 'D', locationname )
+                            sprite_group.add (pr)
+                            door = classes.GnosisDoor (x,y)
+                            sprite_group.add (door)
+                            stuff_dict['strange_enter'] = pr
+                     elif col == 'S':
+                            pr = classes.PortalLink (x,y, 'secta', 'stranges', 'U', locationname )
+                            sprite_group.add (pr)
+                     elif col == 'D':
+                            ding = classes.Ding3 (x,y, 'images/tiles/furnitures2.png', ['Дорогая мебель.','Всё это даёт чувство особенности.', "Если вы тут, то вы не такой как все","Стулья, обитые кожей.", "Стол из красного дерева и дорогие стулья."])
+                            sprite_group.add (ding)
+                     elif col == "F":
+                            mn = npc.Gnostic (x/45,y/45,battle, text_data.gnostic_dict.text, control, 8,6,7,2, son, 200)
+                            sprite_group.add (mn)
+                     elif col == 'G':
+                            pr = classes.PortalLink (x,y, 'end2', 'end1', 'R', locationname )
+                            sprite_group.add (pr)
+                     elif col == "H":
+                            mn = classes.ZombiBandit (x/45,y/45,battle, text_data.zombi_bandit_dict.text, control, 10,1,10,1, son, 20)
+                            sprite_group.add (mn)
+                                                            
                      x += 45
               x = 0
               y += 45

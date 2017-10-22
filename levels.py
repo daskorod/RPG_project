@@ -418,3 +418,56 @@ class _strange (SuperLevel):
 
 	def stage_content (self, hero):
 		pass
+		if self.up == True:
+			self.x +=1
+		else:
+			self.x -=1
+
+		if self.x > 6:
+			self.up = False
+
+		if self.x < -6:
+			self.up = True
+
+		pos = self.camera.apply(constructor.stuff_dict['strange_enter'])
+		screens.adventure_screen.blit (img.arrow, (pos.x+20,pos.y+10+self.x))
+
+class _secta (SuperLevel):
+	def __init__ (self,lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.name = '- Дом сектантов -'		
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2, create_interior = constructor.create_interior_tavern, floor = classes.WoodFloor)
+		#self.back = False
+
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
+		self.x = 0
+		self.up = True	
+
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Половицы мистически скрипят под вашими ногами.')
+		self.son.change_text (3, 'Загадочный дом. Кто знает чем они тут занимаются?')
+	
+	def stage_content (self, hero):
+		pass
+
+class _end2 (SuperLevel):
+	def __init__ (self, lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2)
+		self.back = True
+		self.camera = camera.Camera (self.level_width, self.level_height, 780, 360)
+		self.name = '- - - Окраины города - - -'
+		self.x = 0
+		self.up = True
+
+	def render_location_info (self):
+
+		self.son.change_text (1, 'Вы зашли в самый глухой уголок города.')
+		self.son.change_text (2, 'Здесь, как кажется, уже нет ни капельки надежды.')
+
+	def stage_content (self, hero):
+		pass
