@@ -566,17 +566,24 @@ class SkeletKing (Monster):
 		self.one_death = False
 		self.light1 = True
 		self.light2 = True
+		self.all = False
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
-		self.light1 = True
+		if 'peidron_in_prison' in hero.quest and self.all == False:
+			self.all = True
+			self.branch = 8
 
+
+		self.light1 = True
 		self.light2 = True
 		if hero.sp > 2 and self.check_for_courage == False:
 			self.branch = 1
 			self.check_for_courage = True
 		if self.one_death == True and ideas.reductio in hero.journal and self.reducted == False:
 			self.branch = 3
+
+
 
 	def death_check (self, hero):
 
@@ -607,6 +614,16 @@ class SkeletKing (Monster):
 				img.boltAnim.play ()
 				hero.hp -= random.randint(1,6)
 				self.light1 = False
+
+		if self.add_information == 'push' and self.control.k_e == True:
+			if hero.char_value['3at'] + hero.char_value['6sp']//3 >= 8:
+				self.rect.y -= 45
+				hero.char_value['2exp'] += 100
+				br_change (self, 10)
+
+			else:
+				br_change (self, 9)
+
 
 		if self.add_information == 'light2':
 			if self.light2 == True:

@@ -542,8 +542,19 @@ class Rouge (classes.Monk):
 
 		self.order = True
 		self.quest = False
+		self.peid = False
 
-
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if self.peid == True:
+			if ideas.anarcho in hero.journal and hero.gold >= 1000:
+				br_change (self, 10)
+			elif ideas.anarcho in hero.journal and hero.gold < 1000:
+				br_change (self, 12)
+			elif ideas.anarcho not in hero.journal and hero.gold >= 1000:
+				br_change (self, 14)
+			elif ideas.anarcho not in hero.journal and hero.gold <= 1000:
+				br_change (self, 13)
 
 	def dialog_special (self, hero):
 		if self.add_information == 'anarcho':
@@ -551,9 +562,45 @@ class Rouge (classes.Monk):
 			if 'anarcho' not in hero.quest:
 				hero.quest['anarcho'] = True
 
+		if self.add_information == 'gold':
+
+			hero.gold -= 1000
+			br_auto (self)	
+						
 		if self.add_information == 'anarcho' and self.control.k_e == True:
 
 			br_auto (self)
+
+		if self.add_information == 'sliv' and self.control.k_e == True:
+			self.peid = False
+			for i in hero.locations_dict['tower2'].block_group:
+				try:
+					if i.mname = 'Пейдрон':
+						i.kill ()
+						break
+				except:
+					pass
+
+			hero.char_value['2exp'] += 200
+			hero.quest['peidron_in_prison'] = True
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы провернули многоходовочку.')
+			hero.son.change_text (3, 'Конечно, вы вступили в сговор с ворами.')
+			hero.son.change_text (4, 'Но ведь вы предотвратили кровавую гекатомбу?')
+			hero.son.change_text (5, 'Вы нанесли удра в основание злой силы, клубящейся над городом... ?')			
+			end_dialog (self, hero)			
+
+		if self.add_information == 'do_it' and self.control.k_e == True:
+			self.peid = True
+			if ideas.anarcho in hero.journal and hero.gold >= 1000:
+				br_change (self, 10)
+			elif ideas.anarcho in hero.journal and hero.gold < 1000:
+				br_change (self, 12)
+			elif ideas.anarcho not in hero.journal and hero.gold >= 1000:
+				br_change (self, 14)
+			elif ideas.anarcho not in hero.journal and hero.gold <= 1000:
+				br_change (self, 13)
+
 		if self.add_information == 'narco' and self.control.k_e == True:
 
 
