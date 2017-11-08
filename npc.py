@@ -546,28 +546,41 @@ class Rouge (classes.Monk):
 
 
 	def dialog_special (self, hero):
-		if self.add_information == 'gold' and self.control.k_e == True:
-			self.control.k_e = False
-			if hero.gold >= 20:
-				hero.gold -= 20
+		if self.add_information == 'anarcho':
 
-				self.branch = 4
-				self.s = 1
-				self.n = 0
+			if 'anarcho' not in hero.quest:
+				hero.quest['anarcho'] = True
 
+		if self.add_information == 'anarcho' and self.control.k_e == True:
+
+			br_auto (self)
+		if self.add_information == 'narco' and self.control.k_e == True:
+
+
+			if ideas.anarcho in hero.quest:
+				if hero.gold > 50:
+					br_change (self, 8)
+				else:
+					br_change (self, 9)					
 			else:
-				self.branch = 6
-				self.s = 1
-				self.n = 0
+				if hero.gold > 50:
+					br_change (self, 6)
+				else:
+					br_change (self, 7)					
 
+		if self.add_information == 'narco_buy' and self.control.k_e == True:
 
+			hero.gold -= 50
 
-		if self.add_information == 'gelassenheit' and self.control.k_e == True:
+			hero.inv.append (items.melanj)
+			br_auto (self)
+
+		if self.add_information == 'anarcho_concept' and self.control.k_e == True:
 			hero.move = True
 			x = 0
 			for i in hero.journal:
 				if i.name == 'Пусто':
-					hero.journal[x] = ideas.gelassenheit
+					hero.journal[x] = ideas.anarcho
 					break
 				x +=1
 
@@ -575,9 +588,7 @@ class Rouge (classes.Monk):
 			self.control.k_e = False
 
 			hero.son.clear_text ()
-			hero.son.change_text (2, 'Вы записали концепцию Отрешённости в свой дневничок.')
-			hero.son.change_text (3, 'Теперь вы по-другому будете относиться к внутреннему и внешнему.')
-			hero.son.change_text (4, 'Кто знает, до чего вас это доведёт?')
+			hero.son.change_text (2, 'Вы записали концепцию Анархизма в свой дневничок.')
 
 			if self.branch_do == 'go':
 				self.branch_do = 'done'
@@ -593,7 +604,7 @@ class Rouge (classes.Monk):
 
 			self.control.k_e = False
 
-
+			hero.view.a = 0
 			if self.branch_do == 'go':
 				self.branch_do = 'done'
 				self.branch = self.branch_id
@@ -616,6 +627,11 @@ class Augustine (classes.Monk):
 		self.order = True
 		self.quest = False
 
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if 'gov1' in hero.quest and 'anarcho' in hero.quest:
+			self.branch = 12
+			hero.quest.pop('gov1')
 
 
 	def dialog_special (self, hero):
@@ -627,7 +643,25 @@ class Augustine (classes.Monk):
 #				self.branch = self.branch_id
 #				self.s = 1
 #				self.n = 0
+		if self.add_information == 'gain' and  self.control.k_e == True:
+			
+			hero.inv.append (items.doc_elite)
+			br_auto (self)
+			hero.gold += 20
+			hero.char_value['2exp'] += 50
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы получаете Красную грамоту и немного золотишка.')
+			hero.son.change_text (3, 'Как приятно работать на родное правительство!')
+			hero.son.change_text (4, 'Оно о тебе всегда позабится.')
+			end_dialog (self, hero)
 
+		if self.add_information == 'info' and  self.control.k_e == True:
+			
+			if ideas.anarcho in hero.journal:
+				br_change (self, 14)
+			else:
+				br_change (self, 15)
+			
 		if self.add_information == 'quest1':
 			
 			hero.quest['gov1'] = True
