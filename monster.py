@@ -574,14 +574,18 @@ class SkeletKing (Monster):
 			self.all = True
 			self.branch = 8
 
+		elif 'peidron_in_prison' not in hero.quest:
 
-		self.light1 = True
-		self.light2 = True
-		if hero.sp > 2 and self.check_for_courage == False:
-			self.branch = 1
-			self.check_for_courage = True
-		if self.one_death == True and ideas.reductio in hero.journal and self.reducted == False:
-			self.branch = 3
+
+			self.light1 = True
+			self.light2 = True
+	
+			if hero.sp > 2 and self.check_for_courage == False:
+				self.branch = 1
+				self.check_for_courage = True
+	
+			if self.one_death == True and ideas.reductio in hero.journal and self.reducted == False:
+				self.branch = 3
 
 
 
@@ -620,7 +624,8 @@ class SkeletKing (Monster):
 				self.rect.y -= 45
 				hero.char_value['2exp'] += 100
 				br_change (self, 10)
-
+				hero.locations_dict['dungeon3'].block_group.add (classes.PortalLink ((45*7),5*45, 'thron', 'pit', 'D', 'dungeon3' ))
+				hero.locations_dict['dungeon3'].background.append (classes.Ding2 ((45*7),5*45, 'images/tiles/pit.png', 'Яма'))
 			else:
 				br_change (self, 9)
 

@@ -169,6 +169,14 @@ def create_dungeon3 (level, battle, control, son, locationname):
                      if col == 'S':
                             pr = classes.DingSpecial (x,y, img.kubert, text_data.corpse_dict.text, functions.dialog_special, functions.interaction_special)
                             sprite_group.add (pr)
+
+                     if col == 'Z':
+                            pr = classes.PortalLink (x,y, 'thron', 'pit', 'D', locationname )
+                            sprite_group.add (pr)
+                     if col == 'X':
+                            pr = classes.PortalLink (x,y, 'pit', 'thron', 'U', locationname )
+                            sprite_group.add (pr)
+
                      x += 45
               x = 0
               y += 45

@@ -562,11 +562,11 @@ class Rouge (classes.Monk):
 			if 'anarcho' not in hero.quest:
 				hero.quest['anarcho'] = True
 
-		if self.add_information == 'gold':
+		if self.add_information == 'gold' and self.control.k_e == True:
 
 			hero.gold -= 1000
 			br_auto (self)	
-						
+
 		if self.add_information == 'anarcho' and self.control.k_e == True:
 
 			br_auto (self)
@@ -575,7 +575,7 @@ class Rouge (classes.Monk):
 			self.peid = False
 			for i in hero.locations_dict['tower2'].block_group:
 				try:
-					if i.mname = 'Пейдрон':
+					if i.mname == 'Пейдрон':
 						i.kill ()
 						break
 				except:
@@ -583,6 +583,7 @@ class Rouge (classes.Monk):
 
 			hero.char_value['2exp'] += 200
 			hero.quest['peidron_in_prison'] = True
+
 			hero.son.clear_text ()
 			hero.son.change_text (2, 'Вы провернули многоходовочку.')
 			hero.son.change_text (3, 'Конечно, вы вступили в сговор с ворами.')

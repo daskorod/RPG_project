@@ -77,6 +77,25 @@ class _dungeon3 (SuperLevel):
 	def stage_content (self, hero):
 		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 
+class _dungeon4 (SuperLevel):
+	def __init__ (self,  lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon3)
+		self.name = '- - - Яма костей - - -'
+		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
+
+	def render_location_info (self):
+		
+		self.son.change_text (1, 'Вы спустились в какие-то дебри тьмы.')
+		self.son.change_text (2, 'Вы всё ещё на Земле? Или в каком-то страшном сне?')
+		self.son.change_text (3, 'Этого понять нельзя.')		
+		self.son.change_text (4, 'Кругом одни кости, черепа, из которых сочится кровь')
+		self.son.change_text (5, 'всюду запах смерти и страха.')
+		self.son.change_text (6, 'Вы в яме костей.')		
+
+	def stage_content (self, hero):
+		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
+
 class _end (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
