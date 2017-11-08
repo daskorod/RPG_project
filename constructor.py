@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict, text_data.gnostic_dict, text_data.zombi_bandit_dict
+import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict, text_data.gnostic_dict, text_data.zombi_bandit_dict, text_data.trader_dict
 import img
 import functions
 
@@ -360,7 +360,11 @@ def create_level_city (level, battle, control, son, locationname):
                             sprite_group.add (pr)     
                      if col == 'г':
                             pr = classes.PortalLink (x,y, 'end1', 'end2', 'L', locationname )
-                            sprite_group.add (pr)                               
+                            sprite_group.add (pr)
+                     if col == 'ш':
+                            pr = classes.PortalLink (x,y, 'stilsh', 'shop', 'D', locationname )
+                            sprite_group.add (pr)   
+                            stuff_dict['shop_enter'] = pr                                
                      x += 45
               x = 0
               y += 45
@@ -432,7 +436,12 @@ def create_level_city2 (level, battle, control, son, locationname):
                      elif col == "H":
                             mn = classes.ZombiBandit (x/45,y/45,battle, text_data.zombi_bandit_dict.text, control, 10,1,10,1, son, 20)
                             sprite_group.add (mn)
-                                                            
+                     elif col == 'J':
+                            pr = classes.PortalLink (x,y, 'shop', 'stilsh', 'U', locationname )
+                            sprite_group.add (pr)       
+                     elif col == "K":
+                            mn = npc.Trader (x/45,y/45,battle, text_data.trader_dict.text, control, 2,3,2,0, son, 1)
+                            sprite_group.add (mn)                                                            
                      x += 45
               x = 0
               y += 45
@@ -462,7 +471,7 @@ def create_interior_standart (level, grType):
                     if col == '#':
                             decor.append(classes.Ding(x,y, 'images/tiles/old_house.png', 'старый дом'))
                     if col == '$':
-                            decor.append(classes.Ding(x,y, 'images/tiles/t_house2.png', 'дом воров'))
+                            decor.append(classes.Ding(x,y, 'images/tiles/t_house3.png', 'дом воров'))
                     if col == '%':
                             decor.append(classes.Ding(x,y, 'images/tiles/tower7.png', 'башня'))
                     if col == 'C':

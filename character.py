@@ -209,6 +209,7 @@ class Hero(pygame.sprite.Sprite):
 		#INVENTORY
 
 		self.inventory_flag = False
+		self.sell_flag = False		
 		self.weapon = items.short_sword
 		self.weapon.status = 'экипировано'
 		self.no_item = items.no_item
@@ -581,6 +582,73 @@ class Hero(pygame.sprite.Sprite):
 						self.control.k_2 = False
 						self.inv_question = False
 
+	def sell_manage (self):
+
+		if self.sell_flag == True:
+
+			adventure_screen.blit (inventory_screen, (200,10))
+			inventory_screen.fill (sea_color)
+			a = 0
+			inventory_screen.blit(fonts.font2.render ('Старьёвщик (продажа)', True, (250,250,250)),(40,10))
+			inventory_screen.blit(fonts.font2.render ('Выйти', True, (250,250,250)),(90,350))
+
+			for i in range(self.inv_page*self.number_of_things_on_the_page,(self.inv_page+1)*self.number_of_things_on_the_page):
+				try:				
+					inventory_screen.blit(fonts.font2.render (str(self.inv[i].name)+' ( '+ self.inv[i].status + ' )', True, (	250,250,250)),(40,50+(a*30)))
+					a +=1
+					if a > self.number_of_things_on_the_page or a > len(self.inv)-((self.inv_page)*self.	number_of_things_on_the_page):
+						break
+				except:
+					pass
+
+			if self.inv_question == False:
+				self.inv_index()
+
+				if self.inv_quit == False:
+					#if a < len(self.inv) or a < 8:
+					try:
+						self.son.change_text_tree (self.view.render_text (self.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].name+ '. ' + self.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].description, 'Стоимость: '+str(self.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].cost)+'.                         Нажмите E для продажи.'))
+					except:
+						self.inv_quit = True
+
+			if len(self.inv)>7:
+				inventory_screen.blit(fonts.font2.render (str(len(self.inv)), True, (250,250,250)),(280,10))
+				inventory_screen.blit(fonts.font2.render (str(self.inv_page+1), True, (250,250,250)),(235,10))				
+				if self.inv_page<len(self.inv)//self.number_of_things_on_the_page:
+					inventory_screen.blit(img.arrow_right,(250,10))
+
+				if self.inv_page >0:
+							
+					inventory_screen.blit(img.arrow_left,(200,10))
+
+
+			if self.inv_quit == True:
+				self.son.clear_text ()
+				information_screen.blit(fonts.font2.render ('Выйти? Нажмите E', True, (250,250,250)),(10,10))
+
+				if self.control.k_e == True:
+					self.control.k_e = False
+					self.move = True
+					self.sell_flag = False
+					self.inv_index_pos = 0
+					self.inv_quit = False
+
+			if self.inv_quit == False:
+
+				if self.inv_question == False:
+
+					if self.control.k_e == True:
+						self.control.k_e = False
+
+						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'экипировано':
+							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
+								self.weapon = self.first
+								#self.at += self.weapon.at_mod
+								self.damage = self.weapon.dem
+
+						self.gold += self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].cost
+						self.inv.pop(self.inv_index_pos)
+
 	def inv_index (self):
 
 		if self.control.right == True and (len(self.inv)-(self.inv_page+1)*self.number_of_things_on_the_page)>0:
@@ -617,6 +685,7 @@ class Hero(pygame.sprite.Sprite):
 				self.control.up = False
 				self.inv_quit = False
 
+	
 	def journal_manage (self):
 
 		if self.control.k_j == True and self.journal_flag == False:
@@ -899,13 +968,16 @@ class Hero(pygame.sprite.Sprite):
 
 
 		self.conversation_control ()
+
 		if self.collide_control == False:
-			if self.char_flag == False and self.journal_flag == False:
+			if self.char_flag == False and self.journal_flag == False and self.sell_flag == False:
 				self.inventory_manage ()
-			if self.inventory_flag == False and self.journal_flag == False:
+			if self.inventory_flag == False and self.journal_flag == False and self.sell_flag == False:
 				self.char_options ()
-			if self.char_flag == False and self.inventory_flag == False:
+			if self.char_flag == False and self.inventory_flag == False and self.sell_flag == False:
 				self.journal_manage ()
+			if self.sell_flag == True and self.inventory_flag == False and self.journal_flag == False and self.char_flag == False:
+				self.sell_manage()
 
 		#if self.control.move_cntrl == True and self.move == True:
 			#self.anima.play ()

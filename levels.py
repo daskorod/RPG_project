@@ -201,6 +201,28 @@ class _tavern (SuperLevel):
 	def stage_content (self, hero):
 		pass
 
+class _shop (SuperLevel):
+	def __init__ (self, lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.name = '- Мелочная лавка -'
+		self.auto = False		
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2, create_interior = constructor.create_interior_tavern, floor = classes.WoodFloor)
+		#self.back = False
+
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
+
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Вы зашли в лавку старьёвщика.')
+		self.son.change_text (3, 'Очень плачевное и затхлое заведение.')
+		self.son.change_text (4, 'В маленькой комнатке темно и пыль, всё завалено хламом.')		
+		self.son.change_text (5, 'Окна заколочены и задрапированы какой-то ветошью.')
+
+	def stage_content (self, hero):
+		pass
+
+
 
 class _temple (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
@@ -280,22 +302,20 @@ class _still (SuperLevel):
 
 	def stage_content (self, hero):
 		pass
-#		if self.up == True:
-#			self.x +=1
-#		else:
-#			self.x -=1
-#
-#		if self.x > 6:
-#			self.up = False
-#
-#		if self.x < -6:
-#			self.up = True
-#
-#		pos = self.camera.apply(constructor.stuff[1])
-#		screens.adventure_screen.blit (img.arrow, (pos.x+20,pos.y+10+self.x))
-#
-#		pos2 = self.camera.apply(constructor.stuff[2])
-#		screens.adventure_screen.blit (img.arrow, (pos2.x+12,pos2.y+10+self.x))
+		pass
+		if self.up == True:
+			self.x +=1
+		else:
+			self.x -=1
+
+		if self.x > 6:
+			self.up = False
+
+		if self.x < -6:
+			self.up = True
+
+		pos = self.camera.apply(constructor.stuff_dict['shop_enter'])
+		screens.adventure_screen.blit (img.arrow, (pos.x+12,pos.y+10+self.x))
 
 class _toweroutside (SuperLevel):
 	def __init__ (self,lev, battle, son, control):
