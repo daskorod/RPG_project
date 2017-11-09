@@ -570,11 +570,11 @@ class SkeletKing (Monster):
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
-		if 'peidron_in_prison' in hero.quest and self.all == False:
+		if ('peidron_in_prison' in hero.quest or 'peidron_is_dead' in hero.quest) and self.all == False:
 			self.all = True
 			self.branch = 8
 
-		elif 'peidron_in_prison' not in hero.quest:
+		elif ('peidron_in_prison' not in hero.quest or 'peidron_is_dead' not in hero.quest):
 
 
 			self.light1 = True

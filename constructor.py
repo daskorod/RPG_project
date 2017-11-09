@@ -365,6 +365,10 @@ def create_level_city (level, battle, control, son, locationname):
                             pr = classes.PortalLink (x,y, 'stilsh', 'shop', 'D', locationname )
                             sprite_group.add (pr)   
                             stuff_dict['shop_enter'] = pr                                
+                     if col == 'щ':
+                            pr = classes.TowerDoor (x,y)
+                            sprite_group.add (pr)   
+
                      x += 45
               x = 0
               y += 45

@@ -17,6 +17,13 @@ pave_wood1 = image.load('images/tavern/base.png')
 pave_wood2 = image.load('images/tavern/crack.png')
 pave_tavern = [pave_wood1, pave_wood2]
 
+bone1 = image.load('images/tiles/skull1.png')
+bone2 = image.load('images/tiles/skull2.png')
+bone3 = image.load('images/tiles/skull3.png')
+bone4 = image.load('images/tiles/skull4.png')
+bone_floor = [bone1, bone2, bone3, bone4]
+
+
 arrow = image.load('images/arrow_map.png')
 arrow2 = image.load('images/arrow_map2.png')
 arrowl = image.load('images/arrow_map_left.png')

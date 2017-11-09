@@ -80,7 +80,7 @@ class _dungeon3 (SuperLevel):
 class _dungeon4 (SuperLevel):
 	def __init__ (self,  lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon3)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon3,floor = classes.BoneFloor)
 		self.name = '- - - Яма костей - - -'
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 
@@ -370,6 +370,7 @@ class _tower1 (SuperLevel):
 		self.son.change_text (4, 'сила словно растворены в самом воздухе этого помещения.')		
 
 	def stage_content (self, hero):
+		img.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 		pass
 
 class _tower2 (SuperLevel):

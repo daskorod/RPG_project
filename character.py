@@ -589,7 +589,7 @@ class Hero(pygame.sprite.Sprite):
 			adventure_screen.blit (inventory_screen, (200,10))
 			inventory_screen.fill (sea_color)
 			a = 0
-			inventory_screen.blit(fonts.font2.render ('Старьёвщик (продажа)', True, (250,250,250)),(40,10))
+			inventory_screen.blit(fonts.font2.render ('Ваши вещи (продажа)', True, (250,250,250)),(40,10))
 			inventory_screen.blit(fonts.font2.render ('Выйти', True, (250,250,250)),(90,350))
 
 			for i in range(self.inv_page*self.number_of_things_on_the_page,(self.inv_page+1)*self.number_of_things_on_the_page):

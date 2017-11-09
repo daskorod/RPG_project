@@ -543,9 +543,16 @@ class Rouge (classes.Monk):
 		self.order = True
 		self.quest = False
 		self.peid = False
+		self.first_peid = True
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
+
+		if 'pedron_quest' in hero.quest and self.first_peid == True:
+			self.first_peid = False
+			br_change (self, 3)
+
+
 		if self.peid == True:
 			if ideas.anarcho in hero.journal and hero.gold >= 1000:
 				br_change (self, 10)
@@ -666,6 +673,7 @@ class Augustine (classes.Monk):
 		self.lbolt = False
 		self.mname = 'Августин'
 		self.race = 'human'
+		self.item = items.peidron_key
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/priest.png')
@@ -921,65 +929,15 @@ class Guard2 (Monster):
 		#Monster.interaction (self, hero)
 	def special_death (self,hero):
 		hero.collide_control = True
+		hero.move = False
+		hero.direction = 1
 		for i in hero.locations_dict['tower1'].block_group:
 			if i.__class__.__name__ == 'Augustine':
 				i.agression = True
 				hero.etwas = i	
 
 	def dialog_special (self, hero):
-		if self.add_information == 'what':
-			
-			if hero.gold <20:
-				br_change(self, 2)
-			else:
-				br_change(self, 1)
-		if self.add_information == 'doc' and self.control.k_e == True:
-			self.control.k_e = False
-			if items.doc in hero.inv:
-				br_change(self, 7)
-			else:
-				br_change(self, 4)
-
-		if self.add_information == 'arrest' and self.control.k_e == True:
-			end_dialog (self, hero)
-			menu.ending ('Вы закончили свою жизнь в тюрьме. Вас посадили за решётку и забыли за ненадобностью. Кормили вас скудно. От холода и голода вы заболели и вскоре умерли. Лёжа на гнилой соломе вы прошептали ваши последние слова "еды..." и испустили дух.', 'images/end/prison.png', 2, pic_x = 50, time_scroll = 40, pic_y = 60, speed_mod = 5)
-			
-			
-			#переход на локацию башня, или тюрьма.
-
-		if self.add_information == 'briber':
-			
-			if hero.gold <100:
-				br_change(self, 6)
-			else:
-				br_change(self, 5)
-
-		if self.add_information == 'open':
-			self.rect.x += 45
-			self.step_away = True			
-			br_auto (self)
-			end_dialog (self, hero)
-
-		if self.add_information == 'second':
-
-			self.second = True			
-			br_auto (self)
-			end_dialog (self, hero)
-
-		if self.add_information == 'briebery_gold':
-			hero.gold -= 100
-
-			self.second = True			
-
-			end_dialog (self, hero)
-
-		if self.add_information == 'briebery_200' and self.control.k_e == True:
-			self.control.k_e = False
-			hero.gold -= 200
-			self.rect.x += 45
-			self.step_away = True	
-			self.second = True			
-			br_auto (self)
+		pass
 
 	def battle_action (self, hero):
 		if hero.monster_turn == True:
@@ -1039,23 +997,6 @@ class Guard2 (Monster):
 			self.heal = False
 			self.wait_for_next_turn = True
 						
-#			self.ll = False
-#			img.boltAnim.play ()
-#			self.son.clear_text ()
-#			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
-#			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
-#			hero.hp -= a
-#			self.son.change_text (4, 'Нажмите Е')
-#			self.wait_for_next_turn = True
-#			hero.monster_turn = False
-#			self.control.k_e = False
-
-#		if self.control.k_e == True and self.wait_for_priest_turn == True:
-#			self.priest_turn = True
-#			self.control.k_e = False
-#
-#			self.son.clear_text ()	
-
 		if self.control.k_e == True and self.wait_for_next_turn == True and self.control.e_cntrl == True and hero.is_death == False:
 			self.wait_for_next_turn = False
 			self.control.k_e = False
@@ -1166,48 +1107,25 @@ class Peidron (Monster):
 #			if i.__class__.__name__ == 'Augustine':
 #				i.agression = True
 #				hero.etwas = i	
+	def special_death (self,hero):
+		hero.quest['peidron_is_dead'] = True
+
 
 	def dialog_special (self, hero):
-		if self.add_information == 'reductio':
-			hero.move = True
-			x = 0
-			for i in hero.journal:
-				if i.name == 'Пусто':
-					hero.journal[x] = ideas.reductio
-					break
-				x +=1
-
-
+		if self.add_information == 'wars' and self.control.k_e == True:
+			hero.hp -= 3
+			self.son.clear_text ()
 			self.control.k_e = False
-
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Вы записали концепцию Редукции в свой дневничок.')
-			hero.son.change_text (3, 'Может быть теперь при встрече с чем-то неразрешимым и тёмным')
-			hero.son.change_text (4, 'вам удастся свести его к чему-то более простому и ясному?')
-
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-			hero.collide_control = False
+			self.agression = True
+			hero.turn_main = True
 			hero.start_conv = True
+			hero.view.a = 0
 
-		if self.add_information == 'thing' and self.control.k_e == True:
-			self.control.k_e = False
-			hero.inv.append(items.bottle)
-
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Вы взяли странную бутылку у старика.')
-			hero.son.change_text (3, 'Кто знает, может вам её лучше выбросить?')
-
-			end_dialog (self, hero)
-
-		if self.add_information == 'learn':
-			if ideas.reductio in hero.journal:
-				br_change(self, 4)
-			else:
-				br_change(self, 3)
+#			a = random.randint (1,6)
+			self.branch_do = 'done'
+			self.s = 1
+			self.n = 0
+			self.branch = self.branch_id
 
 class Merch (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
@@ -1300,120 +1218,9 @@ class Tubus (classes.Monk):
 
 
 	def dialog_special (self, hero):
-		if self.add_information == 'gold' and self.control.k_e == True:
-			self.control.k_e = False
-			if hero.gold >= 20:
-				hero.gold -= 20
+		if self.add_information == 'quest':
+			hero.quest['gnostic_book'] = True
 
-				self.branch = 4
-				self.s = 1
-				self.n = 0
-
-			else:
-				self.branch = 6
-				self.s = 1
-				self.n = 0
-
-		if self.add_information == 'gold_inf' and self.control.k_e == True:
-			self.control.k_e = False
-			if hero.gold >= 20:
-				hero.gold -= 20
-
-				self.branch = 5
-				self.s = 1
-				self.n = 0
-
-			else:
-				self.branch = 13
-				self.s = 1
-				self.n = 0						
-
-		if self.add_information == 'hit' and self.control.k_e == True:
-			hero.move = True
-
-			self.control.k_e = False
-
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Потирая кулак вы отошли во свояси.')
-			hero.son.change_text (3, 'Посетители таверны даже не отреагировали.')
-			hero.son.change_text (4, 'Они просто пили своё пиво.')
-			hero.son.change_text (5, 'А вас кольнула булавочкой совесть: правильно ли?')
-
-
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-			hero.quest['gilbert_hit'] = True
-			hero.collide_control = False
-			hero.start_conv = True
-
-		if self.add_information == 'trinktour' and self.control.k_e == True:
-			hero.move = True
-
-			self.control.k_e = False
-			hero.gold = 0
-			if ideas.gelassenheit not in hero.journal:
-
-				hero.son.clear_text ()
-				hero.son.change_text (2, 'Вы долго пили. И пьянствовали. Но для чего?')
-				hero.son.change_text (3, 'Вы и сами не знаете. Вы тупо просадили все деньги.')
-				hero.son.change_text (4, 'Вы и сами уже не помните, что происходило и кто за что платил.')
-				hero.son.change_text (5, 'Теперь у вас лишь головная боль, а впереди много дел.')
-
-				self.branch = 7
-				self.s = 1
-				self.n = 0
-
-
-			if ideas.gelassenheit in hero.journal:
-
-				hero.son.clear_text ()
-				hero.son.change_text (2, 'Вы долго пили. И пьянствовали. Но для чего?')
-				hero.son.change_text (3, 'Вспомнив концепцию отрешённости, вы восприняли данную пьянку как нечто пустое.')
-				hero.son.change_text (4, 'Отрешившись от своего тела, потребляющего алкоголь вы обратились к вечности.')
-				hero.son.change_text (5, 'И преисполнились внутреннего спокойствия и силы. ')
-				hero.son.change_text (6, 'На утро вы чувствовали себя отлично. Ваша вера возросла.')
-
-				hero.char_value['6sp'] += 1
-
-
-				self.branch = 12
-				self.s = 1
-				self.n = 0
-			hero.collide_control = False
-			hero.start_conv = True
-
-		if self.add_information == 'stupid' and self.control.k_e == True:
-			hero.move = True
-
-			self.control.k_e = False
-
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Вы презрительно отозвались об идеях монаха, которые')
-			hero.son.change_text (3, 'он вынашивал у себя под сердцем. Достойный ли это поступок?')
-			hero.son.change_text (4, 'Кто знает? Может вы искренне считали его построения заблужденем?')
-			hero.son.change_text (5, 'Или же проявили невнимание и нетерпение?')
-
-
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-				
-			hero.collide_control = False
-			hero.start_conv = True
-
-		if self.add_information == 'magnus' and self.control.k_e == True:
-			hero.move = True
-			x = 0
-			for i in hero.journal:
-				if i.name == 'Пусто':
-					hero.journal[x] = ideas.order_of_magnitude
-					break
-				x +=1
 
 class Gnostic (classes.Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):

@@ -15,7 +15,8 @@ import controller
 from monster import Monster
 import img
 import items
-import text_data.well_dict, text_data.cup_dict, text_data.gnosis_door_dict
+import ideas
+import text_data.well_dict, text_data.cup_dict, text_data.gnosis_door_dict, text_data.tower_door_dict
 import event
 from functions import end_dialog
 from functions import end_dialog, war, br_change, br_auto
@@ -317,6 +318,23 @@ class WoodFloor(sprite.Sprite):
 	def interaction (self,hero):
 		pass
 
+class BoneFloor(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		self.image = self.random(img.bone_floor)
+		#self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((95,95,95))
+		self.rect = Rect(0,0,45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "no"
+
+	def random(self, florlist):
+		return random.choice(florlist)
+
+	def interaction (self,hero):
+		pass
 class CityFloor(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
@@ -1042,6 +1060,7 @@ class Obstacle(Platform):
 		self.choice = random.choice(random_set)		
 		self.image = self.choice[0]
 		self.image.set_colorkey ((255,255,255))
+		self.item = items.garbage
 
 		#self.image = Surface ((45,45))
 		#self.image.fill ((100,100,100))
@@ -1050,10 +1069,14 @@ class Obstacle(Platform):
 		self.rect.y = y
 		self.name = ""
 		self.text = self.choice[1]
+
 	def interaction (self,hero):
 		Platform.interaction (self, hero)
 		hero.son.clear_text ()
 		hero.son.change_text (2, self.text)
+		#hero.move = False
+		#hero.son.change_text (3, 'Вы исследуете содержимое и находите %s ' % self.item.name)
+		#hero.son.change_text (2, self.text)
 
 class Chair(Platform):
 	def __init__(self, x, y):
@@ -1629,6 +1652,7 @@ class Monk (Monster):
 			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
 			hero.hp -= a
 			self.son.change_text (4, 'Нажмите Е')
+			#img.fireAnim.play ()
 			self.wait_for_next_turn = True
 			hero.monster_turn = False
 			self.control.k_e = False
@@ -1666,6 +1690,9 @@ class GnosisDoor(sprite.Sprite):
 
 	def interaction (self, hero):
 
+		if ideas.gnosis in hero.journal:
+			self.branch = 1
+
 		if hero.control.right == True:
 			hero.rect.x -= hero.back_move
 		elif hero.control.left == True:
@@ -1701,7 +1728,6 @@ class GnosisDoor(sprite.Sprite):
 					except:
 						pass
 
-
 		if self.add_information == 'end':
 
 			hero.move = True
@@ -1711,6 +1737,33 @@ class GnosisDoor(sprite.Sprite):
 			hero.view.a = 0
 			self.s = 1
 			self.n = 0
+			
+		if self.add_information == 'passage' and self.control.k_e == True:
+
+
+			self.control.k_e = False
+
+
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+				hero.view.a = 0
+
+class TowerDoor (GnosisDoor):
+	def __init__ (self, x,y):
+		GnosisDoor.__init__(self, x, y)
+		self.image = image.load('images/door_gold.png')
+		self.image.set_colorkey ((255,255,255))
+		self.tree = text_data.tower_door_dict.text	
+	def interaction(self, hero):
+		if items.peidron_key in hero.inv:
+			self.branch = 1
+		GnosisDoor.interaction(self,hero)
+
+
+
 
 class ZombiBandit (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp, item = items.no_item):
@@ -1733,46 +1786,18 @@ class ZombiBandit (Monster):
 
 	def dialog_special (self, hero):
 		
-		if self.add_information == 'zombidead' and self.control.k_e == True:
-			self.kill()
-			hero.move = True
-			self.control.k_e = False
-			hero.collide_control = False
-			hero.start_conv = True
-			hero.view.a = 0	
-			self.son.clear_text ()
-			hero.char_value['2exp'] += 60
-			self.son.change_text(2, 'Поздравляю, вы сделали с зомби что-то ингуманистическое!')	
-			self.son.change_text(4, 'Вы получаете 60 опыта!')	
-			
-		if self.add_information == 'garbage':
-				for i in hero.inv:
-					if i.name == 'Хлам':
-						hero.inv.remove(i)
-
-		if self.add_information == 'solve':
-
-			hero.move = True
-			self.control.k_e = False
-			hero.collide_control = False
-			hero.start_conv = True
-			hero.view.a = 0
-			self.rect.y = self.rect.y + 45
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
+		if self.add_information == 'death' and self.control.k_e == True:
+			hero.hp = 0
+			end_dialog (self, hero)
+			hero.death ()
 				
-		if self.add_information == 'quest':
-			hero.quest['zombisad'] = 'is'
-			hero.move = True
+		if self.add_information == 'quest' and self.control.k_e == True:
+			hero.quest['pedron_quest'] = True
 			self.control.k_e = False
-			hero.collide_control = False
-			hero.start_conv = True
-			hero.view.a = 0
 			if self.branch_do == 'go':
 				self.branch_do = 'done'
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+				hero.view.a = 0
+
