@@ -1316,3 +1316,38 @@ class Trader (classes.Monster):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+
+class Smith (classes.Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Оружейник'
+		self.race = 'human'
+		self.image = Surface ((45,45))
+		self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/tiles/smith.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+		self.matter = 0
+		self.order = True
+
+#	def interaction (self, hero):
+#		Monster.interaction (self, hero)
+
+
+	def dialog_special (self, hero):
+
+
+		if self.add_information == 'trade'  and self.control.k_e == True:
+			hero.sell_flag = True
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0

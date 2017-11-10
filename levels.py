@@ -511,3 +511,59 @@ class _end2 (SuperLevel):
 
 	def stage_content (self, hero):
 		pass
+
+
+class _smith (SuperLevel):
+	def __init__ (self,lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.name = '- Кузнечный квартал -'		
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2)
+		self.back = True
+		self.camera = camera.Camera (self.level_width, self.level_height, 735, 420)
+		self.x = 0
+		self.up = True	
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Вы вошли в дымный квартал кузниц и оружеен')
+		self.son.change_text (3, 'Здесь слышен весёлый перезвон молотков, ощущается дым,')
+		self.son.change_text (4, 'неприятный запах угля и химикатов.')		
+	
+	def stage_content (self, hero):
+		pass
+		pass
+		if self.up == True:
+			self.x +=1
+		else:
+			self.x -=1
+
+		if self.x > 6:
+			self.up = False
+
+		if self.x < -6:
+			self.up = True
+
+		pos = self.camera.apply(constructor.stuff_dict['smith_enter'])
+		screens.adventure_screen.blit (img.arrow, (pos.x+12,pos.y+10+self.x))
+
+class _smith_hs (SuperLevel):
+	def __init__ (self,lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.name = '- Оружейня -'		
+		self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2, create_interior = constructor.create_interior_tavern, floor = classes.WoodFloor)
+		#self.back = False
+
+		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
+		self.x = 0
+		self.up = True	
+
+
+	def render_location_info (self):
+		
+		self.son.change_text (2, 'Отличное местечко.')
+		#self.son.change_text (3, 'Загадочный дом. Кто знает чем они тут занимаются?')
+	
+	def stage_content (self, hero):
+		pass
