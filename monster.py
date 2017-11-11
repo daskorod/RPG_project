@@ -58,6 +58,9 @@ class Monster (sprite.Sprite):
 		self.hp = hp
 		self.damage = dem
 		self.exp = exp
+		self.prevent = 0
+		self.armor = 0
+		self.master_of_sword = 0
 
 		self.item = item
 
@@ -269,21 +272,37 @@ class Monster (sprite.Sprite):
 			self.son.clear_text ()
 			a = random.randint (1,6)
 			b = random.randint (1,6)
-			c = self.at + a 
-			d = hero.ac + b
-		
+
+			c = self.at + a + self.weapon.at_mod
+
+			if self.master_of_sword != 0:
+				if a > 6-self.master_of_sword:
+					d = hero.ac + b
+
+			else:
+				d = hero.ac + b + hero.armor	
+
 			self.son.change_text (1, "Атака монстра: "+str(c) + "  Защита ваша: "+ str(d))
 			if c >= d:
 				
 				if int(c/d)>1:
-					hero.hp = hero.hp - self.damage*int(c/d)
+					damg = self.damage*int(c/d)
 					self.son.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
 					self.son.change_text (5, 'Критический урон: '+str(self.damage*int(c/d)))
 					
 				else:
 					self.son.change_text (4, "Монстр попал и нанес сокрушительный удар!")
-					hero.hp = hero.hp - self.damage
+					damg = self.damage
 					self.son.change_text (5, 'Урон: '+str(self.damage))
+
+				if hero.prevent == 0: hero.hp = hero.hp - damg
+
+				else:
+					if hero.prevet >= damg: 
+						pass
+					else:
+						hero.hp = hero.hp - (damg-hero.prevet)
+
 			elif c<d:
 				self.son.change_text (4, 'Вы уклонились!')	
 		

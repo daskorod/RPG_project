@@ -161,6 +161,8 @@ class Hero(pygame.sprite.Sprite):
 		self.exp_mod = 0
 		self.sp_mod = 0
 		self.sp_old = self.sp
+		self.armor = 0
+		self.master_of_sword = 0
 
 
 		#QEST
@@ -209,7 +211,8 @@ class Hero(pygame.sprite.Sprite):
 		#INVENTORY
 
 		self.inventory_flag = False
-		self.sell_flag = False		
+		self.sell_flag = False	
+		self.buy_flag = False	
 		self.weapon = items.short_sword
 		self.weapon.status = 'экипировано'
 		self.no_item = items.no_item
@@ -222,6 +225,11 @@ class Hero(pygame.sprite.Sprite):
 		self.hp_potions = 0
 		self.inv_page = 0
 		self.number_of_things_on_the_page = 9
+		self.armor_equip = items.chain_mail
+		self.armor_equip.status = 'экипировано'		
+		self.armor = self.armor_equip.armor
+		self.armor = self.armor_equip.armor
+
 
 		#JOURNAL
 
@@ -378,6 +386,7 @@ class Hero(pygame.sprite.Sprite):
 		self.ac = self.char_value['4ac']
 		self.level = self.char_value['1lvl']
 		self.exp = self.char_value ['2exp']	
+
 		if self.move == True:
 			if self.quest['gold_cup'] >= 1000 and self.donat == False:
 				self.char_value['6sp'] +=1
@@ -385,7 +394,6 @@ class Hero(pygame.sprite.Sprite):
 				self.son.clear_text ()
 				self.son.change_text (2, 'Вы отдаёте последние деньги')
 				self.son.change_text (3, 'и чувствуете, что ваша вера становится крепче.')
-
 
 		self.level_up ()
 
@@ -399,12 +407,14 @@ class Hero(pygame.sprite.Sprite):
 				self.char_value['1lvl'] += 1
 				self.start_rendering_lev = True
 				self.char_value['7points'] +=1
-				self.next_level = self.to_next_level(self.char_value['1lvl'])
-
+				try:
+					self.next_level = self.to_next_level(self.char_value['1lvl'])
+				except:
+					self.next_level = self.char_value['1lvl']*3000
 
 
 	def to_next_level(self, current_level):
-		level_table = {1:100,2:200,3:400,4:700,5:1000,6:2000,7:50000,8:100000,9:200000,10:500000}
+		level_table = {1:100,2:200,3:400,4:700,5:1000,6:2000,7:3000,8:5000,9:7500,10:10000}
 		return level_table[current_level]
 
 
@@ -506,6 +516,7 @@ class Hero(pygame.sprite.Sprite):
 								if i.species == 'оружие' and i.status == 'экипировано':
 									i.status = "в рюкзаке"
 							self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'экипировано'
+							
 							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
 								self.weapon = self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)]
 								self.at += self.weapon.at_mod
@@ -648,6 +659,107 @@ class Hero(pygame.sprite.Sprite):
 
 						self.gold += self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].cost
 						self.inv.pop(self.inv_index_pos)
+
+	def buy_manage (self, trader):
+
+		if self.buy_flag == True:
+
+			adventure_screen.blit (inventory_screen, (200,10))
+			inventory_screen.fill (sea_color)
+			a = 0
+			inventory_screen.blit(fonts.font2.render (trader.mname, True, (250,250,250)),(40,10))
+			inventory_screen.blit(fonts.font2.render ('Выйти', True, (250,250,250)),(90,350))
+
+			for i in range(self.inv_page*self.number_of_things_on_the_page,(self.inv_page+1)*self.number_of_things_on_the_page):
+				try:				
+					inventory_screen.blit(fonts.font2.render (str(trader.inv[i].name)+' ( Цена: '+ str(trader.inv[i].cost) + ' )', True, (	250,250,250)),(40,50+(a*30)))
+					a +=1
+					if a > self.number_of_things_on_the_page or a > len(trader.inv)-((self.inv_page)*self.	number_of_things_on_the_page):
+						break
+				except:
+					pass
+
+			if self.inv_question == False:
+				self.buy_inv_index(trader)
+
+				if self.inv_quit == False:
+					#if a < len(self.inv) or a < 8:
+					try:
+						self.son.change_text_tree (self.view.render_text (trader.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].name+ '. ' + trader.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].description, 'Стоимость: '+str(trader.inv[self.inv_index_pos+self.inv_page*self.number_of_things_on_the_page].cost)+'.                         Нажмите E для покупки.'))
+					except:
+						self.inv_quit = True
+
+			if len(trader.inv)>7:
+				inventory_screen.blit(fonts.font2.render (str(len(trader.inv)), True, (250,250,250)),(280,10))
+				inventory_screen.blit(fonts.font2.render (str(self.inv_page+1), True, (250,250,250)),(235,10))				
+				if self.inv_page<len(trader.inv)//self.number_of_things_on_the_page:
+					inventory_screen.blit(img.arrow_right,(250,10))
+
+				if self.inv_page >0:
+							
+					inventory_screen.blit(img.arrow_left,(200,10))
+
+
+			if self.inv_quit == True:
+				self.son.clear_text ()
+				information_screen.blit(fonts.font2.render ('Выйти? Нажмите E', True, (250,250,250)),(10,10))
+
+				if self.control.k_e == True:
+					self.control.k_e = False
+					self.move = True
+					self.buy_flag = False
+					self.inv_index_pos = 0
+					self.inv_quit = False
+
+			if self.inv_quit == False:
+
+				if self.inv_question == False:
+
+					if self.control.k_e == True:
+						self.control.k_e = False
+						if self.gold >= trader.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].cost:
+
+
+							self.gold -= trader.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].cost
+							self.inv.append(trader.inv.pop(self.inv_index_pos))
+
+	def buy_inv_index (self, trader):
+
+		if self.control.right == True and (len(trader.inv)-(self.inv_page+1)*self.number_of_things_on_the_page)>0:
+			self.control.right = False
+			self.inv_page+= 1
+
+		if self.control.left == True and self.inv_page>0:
+			self.control.left = False
+			self.inv_page -= 1
+
+		if self.inv_quit == False:
+
+			inventory_screen.blit(self.at_ic, (13,53+(self.inv_index_pos*30)))
+
+			if self.control.down == True and self.inv_index_pos <8:
+				self.control.down = False
+				self.inv_index_pos += 1
+			if self.control.up == True and self.inv_index_pos >0:
+				self.control.up = False
+				self.inv_index_pos -= 1
+
+			if self.control.down == True and self.inv_index_pos == 8:
+				self.control.down = False
+				self.inv_quit = True
+
+		elif self.inv_quit == True:
+			inventory_screen.blit(self.at_ic, (70, 353))
+
+			if self.control.up == True:
+				if len(self.inv)//self.number_of_things_on_the_page == self.inv_page:
+					self.inv_index_pos = len(trader.inv)%self.number_of_things_on_the_page-1
+				else:
+					self.inv_index_pos = 8
+				self.control.up = False
+				self.inv_quit = False
+
+
 
 	def inv_index (self):
 
@@ -970,15 +1082,18 @@ class Hero(pygame.sprite.Sprite):
 		self.conversation_control ()
 
 		if self.collide_control == False:
-			if self.char_flag == False and self.journal_flag == False and self.sell_flag == False:
+
+			if self.char_flag == False and self.buy_flag == False and self.journal_flag == False and self.sell_flag == False:
 				self.inventory_manage ()
-			if self.inventory_flag == False and self.journal_flag == False and self.sell_flag == False:
+			if self.inventory_flag == False and self.buy_flag == False and self.journal_flag == False and self.sell_flag == False:
 				self.char_options ()
-			if self.char_flag == False and self.inventory_flag == False and self.sell_flag == False:
+			if self.char_flag == False and self.buy_flag == False and self.inventory_flag == False and self.sell_flag == False:
 				self.journal_manage ()
-			if self.sell_flag == True and self.inventory_flag == False and self.journal_flag == False and self.char_flag == False:
+			if self.sell_flag == True and self.buy_flag == False and self.inventory_flag == False and self.journal_flag == False and self.char_flag == False:
 				self.sell_manage()
 
+		if self.buy_flag == True:
+			self.buy_manage (self.etwas)
 		#if self.control.move_cntrl == True and self.move == True:
 			#self.anima.play ()
 
@@ -1341,21 +1456,37 @@ class Hero(pygame.sprite.Sprite):
 			a = self.dice_value
 			b = random.randint (1,6)
 			c = self.at + a + self.weapon.at_mod
-			d = monster.ac + b
-		
+
+			if self.master_of_sword != 0:
+				if a > 6-self.master_of_sword:
+					d = monster.ac + b
+
+			else:
+				d = monster.ac + b + monster.armor
+
 			self.son.change_text (2, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
 			self.son.change_text (1, 'БРОСОК КУБИКА: '+str(self.dice_value))
 			if c >= d:
 				
 				if int(c/d)>1:
-					monster.hp = monster.hp - self.damage*int(c/d)
+					damg = self.damage*int(c/d)
 					self.son.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
 					self.son.change_text (5, 'Критический урон: '+str(self.damage*int(c/d)))
 					
 				else:
 					self.son.change_text (4, "Вы попали и нанесли сокрушительный удар!")
-					monster.hp = monster.hp - self.damage
+					damg = self.damage
 					self.son.change_text (5, 'Урон: '+str(self.damage))
+
+
+				if monster.prevent == 0: monster.hp = monster.hp - damg
+
+				else:
+					if monster.prevet >= damg: 
+						pass
+					else:
+						monster.hp = monster.hp - (damg-monster.prevet)
+
 			elif c<d:
 				self.son.change_text (4, 'Вы промазали!')	
 			self.attack_roll = False

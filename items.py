@@ -19,6 +19,17 @@ class Weapon (Item):
 		self.species = 'оружие'
 		self.at_mod = at_mod
 
+class Armor (Item):
+	def __init__ (self, name, description, cost, ac, prevent, use_description = '', dex_mod = 0):
+		Item.__init__ (self, name, description, cost)
+		self.ac = ac
+		self.prevent =  prevent
+		self.use_description = use_description
+		self.status = 'в рюкзаке'
+		self.species = 'доспех'
+		self.dex_mod = dex_mod
+
+
 class Potion (Item):
 	def __init__ (self, name, description, cost, value, species, use_description = '' ):
 		Item.__init__ (self, name, description, cost)
@@ -27,9 +38,16 @@ class Potion (Item):
 		self.species = species
 
 
+chain_mail = Armor ('Кольчуга', 'Искусно сделанная добротная кольчуга, которая может вас защитить от шального удара. А может и не защитить. Броня 2.', 100, 2, 0, '1 - экипировать/снять; 2 - выбросить.')
+
+plate_mail = Armor ('Панцырь', 'Тяжелый панцырь, который надежно защитить все ваши жизненно важные органы, если вы, конечно, сможете его унести на себе. Тяжелый, сволочь.', 500, 5, 1, '1 - экипировать/снять; 2 - выбросить.', dex_mod =-1)
+
+full_plate = Armor ('Латы', 'Рыцарские латы, в них не страшен и прямой удар мечом. Вот только двигаться в них не очень удобно..', 1000, 8, 2, '1 - экипировать/снять; 2 - выбросить.', dex_mod=-3)
 
 short_sword = Weapon ('Короткий меч', "Довольно качественная вещь. Урон 1.", 20, 1, '1 - экипировать/снять; 2 - выбросить.')
 long_sword = Weapon ('Длинный меч', "Очень опасная вещь. Урон 2.", 50, 2, '1 - экипировать/снять; 2 - выбросить.')
+great_sword = Weapon ('Двуручный меч', "Вот им можно заехать так заехать. Урон 3.", 120, 3, '1 - экипировать/снять; 2 - выбросить.')
+
 first = Weapon ('Кулак', "Ничто не заменит доброго удара кулаком", 0, 1, at_mod = (-2))
 no_item = Item ('Ничего', "Совсем ничего", 0)
 bouquet = Item ('Букет цветов', "Его можно подарить какой-нибудь даме.", 5, "Нажмите (2), чтобы выбросить.")

@@ -1333,6 +1333,9 @@ class Smith (classes.Monster):
 		self.matter = 0
 		self.order = True
 
+		self.inv = [items.long_sword,items.chain_mail,items.plate_mail,items.full_plate,items.great_sword]
+
+
 #	def interaction (self, hero):
 #		Monster.interaction (self, hero)
 
@@ -1341,7 +1344,7 @@ class Smith (classes.Monster):
 
 
 		if self.add_information == 'trade'  and self.control.k_e == True:
-			hero.sell_flag = True
+			hero.buy_flag = True
 			hero.control.k_e = False
 			hero.collide_control = False
 			hero.start_conv = True
@@ -1351,3 +1354,4 @@ class Smith (classes.Monster):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+
