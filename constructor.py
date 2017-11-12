@@ -10,6 +10,7 @@ import monster
 import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict, text_data.gnostic_dict, text_data.zombi_bandit_dict, text_data.trader_dict, text_data.smith_dict
 import img
 import functions
+import random
 
 stuff = []
 addition = []
@@ -124,7 +125,11 @@ def create_dungeon2 (level, battle, control, son, locationname):
 
                      if col == 'Z':
                             well = monster.Goblin(x/45,y/45,battle, text_data.goblin_lord_dict.text, control, 6,4,4,1, son, 15)  
-                            sprite_group.add (well)                               
+                            sprite_group.add (well) 
+
+                     if col == 'X':
+                            s = classes.MinorChest (x,y, 'open', random.choice(items.potion_list))
+                            sprite_group.add (s)                                                         
   
          
                      x += 45
@@ -371,6 +376,12 @@ def create_level_city (level, battle, control, son, locationname):
                      if col == 'з':
                             pr = classes.PortalLink (x,y, 'towero', 'smith', 'R', locationname )
                             sprite_group.add (pr)
+                     elif col == 'х':
+                            s = classes.MinorChest (x,y, 'open', random.choice(items.potion_list))
+                            sprite_group.add (s)
+                     if col == 'ф':
+                            well = monster.Goblin(x/45,y/45,battle, text_data.master_dict.text, control, 16,10,10,3, son, 15)  
+                            sprite_group.add (well)
 
                      x += 45
               x = 0

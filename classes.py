@@ -1127,7 +1127,7 @@ class Trap(sprite.Sprite):
 			hero.son.clear_text ()
 			hero.son.change_text (4, 'Вы наступили на плиту и по вам шибанули снопы огня.')
 			hero.son.change_text (5, "Больно!")
-			hero.hp -=4
+			hero.take_damage (4, 'fire')
 			img.fireAnim.play ()
 
 		if hero.control.right == True:
@@ -1650,7 +1650,7 @@ class Monk (Monster):
 			self.son.clear_text ()
 			self.son.change_text (1, "... вас охватывает пламя.")
 			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
-			hero.hp -= a
+			hero.take_damage (a, 'fire')
 			self.son.change_text (4, 'Нажмите Е')
 			#img.fireAnim.play ()
 			self.wait_for_next_turn = True
@@ -1738,10 +1738,10 @@ class GnosisDoor(sprite.Sprite):
 			self.s = 1
 			self.n = 0
 			
-		if self.add_information == 'passage' and self.control.k_e == True:
+		if self.add_information == 'passage' and hero.control.k_e == True:
 
 
-			self.control.k_e = False
+			hero.control.k_e = False
 
 
 			if self.branch_do == 'go':

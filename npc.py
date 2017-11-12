@@ -247,53 +247,6 @@ class Gilbert (classes.Monk):
 				self.n = 0
 
 
-	def battle_action (self, hero):
-		self.g += 1
-		if self.lbolt == True:
-			self.g = 185
-
-			self.lbolt = False
-
-
-		if self.g > 190 and self.g< 240:
-			
-#			x_hero.x -=49
-#			x_hero.y -=80
-#			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
-			boltAnim.play ()
-			if self.g==239:
-				boltAnim.stop()
-
-		if hero.monster_turn == True:
-			self.son.clear_text ()
-			a = random.randint (1,3)
-			#boltAnim.blit (adventure_screen, (100, 100))
-		
-			self.son.change_text (1, 'Священник шепчет слова молитвы:')
-			self.son.change_text (2, '"Возврати меч твой в его место, ибо')
-			self.son.change_text (3, 'все, взявшие меч, мечом погибнут." ... ')
-			self.son.change_text (5, 'Нажмите Е')
-			self.lbolt = True
-			self.ll = True
-
-		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
-			self.ll = False
-			self.lbolt = False
-			self.son.clear_text ()
-			self.son.change_text (1, "... вас охватывает пламя.")
-			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
-			hero.hp -= a
-			self.son.change_text (4, 'Нажмите Е')
-			self.wait_for_next_turn = True
-			hero.monster_turn = False
-			self.control.k_e = False
-
-		if self.control.k_e == True and self.wait_for_next_turn == True:
-			
-			self.wait_for_next_turn = False
-			self.control.k_e = False
-			hero.turn_main = True
-			self.son.clear_text ()
 
 class Barmen (classes.Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
@@ -480,60 +433,13 @@ class Martin (classes.Monk):
 			hero.start_conv = True
 
 
-	def battle_action (self, hero):
-		self.g += 1
-		if self.lbolt == True:
-			self.g = 185
-
-			self.lbolt = False
-
-
-		if self.g > 190 and self.g< 240:
-			
-#			x_hero.x -=49
-#			x_hero.y -=80
-#			classes.boltAnim.blit (adventure_screen, (x_hero.x - 49, x_hero.y - 80))
-			boltAnim.play ()
-			if self.g==239:
-				boltAnim.stop()
-
-		if hero.monster_turn == True:
-			self.son.clear_text ()
-			a = random.randint (1,3)
-			#boltAnim.blit (adventure_screen, (100, 100))
-		
-			self.son.change_text (1, 'Священник шепчет слова молитвы:')
-			self.son.change_text (2, '"Возврати меч твой в его место, ибо')
-			self.son.change_text (3, 'все, взявшие меч, мечом погибнут." ... ')
-			self.son.change_text (5, 'Нажмите Е')
-			self.lbolt = True
-			self.ll = True
-
-		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
-			self.ll = False
-			self.lbolt = False
-			self.son.clear_text ()
-			self.son.change_text (1, "... вас охватывает пламя.")
-			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
-			hero.hp -= a
-			self.son.change_text (4, 'Нажмите Е')
-			self.wait_for_next_turn = True
-			hero.monster_turn = False
-			self.control.k_e = False
-
-		if self.control.k_e == True and self.wait_for_next_turn == True:
-			
-			self.wait_for_next_turn = False
-			self.control.k_e = False
-			hero.turn_main = True
-			self.son.clear_text ()
-
-class Rouge (classes.Monk):
+class Rouge (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = textus
 		self.lbolt = False
 		self.mname = 'Вор'
+		self.race = 'human'
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/tiles/rouge.png')
@@ -744,6 +650,29 @@ class Augustine (classes.Monk):
 				br_change(self, 7)
 				hero.inv.append (items.doc)
 
+		if self.add_information == 'permit':
+			
+			if hero.gold <100:
+				br_change(self, 10)
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'К сожалению у вас не хватает денег,')
+				hero.son.change_text (3, 'чтобы получить пропуск в подземелье.')
+				hero.son.change_text (4, 'Приходите, когда у вас будет больше денег.')
+				hero.son.change_text (4, 'Или не приходите вообще!')
+				end_dialog (self, hero)
+			else:
+				hero.gold >= 100
+				hero.gold -= 100
+				br_change(self, 10)
+				hero.inv.append (items.permit)
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Вы получаете Пропуск в подземелье.')
+				hero.son.change_text (3, 'За него вам пришлось отвалить 100 золотых.')
+				hero.son.change_text (4, 'Действительно, что такое ограбление по сравнению с')
+				hero.son.change_text (4, 'основанием государства!')
+				end_dialog (self, hero)
+
+
 		if self.add_information == 'red':
 			
 			if hero.gold <200:
@@ -876,7 +805,8 @@ class Guard (Monster):
 
 		if self.add_information == 'open':
 			self.rect.x += 45
-			self.step_away = True			
+			self.step_away = True
+			hero.char_value['2exp'] += 60			
 			br_auto (self)
 			end_dialog (self, hero)
 
@@ -944,23 +874,40 @@ class Guard2 (Monster):
 			self.son.clear_text ()
 			a = random.randint (1,6)
 			b = random.randint (1,6)
-			c = self.at + a 
-			d = hero.ac + b
-		
+
+			c = self.at + a
+
+			if self.master_of_sword != 0:
+				if a > 6-self.master_of_sword:
+					d = hero.ac + b
+
+			else:
+				d = hero.ac + b + hero.armor
+
 			self.son.change_text (1, "Атака монстра: "+str(c) + "  Защита ваша: "+ str(d))
 			if c >= d:
 				
 				if int(c/d)>1:
-					hero.hp = hero.hp - self.damage*int(c/d)
+					damg = self.damage*int(c/d)
 					self.son.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
 					self.son.change_text (5, 'Критический урон: '+str(self.damage*int(c/d)))
 					
 				else:
 					self.son.change_text (4, "Монстр попал и нанес сокрушительный удар!")
-					hero.hp = hero.hp - self.damage
+					damg = self.damage
 					self.son.change_text (5, 'Урон: '+str(self.damage))
+
+				if hero.prevent == 0: hero.hp = hero.hp - damg
+
+				else:
+					if hero.prevet >= damg: 
+						pass
+					else:
+						hero.hp = hero.hp - (damg-hero.prevet)
+
 			elif c<d:
 				self.son.change_text (4, 'Вы уклонились!')	
+		
 		
 			self.son.change_text (7, 'Нажмите Е')
 			hero.monster_turn = False
@@ -1333,7 +1280,7 @@ class Smith (classes.Monster):
 		self.matter = 0
 		self.order = True
 
-		self.inv = [items.long_sword,items.chain_mail,items.plate_mail,items.full_plate,items.great_sword]
+		self.inv = [items.mail, items.long_sword, items.plate_mail,items.full_plate,items.great_sword]
 
 
 #	def interaction (self, hero):
@@ -1355,3 +1302,45 @@ class Smith (classes.Monster):
 				self.s = 1
 				self.n = 0
 
+
+class Master (classes.Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Мастер меча'
+		self.race = 'human'
+		self.image = Surface ((45,45))
+		self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/tiles/master.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+		self.matter = 0
+		self.order = True
+		self.master_of_sword = 1
+
+
+
+
+#	def interaction (self, hero):
+#		Monster.interaction (self, hero)
+
+
+	def dialog_special (self, hero):
+
+
+		if self.add_information == 'teach'  and self.control.k_e == True:
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'С вами поделился своим боевым опытом мастер меча.')
+			hero.son.change_text (3, 'Он показал ряд приёмов и хитростей.')
+			hero.son.change_text (4, 'Теперь при броске 6 на кубике вы будете пробивать броню врага.')
+			hero.son.change_text (5, 'Но только броню, его уклонение будет продолжать считаться!')
+
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+			hero.master_of_sword +=1
+
+			end_dialog (self, hero)

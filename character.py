@@ -144,7 +144,7 @@ class Hero(pygame.sprite.Sprite):
 		self.sp = 2
 		self.sp_max = 2
 		self.at = at 
-		self.ac = ac
+		self.ac = 6
 		self.hp = hp
 		self.gold = 160
 		self.mx = 20
@@ -163,7 +163,16 @@ class Hero(pygame.sprite.Sprite):
 		self.sp_old = self.sp
 		self.armor = 0
 		self.master_of_sword = 0
+		self.resistance = {'fire':0, 'light':0, 'ice':0, 'necro':0, 'phis':0}
+		self.fire = False
+		self.light = False
+		self.b3at = False
+		self.b4ac = False
+		self.narc = False
 
+		#TIME
+		self.day = 0
+		self.round = 0
 
 		#QEST
 		self.quest = {'gold_cup':0}
@@ -216,7 +225,7 @@ class Hero(pygame.sprite.Sprite):
 		self.weapon = items.short_sword
 		self.weapon.status = 'экипировано'
 		self.no_item = items.no_item
-		self.inv = [self.weapon, items.long_sword,items.bouquet,items.hp_potion]
+		self.inv = [items.fire_resist, items.light_resist, self.weapon, items.long_sword,items.bouquet,items.hp_potion, items.chain_mail, items.str_potion, items.dex_potion]
 		self.inv_index_pos = 0
 		self.first = items.first
 		self.damage = self.weapon.dem
@@ -228,7 +237,7 @@ class Hero(pygame.sprite.Sprite):
 		self.armor_equip = items.chain_mail
 		self.armor_equip.status = 'экипировано'		
 		self.armor = self.armor_equip.armor
-		self.armor = self.armor_equip.armor
+		self.prevent = self.armor_equip.prevent
 
 
 		#JOURNAL
@@ -251,7 +260,7 @@ class Hero(pygame.sprite.Sprite):
 		self.d = 'Е - повысить параметр'
 		self.char_quit = False
 
-		self.char_value ={'1lvl':1,'2exp':0,'3at':6,'4ac':6,'5hp':7,'6sp':2,'7points':1}
+		self.char_value ={'1lvl':1,'2exp':0,'3at':6,'4ac':4,'5hp':7,'6sp':2,'7points':1}
 
 		self.sorted_char_value_keys = sorted(self.char_value.keys())
 		self.char = [
@@ -378,6 +387,8 @@ class Hero(pygame.sprite.Sprite):
 					self.char_flag = False
 					self.inv_index_pos = 0
 					self.char_quit = False
+
+
 
 	def update_char(self):
 		self.sp_max = self.char_value['6sp']
@@ -509,26 +520,51 @@ class Hero(pygame.sprite.Sprite):
 
 					if self.control.k_1 == True:
 						self.control.k_1 = False
+						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
 
-						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'в рюкзаке':
+							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'в рюкзаке':
 
-							for i in self.inv:
-								if i.species == 'оружие' and i.status == 'экипировано':
-									i.status = "в рюкзаке"
-							self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'экипировано'
+								for i in self.inv:
+									if i.species == 'оружие' and i.status == 'экипировано':
+										i.status = "в рюкзаке"
+								self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'экипировано'
 							
-							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
-								self.weapon = self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)]
-								self.at += self.weapon.at_mod
-								self.damage = self.weapon.dem
+								if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
+									self.weapon = self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)]
+									self.at += self.weapon.at_mod
+									self.damage = self.weapon.dem
 
-						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'экипировано':
-							self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'в рюкзаке'
+							elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'экипировано':
+								self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'в рюкзаке'
 		
-							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
-								self.weapon = self.first
+								if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
+									self.weapon = self.first
 								#self.at += self.weapon.at_mod
-								self.damage = self.weapon.dem
+									self.damage = self.weapon.dem
+
+						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'доспех':
+
+							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'в рюкзаке':
+
+								for i in self.inv:
+									if i.species == 'доспех' and i.status == 'экипировано':
+										i.status = "в рюкзаке"
+								self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'экипировано'
+							
+								if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'доспех':
+									self.armor_equip = self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)]
+
+									self.armor = self.armor_equip.armor
+									self.prevent = self.armor_equip.prevent
+
+							elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'экипировано':
+								self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status = 'в рюкзаке'
+		
+								if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'доспех':
+									self.armor_equip = items.no_armor
+									#self.at += self.weapon.at_mod
+									self.armor = self.armor_equip.armor
+									self.prevent = self.armor_equip.prevent
 # контроль выпивания бутылок
 
 						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].__class__.__name__ == 'Potion':
@@ -550,6 +586,71 @@ class Hero(pygame.sprite.Sprite):
 									self.son.clear_text ()
 									self.son.change_text (2, 'Вы выпиваете отвратительное тягучее пойло.')
 									self.son.change_text (3, 'Вы чувствуете странную метаморфозу в своём теле.')
+
+						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].__class__.__name__  == 'Potion_Resist':
+
+									
+
+									self.resistance[self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species] = self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].value
+						
+									self.son.clear_text ()
+									self.son.change_text (2, 'Вы выпиваете %s.'%self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name)
+									self.son.change_text (3, '+ %s сопротивления ' % str(self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].value))
+
+									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species, True)
+									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species+'_dur', self.round)
+									self.inventory_flag = False
+									self.control.k_e = False
+									self.move = True
+									self.inventory_flag = False
+									self.inv_index_pos = 0
+									self.inv_quit = False
+									self.inv.pop(self.inv_index_pos)						
+
+						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].__class__.__name__  == 'Potion_Buff':
+
+									
+
+									self.char_value[self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species.strip('b')] += self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].value
+						
+									self.son.clear_text ()
+									self.son.change_text (2, 'Вы выпиваете %s.'%self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name)
+									
+
+									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species, True)
+									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species+'_dur', self.round)
+
+									self.inv.pop(self.inv_index_pos)	
+									self.inventory_flag = False
+									self.control.k_e = False
+									self.move = True
+									self.inventory_flag = False
+									self.inv_index_pos = 0
+									self.inv_quit = False
+
+						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name  == 'Меланж':
+
+									
+
+									self.char_value['4ac'] += 1
+									self.hp -= 1
+						
+									self.son.clear_text ()
+									self.son.change_text (2, 'Вы выпиваете жадно и обильно занюхнули дозу меланжа.')
+									self.son.change_text (3, 'Хорошенько вас пробрало.')
+									self.son.change_text (5, 'Ваша реакция стала лучше: + 1 защиты.')						
+									
+
+									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species, True)
+									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species+'_dur', self.round)
+
+									self.inv.pop(self.inv_index_pos)	
+									self.inventory_flag = False
+									self.control.k_e = False
+									self.move = True
+									self.inventory_flag = False
+									self.inv_index_pos = 0
+									self.inv_quit = False
 
 						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name == 'Старая книга':
 
@@ -585,6 +686,14 @@ class Hero(pygame.sprite.Sprite):
 								self.weapon = self.first
 								#self.at += self.weapon.at_mod
 								self.damage = self.weapon.dem
+
+							elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'доспех':
+								self.armor_equip = items.no_armor
+								#self.at += self.weapon.at_mod
+								self.armor = self.armor_equip.armor
+								self.prevent = self.armor_equip.prevent
+
+
 						self.inv.pop (self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page))
 					#	self.inv.insert (self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page), items.no_item)
 						self.inv_question = False
@@ -941,6 +1050,11 @@ class Hero(pygame.sprite.Sprite):
 				self.start_rendering_exp = False
 				self.x2_mod = 0	
 
+	def duration (self, what, dur, dur_start):
+		if self.round == dur_start+dur:
+			setattr (self, str(what), False)
+			self.resistance[what] = 0
+			dur_start = 0
 
 	def render_information (self):
 
@@ -957,7 +1071,35 @@ class Hero(pygame.sprite.Sprite):
 			n = n+15
 
 		hero_screen.blit(fonts.font2.render (str(self.sp), True, (250,250,250)),(30,140))
+		
+		if self.fire == True:
+			adventure_screen.blit(img.firer,(15,50))
+			self.duration ('fire', 20, self.fire_dur)
 
+		if self.light == True:
+			adventure_screen.blit(img.lightr,(15,100))
+			self.duration ('light', 20, self.light_dur)
+
+		if self.b3at == True:
+			adventure_screen.blit(img.bless,(15,150))
+			if self.round == self.b3at_dur+20:
+				self.b3at = False
+				self.char_value['3at'] -= 2
+				self.b3at_start = 0
+
+		if self.b4ac == True:
+			adventure_screen.blit(img.bless,(15,200))
+			if self.round == self.b4ac_dur+20:
+				self.b4ac = False
+				self.char_value['4ac'] -= 2
+				self.b4ac_start = 0
+
+		if self.narc == True:
+			adventure_screen.blit(img.narc,(15,250))
+			if self.round == self.narc_dur+20:
+				self.narc = False
+				self.char_value['4ac'] -= 1
+				self.narc_start = 0
 
 
 		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
@@ -968,7 +1110,7 @@ class Hero(pygame.sprite.Sprite):
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
 		hero_screen.blit(fonts.font5.render (str((self.at+self.weapon.at_mod)) +'/'+str(self.damage) , True, (250,250,250)),(60,155))
-		hero_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(120,155))
+		hero_screen.blit(fonts.font5.render (str(self.ac)+'/'+str(self.armor), True, (250,250,250)),(120,155))
 		hero_screen.blit(self.at_ic,(45,160))
 		hero_screen.blit(self.ac_ic,(100,160))
 		hero_screen.blit (self.icon, (50,35))
@@ -1068,6 +1210,11 @@ class Hero(pygame.sprite.Sprite):
 	def update (self, array):
 		self.drink_potion()
 		self.update_char()
+
+		if self.round == 160:
+			self.day +=1
+			self.round = 0
+
 		#self.location.stage_loop ()
 		
 		if self.is_death == True and self.control.k_space == True:
@@ -1123,6 +1270,7 @@ class Hero(pygame.sprite.Sprite):
 					#sounds.footstep.play()
 				self.control.right = False
 
+				self.round += 1
 	
 			if self.control.left == True:
 
@@ -1137,7 +1285,7 @@ class Hero(pygame.sprite.Sprite):
 					self.rect.x -= self.velo
 					sounds.footstep.play()
 				self.control.left = False
-	
+				self.round += 1
 			if self.control.up == True:
 				
 				self.direction = 3
@@ -1152,7 +1300,7 @@ class Hero(pygame.sprite.Sprite):
 					sounds.footstep.play()
 					
 				self.control.up = False
-	
+				self.round += 1
 			if self.control.down == True:
 				
 				self.direction = 0
@@ -1166,6 +1314,7 @@ class Hero(pygame.sprite.Sprite):
 					self.rect.y += self.velo
 					sounds.footstep.play()
 				self.control.down = False
+				self.round += 1
 			self.anima = animlist[self.direction]
 
 
@@ -1200,6 +1349,11 @@ class Hero(pygame.sprite.Sprite):
 		if self.collide_control == True and self.etwas.agression == True:
 			functions.combat (self, self.etwas)			
 
+	
+
+	def take_damage (self, dem, source):
+		dem = int(dem * (self.resistance[source]/100))
+		self.hp -= dem
 
 	# BATTLE OPTIONS
 

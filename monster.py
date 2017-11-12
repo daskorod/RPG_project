@@ -273,14 +273,14 @@ class Monster (sprite.Sprite):
 			a = random.randint (1,6)
 			b = random.randint (1,6)
 
-			c = self.at + a + self.weapon.at_mod
+			c = self.at + a
 
 			if self.master_of_sword != 0:
 				if a > 6-self.master_of_sword:
 					d = hero.ac + b
 
 			else:
-				d = hero.ac + b + hero.armor	
+				d = hero.ac + b + hero.armor
 
 			self.son.change_text (1, "Атака монстра: "+str(c) + "  Защита ваша: "+ str(d))
 			if c >= d:
@@ -456,7 +456,7 @@ class SkeletLord (Monster):
 			self.son.clear_text ()
 			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
 			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
-			hero.hp -= a
+			hero.take_damage (a, 'light')
 			self.son.change_text (4, 'Нажмите Е')
 			self.wait_for_next_turn = True
 			hero.monster_turn = False
@@ -635,7 +635,7 @@ class SkeletKing (Monster):
 		if self.add_information == 'light':
 			if self.light1 == True:
 				img.boltAnim.play ()
-				hero.hp -= random.randint(1,6)
+				hero.take_damage (random.randint(1,6), 'light')
 				self.light1 = False
 
 		if self.add_information == 'push' and self.control.k_e == True:
@@ -652,7 +652,7 @@ class SkeletKing (Monster):
 		if self.add_information == 'light2':
 			if self.light2 == True:
 				img.boltAnim.play ()
-				hero.hp -= random.randint(1,6)
+				hero.take_damage (random.randint(1,6), 'light')
 				self.light2 = False
 
 		if self.add_information == 'idea_of_evil' and self.control.k_e == True:

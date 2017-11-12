@@ -23,6 +23,10 @@ bone3 = image.load('images/tiles/skull3.png')
 bone4 = image.load('images/tiles/skull4.png')
 bone_floor = [bone1, bone2, bone3, bone4]
 
+bless = image.load('images/bless.png')
+firer = image.load('images/fire.png')
+lightr = image.load('images/light.png')
+narc = image.load('images/narc.png')
 
 arrow = image.load('images/arrow_map.png')
 arrow2 = image.load('images/arrow_map2.png')
