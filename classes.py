@@ -16,6 +16,7 @@ from monster import Monster
 import img
 import items
 import ideas
+import menu
 import text_data.well_dict, text_data.cup_dict, text_data.gnosis_door_dict, text_data.tower_door_dict
 import event
 from functions import end_dialog
@@ -1053,17 +1054,36 @@ class Ding3(Platform):
 		hero.son.clear_text ()
 		hero.son.change_text (2, random.choice(self.text))
 
-class Obstacle(Platform):
-	def __init__(self, x, y, random_set):
+class Obstacle_stone(Platform):
+	def __init__(self, x, y):
 		#sprite.Sprite.__init__(self)
 		Platform.__init__(self, x, y)
-		self.choice = random.choice(random_set)		
-		self.image = self.choice[0]
-		self.image.set_colorkey ((255,255,255))
+		#self.choice = random.choice(random_set)		
+		self.image = random.choice(img.obstacles_stone)
+		#self.image.set_colorkey ((255,255,255))
 		self.item = items.garbage
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.text = random.choice(img.obstacles_stone_t)
 
-		#self.image = Surface ((45,45))
-		#self.image.fill ((100,100,100))
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		hero.son.clear_text ()
+		hero.son.change_text (2, self.text)
+		#hero.move = False
+		#hero.son.change_text (3, 'Вы исследуете содержимое и находите %s ' % self.item.name)
+		#hero.son.change_text (2, self.text)
+
+class Obstacle_br(Platform):
+	def __init__(self, x, y):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.choice = random.choice(img.obstacles_broken)		
+		self.image = self.choice[0]
+		#self.image.set_colorkey ((255,255,255))
+		self.item = items.garbage
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
@@ -1074,9 +1094,79 @@ class Obstacle(Platform):
 		Platform.interaction (self, hero)
 		hero.son.clear_text ()
 		hero.son.change_text (2, self.text)
+
+class Obstacle_useful(Platform):
+	def __init__(self, x, y):
+		#sprite.Sprite.__init__(self)
+		Platform.__init__(self, x, y)
+		self.choice = random.choice(img.obstacles_useful)		
+		self.image = self.choice[0]
+		#self.image.set_colorkey ((255,255,255))
+		self.item = random.choice(items.garbage_collection)
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.name = ""
+		self.text = self.choice[1]
+		self.untapped = True
+		self.rnd = random.randint(1,4)
+
+	def interaction (self,hero):
+		Platform.interaction (self, hero)
+		if self.untapped == True:
+			if self.rnd == 1:
+				hero.son.clear_text ()
+				hero.son.change_text (2, self.text)
+				hero.son.change_text (5, 'Вы получаете предмет: %s' % self.item.name)
+				hero.son.change_text (3, 'Вы исследуете содержимое... И что-то находите.')
+				#hero.son.change_text (5, 'Вы за.')
+				hero.inv.append(self.item)
+				self.image = self.choice[2]
+				self.text = self.choice[3]
+				self.untapped = False
+			elif self.rnd == 2:
+				a = random.randint(1,6)
+				hero.son.clear_text ()
+				hero.son.change_text (2, self.text)
+				hero.son.change_text (5, 'Вы получаете немного золотишка: %s' % str(a))
+				hero.son.change_text (3, 'Вы исследуете содержимое... и находите пару монет.')
+				#hero.son.change_text (5, 'Вы за.')
+				hero.gold += a
+				self.image = self.choice[2]
+				self.text = self.choice[3]
+				self.untapped = False				
+			elif self.rnd == 3:
+				
+				hero.son.clear_text ()
+				hero.son.change_text (2, self.text)
+				hero.son.change_text (5, 'Вы теряете 1 жизненную силу!')
+				hero.son.change_text (3, 'Вы исследуете содержимое... и вас кусает крыса!')
+				#hero.son.change_text (5, 'Вы за.')
+				hero.hp -= 1
+				self.image = self.choice[2]
+				self.text = self.choice[3]
+				self.untapped = False	
+
+			elif self.rnd == 4:	
+				hero.son.clear_text ()
+				hero.son.change_text (2, self.text)
+				hero.son.change_text (5, 'Вы получаете предемет: Меланж.')
+				hero.son.change_text (3, 'Вы находите воровскую закладку с наркотой.')
+				#hero.son.change_text (5, 'Вы за.')
+				hero.inv.append(items.melanj)
+				self.image = self.choice[2]
+				self.text = self.choice[3]
+				self.untapped = False				
+		else:
+			hero.son.clear_text ()
+			hero.son.change_text (2, self.text)
 		#hero.move = False
 		#hero.son.change_text (3, 'Вы исследуете содержимое и находите %s ' % self.item.name)
 		#hero.son.change_text (2, self.text)
+
+def Obstacle(x,y):
+	return random.choice([Obstacle_stone(x,y), Obstacle_useful(x,y), Obstacle_useful(x,y),Obstacle_br(x,y)])
+
 
 class Chair(Platform):
 	def __init__(self, x, y):
@@ -1208,12 +1298,12 @@ class Chest(sprite.Sprite):
 			self.branch = 0
 
 #BASIC CHEST
-
+#стандартныый сундук
 class MinorChest(sprite.Sprite):
 	def __init__(self, x, y, status, *item):
 		sprite.Sprite.__init__(self)
-		self.image=image.load('images/chest2.png')
-		self.image.set_colorkey ((255,255,255))
+		self.image=image.load('images/tiles/chest.png')
+		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((200,30,70))
 		self.rect = Rect (0,0, 45,45)
@@ -1377,59 +1467,7 @@ class MinorChest2(sprite.Sprite):
 			self.n = 0
 			self.branch = 0
 
-#class Portal2(sprite.Sprite):
-#	def __init__(self, x, y,control):
-#		sprite.Sprite.__init__(self)
-#		self.image=image.load('images/portal.png')
-#		#self.image.set_colorkey ((255,255,255))
-#		#self.image = Surface ((45,45))
-#		#self.image.fill ((200,30,70))
-#		self.rect = Rect (0,0, 45,45)
-#		self.rect.x = x
-#		self.rect.y = y
-#		self.name = "portal"
-#		self.control = control
-#	def interaction (self, hero):
-#		#self.control.stage1_flag = False
-#		#self.control.stage2_flag = True
-#		hero.location = hero.locations_dict['end']
-#		hero.rect.x = 675
-#		hero.rect.y = 180
-#		#hero.son.change_text (1, self.description)
-#
-#class Portal (sprite.Sprite):
-#	def __init__(self, x, y,control):
-#		sprite.Sprite.__init__(self)
-#		self.image=image.load('images/portal.png')
-#		#self.image.set_colorkey ((255,255,255))
-#		#self.image = Surface ((45,45))
-#		#self.image.fill ((200,30,70))
-#		self.rect = Rect (0,0, 45,45)
-#		self.rect.x = x
-#		self.rect.y = y
-#		self.name = "portal"
-#		self.control = control
-#	def interaction (self, hero):
-#		#self.control.stage2_flag = False
-#		#self.control.stage1_flag = True
-#		hero.location = hero.locations_dict['1']
-#		hero.rect.x = 45
-#		hero.rect.y = 45
-#
-#class PortalS (sprite.Sprite):
-#	def __init__(self, x, y, loc, coordinates):
-#		sprite.Sprite.__init__(self)
-#		self.image=image.load('images/portal.png')
-#		self.rect = Rect (0,0, 45,45)
-#		self.rect.x = x
-#		self.rect.y = y
-#		self.name = "portal"
-#		self.loc_num = loc
-#		self.px, self.py = coordinates
-#
-#	def interaction (self, hero):
-#		hero.location = hero.locations_dict[self.loc_num]
-#		hero.rect.x, hero.rect.y = self.px*45, self.py*45
+
 
 class PortalLink (sprite.Sprite):
 	def __init__(self, x, y, name, link, exitside, locationname):
@@ -1801,3 +1839,51 @@ class ZombiBandit (Monster):
 				self.n = 0
 				hero.view.a = 0
 
+class SkeletGod (Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp, item = items.no_item):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp, item)
+		self.tree = textus
+		self.image=image.load('images/god.png')
+		self.image.set_colorkey ((255,255,255))
+		self.mname = ' Бог скелет'
+		self.order = True
+		self.branch = 0
+		self.order_special = False
+		self.rect = self.image.get_rect()
+
+		self.rect.x = 3*PF_WIDTH
+		self.rect.y = 2*PF_HEIGHT
+
+	#def interaction (self, hero):
+	#	Monster.interaction (self, hero)
+	#	if self.order_special == False:
+	#		for i in hero.journal:
+	#			if i.name == 'Порядок магнитуд':
+	#				self.branch = 1
+	#				self.order_special = True
+
+	def dialog_special (self, hero):
+		
+		if self.add_information == 'the_end' and self.control.k_e == True:
+			menu.ending ('Вы сгинули во тьме, убитые нечеловеческим могуществом Бога Скелета. Действительно, что человек может противопоставить такому созданию?', 'images/end/dead_in_dark.png', 3, pic_x = 90, time_scroll = 250, speed_mod = 5)
+
+		if self.add_information == 'other' and self.control.k_e == True:
+			menu.ending ('. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .232%@@ . . e . . . . . . . . . . . . . . . . . . . . . . .$# ^$()#). . . . . . . wgw . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . )$%#lJ$#m. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ', 'images/end/other.gif', 10, pic_x = 90, time_scroll = 250, speed_mod = 5)
+								
+		if self.add_information == 'pray' and self.control.k_e == True:
+			self.control.k_e = False
+			if ideas.gelassenheit in hero.journal:
+				br_change (self,7)
+
+			elif ideas.dark in hero.journal:
+				br_change (self,10)
+
+			else:
+				br_change (self,8)
+
+		if self.add_information == 'sword' and self.control.k_e == True:
+			self.control.k_e = False
+			if items.old_sword in hero.inv:
+				br_change (self,11)
+			else:
+				br_change (self, 9)

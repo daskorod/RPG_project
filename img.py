@@ -101,17 +101,39 @@ arrow_right = image.load('images/arrow_right.png')
 arrow_left = image.load('images/arrow_left.png')
 
 
-barrel = image.load('images/tiles/barrel.png')
-box = image.load('images/tiles/box.png')
-pot = image.load('images/tiles/pot.png')
-stone = image.load('images/tiles/stone.png')
 
-barrel_t = 'Старая никому ненужная бочка. Внутри вся в паутине.'
-box_t = 'Раздолбанный ящик. Пойдёт только на дрова.'
+stone0 = image.load('images/obst/stone0.png')
+stone1 = image.load('images/obst/stone1.png')
+stone2 = image.load('images/obst/stone2.png')
+stone3 = image.load('images/obst/stone3.png')
+stone4 = image.load('images/obst/stone4.png')
+stone5 = image.load('images/obst/stone5.png')
+wood = image.load('images/obst/wood1.png')
+
+obstacles_stone = [wood,stone1,stone2,stone3,stone4,stone5]
+obstacles_stone_t = ['Мерзкие и противные камни, лежащие на вашей дороге', 'Здесь не пройти - камней слишком много.',"Груда камней, земли и мусора.", "Грязь, сор, обрезки ногтей и волос."]
+
+barrel_broken = image.load('images/obst/barrel_broken.png')
+box_broken = image.load('images/obst/box_broken.png')
+pot_broken = image.load('images/obst/pot_broken.png')
+
+barrel = image.load('images/obst/barrel.png')
+box = image.load('images/obst/box.png')
+pot = image.load('images/obst/pot.png')
+
+barrel_t = 'Добротная бочка, может быть внутри у ней что-то есть?'
+box_t = 'Ящик, сколоченный из досок.'
+pot_t = 'Амфора. Или простой горшок?'
+
+barrel_br_t = 'Старая никому ненужная бочка. Внутри вся в паутине.'
+box_br_t = 'Раздолбанный ящик. Пойдёт только на дрова.'
 stone_t = 'Какая-то вопиющая глыба, взгромоздившаяся у вас на пути.'
-pot_t = 'Тресунвший кувшин. Он представляет собой жалкое зрелище.'
+pot_br_t = 'Тресунвший кувшин. Он представляет собой жалкое зрелище.'
+obstacles = [stone0,stone1,stone2,stone3,stone4,stone5]
 
-obstacles = [(barrel,barrel_t), (box,box_t), (pot,pot_t), (stone,stone_t)]
+obstacles_useful = [(barrel,barrel_t,barrel_broken, barrel_br_t), (box,box_t,box_broken,box_br_t), (pot,pot_t,pot_broken, pot_br_t)]
+#obstacles = [(barrel,barrel_t), (box,box_t), (pot,pot_t), (stone,stone_t)]
+obstacles_broken = [(barrel_broken,barrel_br_t), (box_broken,box_br_t), (pot_broken,pot_br_t)]
 
 speed = 0.05
 healAnim = pyganim.PygAnimation([('animation/heal/heal01.png', speed),

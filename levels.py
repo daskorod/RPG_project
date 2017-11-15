@@ -80,7 +80,7 @@ class _dungeon3 (SuperLevel):
 class _dungeon4 (SuperLevel):
 	def __init__ (self,  lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon3,floor = classes.BoneFloor)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon3,create_interior = constructor.create_interior_dung, floor = classes.BoneFloor)
 		self.name = '- - - Яма костей - - -'
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 
@@ -95,6 +95,22 @@ class _dungeon4 (SuperLevel):
 
 	def stage_content (self, hero):
 		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
+
+class _dungeon5 (SuperLevel):
+	def __init__ (self,  lev, battle, son, control):
+		SuperLevel.__init__ (self, lev, battle, son, control)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon3,create_interior = constructor.create_interior_dung, floor = classes.BoneFloor)
+		self.name = '- - - Внешняя тьма - - -'
+		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
+
+	def render_location_info (self):
+		
+		self.son.change_text (1, 'Вас окружает только тьма.')
+
+
+	def stage_content (self, hero):
+		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
+
 
 class _end (SuperLevel):
 	def __init__ (self, lev, battle, son, control):

@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict, text_data.gnostic_dict, text_data.zombi_bandit_dict, text_data.trader_dict, text_data.smith_dict
+import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict, text_data.gnostic_dict, text_data.zombi_bandit_dict, text_data.trader_dict, text_data.smith_dict, text_data.master_dict, text_data.god_dict, text_data.kubert_dict
 import img
 import functions
 import random
@@ -48,7 +48,7 @@ def create_dungeon1 (level, battle, control, son, locationname):
                             s = classes.MinorChest2 (x,y, 'open', items.garbage )
                             sprite_group.add (s)
                      if col == 'O':
-                            well = classes.Obstacle(x,y, img.obstacles)  
+                            well = classes.Obstacle(x,y)  
                             sprite_group.add (well)
 
                      x += 45
@@ -114,7 +114,7 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             well = monster.ZombiLord(x/45,y/45,battle, text_data.zombi_lord_dict.text, control, 15,5,16,4, son, 250)  
                             sprite_group.add (well)      
                      if col == 'O':
-                            well = classes.Obstacle(x,y, img.obstacles)  
+                            well = classes.Obstacle(x,y)  
                             sprite_group.add (well)
                      if col == 'P':
                             cupboard = classes.Cupboard2(x,y)  
@@ -180,6 +180,18 @@ def create_dungeon3 (level, battle, control, son, locationname):
                             sprite_group.add (pr)
                      if col == 'X':
                             pr = classes.PortalLink (x,y, 'pit', 'thron', 'U', locationname )
+                            sprite_group.add (pr)
+                     if col == 'C':
+                            pr = classes.SkeletGod (x/45,y/45, battle, text_data.god_dict.text, control, 20, 20, 30, 4, son, 10000)
+                            sprite_group.add (pr)
+                     if col == 'V':
+                            pr = npc.Kubert (x/45,y/45, battle, text_data.kubert_dict.text, control, 12, 10, 10, 4, son, 300)
+                            sprite_group.add (pr)
+                     if col == 'B':
+                            pr = classes.PortalLink (x,y, 'pit1', 'dark', 'D', locationname )
+                            sprite_group.add (pr)
+                     if col == 'N':
+                            pr = classes.PortalLink (x,y, 'dark', 'pit1', 'U', locationname )
                             sprite_group.add (pr)
 
                      x += 45
@@ -275,7 +287,7 @@ def create_level_city (level, battle, control, son, locationname):
                             pr = classes.PortalLink (x,y, 'Platz', 'End', 'R', locationname )
                             sprite_group.add (pr)
                      if col == 'O':
-                            well = classes.Obstacle(x,y, img.obstacles)  
+                            well = classes.Obstacle(x,y)  
                             sprite_group.add (well)
 
                      if col == 'P':
@@ -380,7 +392,7 @@ def create_level_city (level, battle, control, son, locationname):
                             s = classes.MinorChest (x,y, 'open', random.choice(items.potion_list))
                             sprite_group.add (s)
                      if col == 'ф':
-                            well = monster.Goblin(x/45,y/45,battle, text_data.master_dict.text, control, 16,10,10,3, son, 15)  
+                            well = npc.Master(x/45,y/45,battle, text_data.master_dict.text, control, 16,10,10,3, son, 200)  
                             sprite_group.add (well)
 
                      x += 45
@@ -411,7 +423,7 @@ def create_level_city2 (level, battle, control, son, locationname):
                             pr = classes.PortalLink (x,y, 'still2', 'towerplatz', 'D', locationname )
                             sprite_group.add (pr)  
                      elif col == 'O':
-                            well = classes.Obstacle(x,y, img.obstacles)  
+                            well = classes.Obstacle(x,y)  
                             sprite_group.add (well)
                      elif col == 'E':
                             pr = classes.PortalLink (x,y, 'park', 'strange', 'U', locationname )
@@ -572,6 +584,80 @@ def create_interior_standart (level, grType):
 
        return  interior, ground, walls, decor
 
+def create_interior_dung (level, grType):
+
+       interior =[]
+       walls = []
+       ground = []
+       decor = []
+
+       x = 0
+       y = 0
+
+       for row in level:
+              for col in row:
+                    if col != '0' and col != '-' and col != '!' and col != '@' and col != 'C'  and col != 'X' and col != 'B' and col != 'N':
+                            ground.append(grType(x,y))
+                    if col == '!':
+                            decor.append(classes.Ding(x,y, 'images/tiles/house.png', 'таверна'))
+                    if col == '@':
+                            decor.append(classes.Ding(x,y, 'images/tiles/temple3.png', 'храм'))
+                    if col == '#':
+                            decor.append(classes.Ding(x,y, 'images/tiles/old_house.png', 'старый дом'))
+                    if col == '$':
+                            decor.append(classes.Ding(x,y, 'images/tiles/t_house3.png', 'дом воров'))
+                    if col == '%':
+                            decor.append(classes.Ding(x,y, 'images/tiles/tower7.png', 'башня'))
+
+                    if col == '^':
+                            decor.append(classes.Ding2(x,y, 'images/tiles/str_house.png', 'Странный дом'))
+                    if col == 'й':
+                            ground.append(classes.Ding2(x,y, 'images/tiles/lad_up.png', 'Странный дом'))
+                    if col == 'ц':
+                            ground.append(classes.Ding2(x,y, 'images/tiles/lad_down.png', 'Странный дом'))                               
+                            #ground.append(ding)
+                    if col == '1':
+                            decor.append(classes.Ding2(x,y, 'images/tiles/smith_house.png', 'Дом кузнеца'))                              
+                    x +=45
+              x = 0
+              for col in row:
+                    if col == "+":
+                            pf = classes.PlatformBlack (x,y)
+                            interior.append (pf)
+                    
+                    
+                    if col == "-":
+                            pf = classes.Platform (x,y)
+                            walls.append (pf)
+                    if col == "=":
+                            pf = classes.Nothing (x,y)
+                            interior.append (pf)
+                    if col == "d":
+                            door = classes.Door (x,y)
+                            interior.append (door)
+
+                    if col == "c":
+                            ch = classes.Chest (x,y)
+                            interior.append (ch)
+
+                    if col == "t":
+                            tr = classes.Candel (x,y)
+                            interior.append (tr)
+                    if col == "u":
+                            t = classes.Table(x,y)
+                            interior.append(t)
+                    if col == "i":
+                            t = classes.Chair(x,y)
+                            interior.append(t)
+
+
+                    x += 45
+              x = 0
+              y += 45
+       x = 0
+       y = 0
+
+       return  interior, ground, walls, decor
 
 
 def create_level_tavern (level, battle, control, son, locationname):

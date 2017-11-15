@@ -1163,11 +1163,33 @@ class Tubus (classes.Monk):
 		self.quest = False
 
 
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if items.old_book in hero.inv == True:
+			br_change(self, 3)
 
 	def dialog_special (self, hero):
 		if self.add_information == 'quest':
 			hero.quest['gnostic_book'] = True
 
+		if self.add_information == 'book_gave':
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			self.control.k_e = False
+			hero.pop(items.old_book)
+			end_dialog (self, hero)
+
+		if self.add_information == 'book_not':
+			if self.branch_do == 'go':
+				self.branch_do = 'done'
+				self.branch = self.branch_id
+				self.s = 1
+				self.n = 0
+			self.control.k_e = False
+			end_dialog (self, hero)			
 
 class Gnostic (classes.Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
@@ -1313,7 +1335,7 @@ class Master (classes.Monster):
 		self.image = Surface ((45,45))
 		self.image.fill ((220,130,100))
 		self.ll = False
-		self.image = image.load('images/tiles/master.png')
+		self.image = image.load('images/master.png')
 		self.icon = pygame.image.load ('images/priest_av.png')
 		#self.image.set_colorkey ((254,254,254))
 		self.matter = 0
@@ -1344,3 +1366,48 @@ class Master (classes.Monster):
 			hero.master_of_sword +=1
 
 			end_dialog (self, hero)
+
+
+class Kubert (classes.Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Брат Куберт'
+		self.race = 'human'
+		self.image = Surface ((45,45))
+		self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/master.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+		self.matter = 0
+		self.order = True
+		self.master_of_sword = 3
+		self.item = items.true_dogma
+
+#	def interaction (self, hero):
+#		Monster.interaction (self, hero)
+
+
+	def dialog_special (self, hero):
+
+		if self.add_information == 'dogma'  and self.control.k_e == True:
+			br_change (self, 5)
+			self.control.k_e = False
+
+		if self.add_information == 'give'  and self.control.k_e == True:
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Призрачный рыцарь истаивает во тьме.')
+			hero.son.change_text (3, 'В руках у вас остаётся странный тубус.')
+			hero.char_value['2exp'] += 1000
+			hero.inv.append (self.item)
+			self.item = items.no_item
+			hero.control.k_e = False
+			hero.collide_control = False
+			hero.start_conv = True
+			hero.view.a = 0
+
+
+			end_dialog (self, hero)
+			self.kill()

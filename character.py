@@ -620,7 +620,7 @@ class Hero(pygame.sprite.Sprite):
 									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species, True)
 									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species+'_dur', self.round)
 
-									self.inv.pop(self.inv_index_pos)	
+									self.inv.pop(self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page))	
 									self.inventory_flag = False
 									self.control.k_e = False
 									self.move = True
@@ -644,7 +644,7 @@ class Hero(pygame.sprite.Sprite):
 									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species, True)
 									setattr (self, self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species+'_dur', self.round)
 
-									self.inv.pop(self.inv_index_pos)	
+									self.inv.pop(self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page))	
 									self.inventory_flag = False
 									self.control.k_e = False
 									self.move = True
@@ -767,7 +767,7 @@ class Hero(pygame.sprite.Sprite):
 								self.damage = self.weapon.dem
 
 						self.gold += self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].cost
-						self.inv.pop(self.inv_index_pos)
+						self.inv.pop(self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page))
 
 	def buy_manage (self, trader):
 
@@ -1614,7 +1614,9 @@ class Hero(pygame.sprite.Sprite):
 			if self.master_of_sword != 0:
 				if a > 6-self.master_of_sword:
 					d = monster.ac + b
-
+					self.son.change_text (3, 'Вы ударили в брешь в доспехах врага! ')
+				else:
+					d = monster.ac + b + monster.armor
 			else:
 				d = monster.ac + b + monster.armor
 
