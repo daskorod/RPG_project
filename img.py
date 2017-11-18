@@ -100,7 +100,21 @@ fireAnim = pyganim.PygAnimation([('testimages/flame_a_0001.png', 0.2),
 arrow_right = image.load('images/arrow_right.png')
 arrow_left = image.load('images/arrow_left.png')
 
+bloodAnim = pyganim.PygAnimation([('images/blood/1.png',0.2),
+ ('images/blood/2.png',0.1), 
+ ('images/blood/3.png',0.1), 
+ ('images/blood/4.png',0.1), 
+ ('images/blood/5.png',0.1), 
+ ('images/blood/6.png',0.1), 
+ ('images/blood/7.png',0.2)	], loop=False)
 
+bloodAnim2 = pyganim.PygAnimation([('images/blood/1.png',0.2),
+ ('images/blood/2.png',0.1), 
+ ('images/blood/3.png',0.1), 
+ ('images/blood/4.png',0.1), 
+ ('images/blood/5.png',0.1), 
+ ('images/blood/6.png',0.1), 
+ ('images/blood/7.png',0.2)	], loop=False)
 
 stone0 = image.load('images/obst/stone0.png')
 stone1 = image.load('images/obst/stone1.png')

@@ -18,6 +18,7 @@ import items
 import text_data.skelet_lord2_dict
 from functions import end_dialog, war, br_change, br_auto
 import ideas
+import sounds
 
 class Bar(sprite.Sprite):
 	def __init__(self, xs, ys, color):
@@ -272,7 +273,7 @@ class Monster (sprite.Sprite):
 			self.son.clear_text ()
 			a = random.randint (1,6)
 			b = random.randint (1,6)
-
+			hero.slashAnim_self.play ()
 			c = self.at + a
 
 
@@ -288,6 +289,7 @@ class Monster (sprite.Sprite):
 
 			self.son.change_text (1, "Атака монстра: "+str(c) + "  Защита ваша: "+ str(d))
 			if c >= d:
+				sounds.pain.play()
 				
 				if int(c/d)>1:
 					damg = self.damage*int(c/d)
@@ -298,6 +300,8 @@ class Monster (sprite.Sprite):
 					self.son.change_text (4, "Монстр попал и нанес сокрушительный удар!")
 					damg = self.damage
 					self.son.change_text (5, 'Урон: '+str(self.damage))
+					hero.bloodAnim_self.play ()
+
 
 				if hero.prevent == 0: hero.hp = hero.hp - damg
 
@@ -308,6 +312,7 @@ class Monster (sprite.Sprite):
 						hero.hp = hero.hp - (damg-hero.prevet)
 
 			elif c<d:
+				sounds.flee.play()
 				self.son.change_text (4, 'Вы уклонились!')	
 		
 			self.son.change_text (7, 'Нажмите Е')
@@ -457,6 +462,7 @@ class SkeletLord (Monster):
 		if hero.monster_turn == True and self.ll == True and self.control.k_e == True:
 			self.ll = False
 			img.boltAnim.play ()
+			sounds.light.play()
 			self.son.clear_text ()
 			self.son.change_text (1, "... в вас ударяет ослепительная молния.")
 			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
@@ -639,6 +645,7 @@ class SkeletKing (Monster):
 		if self.add_information == 'light':
 			if self.light1 == True:
 				img.boltAnim.play ()
+				sounds.light.play()
 				hero.take_damage (random.randint(1,6), 'light')
 				self.light1 = False
 
@@ -656,6 +663,7 @@ class SkeletKing (Monster):
 		if self.add_information == 'light2':
 			if self.light2 == True:
 				img.boltAnim.play ()
+				sounds.light.play()
 				hero.take_damage (random.randint(1,6), 'light')
 				self.light2 = False
 

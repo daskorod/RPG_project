@@ -21,6 +21,7 @@ import text_data.well_dict, text_data.cup_dict, text_data.gnosis_door_dict, text
 import event
 from functions import end_dialog
 from functions import end_dialog, war, br_change, br_auto
+import sounds
 
 class Zombi (Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son,exp, item = items.no_item):
@@ -1124,6 +1125,7 @@ class Obstacle_useful(Platform):
 				self.image = self.choice[2]
 				self.text = self.choice[3]
 				self.untapped = False
+				sounds.barrel.play()
 			elif self.rnd == 2:
 				a = random.randint(1,6)
 				hero.son.clear_text ()
@@ -1134,7 +1136,9 @@ class Obstacle_useful(Platform):
 				hero.gold += a
 				self.image = self.choice[2]
 				self.text = self.choice[3]
-				self.untapped = False				
+				self.untapped = False
+				sounds.barrel.play()
+
 			elif self.rnd == 3:
 				
 				hero.son.clear_text ()
@@ -1142,7 +1146,7 @@ class Obstacle_useful(Platform):
 				hero.son.change_text (5, 'Вы теряете 1 жизненную силу!')
 				hero.son.change_text (3, 'Вы исследуете содержимое... и вас кусает крыса!')
 				#hero.son.change_text (5, 'Вы за.')
-				hero.hp -= 1
+				hero.take_damage (1, 'phis')
 				self.image = self.choice[2]
 				self.text = self.choice[3]
 				self.untapped = False	
@@ -1156,7 +1160,8 @@ class Obstacle_useful(Platform):
 				hero.inv.append(items.melanj)
 				self.image = self.choice[2]
 				self.text = self.choice[3]
-				self.untapped = False				
+				self.untapped = False
+				sounds.barrel.play()				
 		else:
 			hero.son.clear_text ()
 			hero.son.change_text (2, self.text)
@@ -1218,6 +1223,7 @@ class Trap(sprite.Sprite):
 			hero.son.change_text (4, 'Вы наступили на плиту и по вам шибанули снопы огня.')
 			hero.son.change_text (5, "Больно!")
 			hero.take_damage (4, 'fire')
+			sounds.fire.play()
 			img.fireAnim.play ()
 
 		if hero.control.right == True:
@@ -1689,6 +1695,7 @@ class Monk (Monster):
 			self.son.change_text (1, "... вас охватывает пламя.")
 			self.son.change_text (2, "Вы получаете " + str(a) + ' урона')
 			hero.take_damage (a, 'fire')
+			sounds.fire.play()
 			self.son.change_text (4, 'Нажмите Е')
 			#img.fireAnim.play ()
 			self.wait_for_next_turn = True

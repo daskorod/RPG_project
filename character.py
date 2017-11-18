@@ -35,6 +35,11 @@ slashAnim = pyganim.PygAnimation([('animation/slash/Effect_Slash11.png', 0.1),
                                  ('animation/slash/Effect_Slash31.png', 0.1),
                                  ('animation/slash/Effect_Slash41.png', 0.1)], loop=False)
 
+slashAnim2 = pyganim.PygAnimation([('animation/slash/Effect_Slash11.png', 0.1),
+                                 ('animation/slash/Effect_Slash21.png', 0.1),
+                                 ('animation/slash/Effect_Slash31.png', 0.1),
+                                 ('animation/slash/Effect_Slash41.png', 0.1)], loop=False)
+
 dustAnim = pyganim.PygAnimation([('testimages/smoke_puff_0001.png', 0.1),
                                  ('testimages/smoke_puff_0002.png', 0.1),
                                  ('testimages/smoke_puff_0003.png', 0.1),
@@ -115,7 +120,11 @@ class Hero(pygame.sprite.Sprite):
 		self.dustAnim = dustAnim
 		self.slashAnim = slashAnim
 		self.inception = True
-		
+		self.bloodAnim = img.bloodAnim
+		self.slashAnim_self = slashAnim2
+		self.inception = True
+		self.bloodAnim_self = img.bloodAnim2
+
 		self.image = pygame.Surface ((45,45))
 		self.image.fill ((100,200,230))
 		self.image.set_colorkey ((100,200,230))		
@@ -163,7 +172,7 @@ class Hero(pygame.sprite.Sprite):
 		self.sp_old = self.sp
 		self.armor = 0
 		self.master_of_sword = 0
-		self.resistance = {'fire':0, 'light':0, 'ice':0, 'necro':0, 'phis':0}
+		self.resistance = {'fire':1, 'light':1, 'ice':1, 'necro':1, 'phis':1}
 		self.fire = False
 		self.light = False
 		self.b3at = False
@@ -290,6 +299,7 @@ class Hero(pygame.sprite.Sprite):
 			for i in self.inv:
 				if i.name == 'Лечебное зелье':
 					#if self.char_value
+					sounds.bells.play()
 					self.hp += random.choice(range(1,i.value))
 					if self.hp > self.char_value['5hp']:
 						self.hp = self.char_value['5hp']
@@ -429,6 +439,7 @@ class Hero(pygame.sprite.Sprite):
 		return level_table[current_level]
 
 
+
 	def char_index (self):
 		if self.char_quit == False:
 
@@ -437,6 +448,7 @@ class Hero(pygame.sprite.Sprite):
 			if self.control.down == True and self.inv_index_pos <6:
 				self.control.down = False
 				self.inv_index_pos += 1
+
 			if self.control.up == True and self.inv_index_pos >0:
 				self.control.up = False
 				self.inv_index_pos -= 1		
@@ -521,6 +533,7 @@ class Hero(pygame.sprite.Sprite):
 					if self.control.k_1 == True:
 						self.control.k_1 = False
 						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
+							sounds.hit.play()
 
 							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'в рюкзаке':
 
@@ -543,6 +556,7 @@ class Hero(pygame.sprite.Sprite):
 									self.damage = self.weapon.dem
 
 						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'доспех':
+							sounds.hit.play()
 
 							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'в рюкзаке':
 
@@ -586,6 +600,8 @@ class Hero(pygame.sprite.Sprite):
 									self.son.clear_text ()
 									self.son.change_text (2, 'Вы выпиваете отвратительное тягучее пойло.')
 									self.son.change_text (3, 'Вы чувствуете странную метаморфозу в своём теле.')
+									img.healAnim.play()
+									sounds.trink.play()
 
 						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].__class__.__name__  == 'Potion_Resist':
 
@@ -605,7 +621,9 @@ class Hero(pygame.sprite.Sprite):
 									self.inventory_flag = False
 									self.inv_index_pos = 0
 									self.inv_quit = False
-									self.inv.pop(self.inv_index_pos)						
+									self.inv.pop(self.inv_index_pos)
+									sounds.trink.play()	
+									img.healAnim.play()					
 
 						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].__class__.__name__  == 'Potion_Buff':
 
@@ -627,6 +645,9 @@ class Hero(pygame.sprite.Sprite):
 									self.inventory_flag = False
 									self.inv_index_pos = 0
 									self.inv_quit = False
+					
+									img.healAnim.play()
+									sounds.trink.play()
 
 						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name  == 'Меланж':
 
@@ -636,7 +657,7 @@ class Hero(pygame.sprite.Sprite):
 									self.hp -= 1
 						
 									self.son.clear_text ()
-									self.son.change_text (2, 'Вы выпиваете жадно и обильно занюхнули дозу меланжа.')
+									self.son.change_text (2, 'Вы жадно и обильно занюхнули дозу меланжа.')
 									self.son.change_text (3, 'Хорошенько вас пробрало.')
 									self.son.change_text (5, 'Ваша реакция стала лучше: + 1 защиты.')						
 									
@@ -651,6 +672,7 @@ class Hero(pygame.sprite.Sprite):
 									self.inventory_flag = False
 									self.inv_index_pos = 0
 									self.inv_quit = False
+									img.healAnim.play()
 
 						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name == 'Старая книга':
 
@@ -682,6 +704,7 @@ class Hero(pygame.sprite.Sprite):
 						self.control.k_1 = False
 
 						if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].status == 'экипировано':
+							sounds.hit.play()
 							if self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].species == 'оружие':
 								self.weapon = self.first
 								#self.at += self.weapon.at_mod
@@ -1239,8 +1262,18 @@ class Hero(pygame.sprite.Sprite):
 			if self.sell_flag == True and self.buy_flag == False and self.inventory_flag == False and self.journal_flag == False and self.char_flag == False:
 				self.sell_manage()
 
+
+
+
 		if self.buy_flag == True:
 			self.buy_manage (self.etwas)
+
+
+		if (self.char_flag == True or self.inventory_flag == True or self.buy_flag == True or self.journal_flag == True or self.sell_flag == True) and (self.control.up_is == True or self.control.down_is == True):
+			self.control.up_is = False
+			self.control.down_is = False
+			sounds.arr.play()
+				#self.inventory_manage ()
 		#if self.control.move_cntrl == True and self.move == True:
 			#self.anima.play ()
 
@@ -1267,7 +1300,7 @@ class Hero(pygame.sprite.Sprite):
 	
 				else:
 					self.rect.x += self.velo
-					#sounds.footstep.play()
+					sounds.footstep.play()
 				self.control.right = False
 
 				self.round += 1
@@ -1352,7 +1385,9 @@ class Hero(pygame.sprite.Sprite):
 	
 
 	def take_damage (self, dem, source):
-		dem = int(dem * (self.resistance[source]/100))
+		self.bloodAnim_self.play()
+		sounds.pain.play()
+		dem = int(dem * (self.resistance[source]))
 		self.hp -= dem
 
 	# BATTLE OPTIONS
@@ -1533,6 +1568,7 @@ class Hero(pygame.sprite.Sprite):
 				if self.etwas.hp <= 100 and self.sp >0:
 					self.sp -= 1
 					self.press_to_kill = True
+					sounds.requiem.play()
 					self.son.change_text (1, "Вы шепчете слова молитвы:")
 					self.son.change_text (2, "'Да воскреснет Бог, и расточатся врази Его,")
 					self.son.change_text (3, "и да бежат от лица Его ненавидящии Его. Яко исчезает дым, да исчезнут;")
@@ -1566,6 +1602,7 @@ class Hero(pygame.sprite.Sprite):
 					self.hp += 4
 					if self.hp > self.hp_max:
 						self.hp = self.hp_max
+					sounds.credo.play()
 					self.son.change_text (1, "Ваши раны восстановились чудесным образом. +4 ЖС")
 					self.son.change_text (3, "Нажмите Е")
 					self.back = True
@@ -1623,7 +1660,8 @@ class Hero(pygame.sprite.Sprite):
 			self.son.change_text (2, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
 			self.son.change_text (1, 'БРОСОК КУБИКА: '+str(self.dice_value))
 			if c >= d:
-				
+				self.bloodAnim.play()
+				sounds.hit.play()
 				if int(c/d)>1:
 					damg = self.damage*int(c/d)
 					self.son.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))
@@ -1645,6 +1683,8 @@ class Hero(pygame.sprite.Sprite):
 
 			elif c<d:
 				self.son.change_text (4, 'Вы промазали!')	
+				sounds.flee.play()
+
 			self.attack_roll = False
 			self.wait_for_next_turn = True
 			self.son.change_text (7, 'Нажмите Е')

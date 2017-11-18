@@ -130,7 +130,7 @@ def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_
 		time2 = 0
 		count = 0
 		sound1 = pygame.mixer.Sound('sound/7.ogg')
-		sound1.set_volume(0.01)
+		#sound1.set_volume(0.01)
 		time3 = 0
 		end = False
 		intro = pygame.image.load (pic)
