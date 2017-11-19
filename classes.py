@@ -406,6 +406,7 @@ class Door(sprite.Sprite):
 			self.kill ()
 			hero.collide_control = False
 			hero.start_conv = True
+			sounds.key.play()
 
 		if self.add_information == 'end':
 
@@ -649,6 +650,7 @@ class GoldDoor(sprite.Sprite):
 
 							hero.son.change_text (4, 'Вы открыли эту жалкую дверь!')
 							self.kill ()
+							sounds.key.play()
 							hero.collide_control = False
 							hero.start_conv = True
 							hero.char_value['2exp']+=50
@@ -1339,6 +1341,8 @@ class MinorChest(sprite.Sprite):
 		self.branch_do = ''
 		self.branch_id = ''
 
+		self.f = True
+
 	def interaction (self, hero):
 
 		if hero.control.right == True:
@@ -1351,6 +1355,7 @@ class MinorChest(sprite.Sprite):
 			hero.rect.y -= 1
 		hero.move = False
 		hero.collide_control = True
+		
 
 	def dialog_special (self, hero):
 		pass
@@ -1359,6 +1364,9 @@ class MinorChest(sprite.Sprite):
 
 		self.dialog_special (hero)
 		if self.add_information == 'end_chest':
+			if self.f == True:
+				sounds.key.play()
+				self.f = False
 
 			hero.son.change_text_tree (hero.view.render_text ('В сундуке находится: ' + self.items_name, 'Нажмите E, чтобы всё забрать...'))
 
@@ -1373,11 +1381,12 @@ class MinorChest(sprite.Sprite):
 			hero.gold += self.gold		
 			for i in self.inside:
 				hero.inv.append(i)
+			
 
 
 
 		if self.add_information == 'end' and hero.control.k_e == True:
-
+			self.f = True
 			hero.move = True
 			hero.control.k_e = False
 			hero.collide_control = False
@@ -1433,6 +1442,7 @@ class MinorChest2(sprite.Sprite):
 			hero.rect.y -= 1
 		hero.move = False
 		hero.collide_control = True
+		sounds.barrel.play()
 
 		if 'zombisad' in hero.quest:
 			self.branch = 1
@@ -1596,6 +1606,7 @@ class Monk (Monster):
 		#self.image.set_colorkey ((254,254,254))
 		self.g = 1000
 		self.order = True
+
 		self.quest = False
 
 	def interaction (self, hero):
@@ -1606,6 +1617,17 @@ class Monk (Monster):
 					for a in hero.inv:
 						if a == items.dogma:
 							self.branch = 2
+							#self.quest = False
+							self.s = 1
+							self.n = 0
+							break
+							
+		if self.quest == True:
+			for i in hero.quest.keys():
+				if i == 'main':
+					for a in hero.inv:
+						if a == items.true_dogma:
+							self.branch = 5
 							#self.quest = False
 							self.s = 1
 							self.n = 0
@@ -1641,6 +1663,10 @@ class Monk (Monster):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+
+		if self.add_information == 'dogma_true' and self.control.k_e == True:
+
+			menu.ending ('Вы вернули людям настоящие Пречистые Догмы. Это вызвало огромный скандал внутри Империи. Вы попытались уйти в тень, что вам удалось. До конца своих дней вы продолжали карьеру странствующего рыцаря, пока смерть не настигла вас.', img.true_end, 7, pic_x = 60, time_scroll = 50, speed_mod = 6)
 
 
 		if self.add_information == 'quest':
@@ -1762,6 +1788,7 @@ class GnosisDoor(sprite.Sprite):
 			hero.son.clear_text ()
 			hero.son.change_text (2, 'Вам открыли дверь в загадочный особняк.')
 			self.kill ()
+			sounds.key.play()
 			hero.collide_control = False
 			hero.start_conv = True
 			for i in hero.locations_dict.keys():
@@ -1875,7 +1902,7 @@ class SkeletGod (Monster):
 			menu.ending ('Вы сгинули во тьме, убитые нечеловеческим могуществом Бога Скелета. Действительно, что человек может противопоставить такому созданию?', 'images/end/dead_in_dark.png', 3, pic_x = 90, time_scroll = 250, speed_mod = 5)
 
 		if self.add_information == 'other' and self.control.k_e == True:
-			menu.ending ('. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .232%@@ . . e . . . . . . . . . . . . . . . . . . . . . . .$# ^$()#). . . . . . . wgw . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . )$%#lJ$#m. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ', 'images/end/other.gif', 10, pic_x = 90, time_scroll = 250, speed_mod = 5)
+			menu.ending ('. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .232%@@ . . e . . . . . . . . . . . . . . . . . . . . . . .$# ^$()#). . . . . . . wgw . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . )$%#lJ$#m. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ', 'images/end/other.gif', 5, pic_x = 90, time_scroll = 250, speed_mod = 5)
 								
 		if self.add_information == 'pray' and self.control.k_e == True:
 			self.control.k_e = False

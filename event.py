@@ -1,6 +1,8 @@
 ﻿
 import ideas
+import img
 import text_data.final_dict, text_data.inception_dict, text_data.old_book_dict
+import menu
 
 class Event ():
 	def __init__ (self, text):
@@ -50,6 +52,15 @@ class Event ():
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+
+		if self.add_information == 'dogma':
+			menu.ending ('Вы выполнили священный квест. Вы разыскали Пречистые Догмы, чтобы раз и навссегда сокрушить еретиков. Церковь восторжествует. Вот только вас будет продолжать грызть червь сомнения, до тех пор пока вы не умрёте в очередной войне.', img.dogma_end, 5, pic_x = 100, time_scroll = 250, speed_mod = 3)
+
+		if self.add_information == 'gnosis':
+			menu.ending ('Вы со всеми потрохами вступили в гностическую общину. Вы так никогда и не достигли в ней каких-то значимых высот. В то время как иерархи общины предавались наслаждениям, вам было предписано соблюдать жесткую аскезу. В итоге вас нашла инквизиция с сожгла на костре.', img.gnosis_end, 6, pic_x = 60, time_scroll = 250, speed_mod = 6)
+
+		if self.add_information == 'true':
+			menu.ending ('Вы вернули людям настоящие Пречистые Догмы. Это вызвало огромный скандал внутри Империи. Вы попытались уйти в тень, что вам удалось. До конца своих дней вы продолжали карьеру странствующего рыцаря, пока смерть не настигла вас.', img.true_end, 7, pic_x = 60, time_scroll = 50, speed_mod = 6)
 
 		if self.add_information == 'concept' and hero.control.k_e == True:
 			hero.move = True

@@ -23,7 +23,6 @@ test_arg = False
 if len(sys.argv)>1:
 	if sys.argv[1] == 'test':
 		print ('Test mode')
-
 		test_arg = True
 
 
@@ -178,6 +177,8 @@ class Hero(pygame.sprite.Sprite):
 		self.b3at = False
 		self.b4ac = False
 		self.narc = False
+		self.frag_journal = []
+		self.evil = 0
 
 		#TIME
 		self.day = 0
@@ -428,6 +429,7 @@ class Hero(pygame.sprite.Sprite):
 				self.char_value['1lvl'] += 1
 				self.start_rendering_lev = True
 				self.char_value['7points'] +=1
+				sounds.halelul.play()
 				try:
 					self.next_level = self.to_next_level(self.char_value['1lvl'])
 				except:
@@ -1076,7 +1078,7 @@ class Hero(pygame.sprite.Sprite):
 	def duration (self, what, dur, dur_start):
 		if self.round == dur_start+dur:
 			setattr (self, str(what), False)
-			self.resistance[what] = 0
+			self.resistance[what] = 1
 			dur_start = 0
 
 	def render_information (self):
@@ -1143,6 +1145,8 @@ class Hero(pygame.sprite.Sprite):
 		 чтобы не сводился на ноль постоянно. n - это значение которое растёт - это путсое вместилище,
 		  которое передаётся дальше. Растёт оно всегда при помощи s.'''
 
+		if self.control.k_e == True:
+			self.view.a = 0
 
 		text_massive, self.etwas.add_information, *other = tree[interlocutor.branch][interlocutor.n]
 
@@ -1163,6 +1167,7 @@ class Hero(pygame.sprite.Sprite):
 				self.control.k_1 = False
 				self.control.button_up = False
 				self.son.clear_text ()
+				sounds.clic2.play()
 
 				self.etwas.s = self.etwas.s*10
 				self.etwas.n = (self.etwas.n+(1*self.etwas.s))
@@ -1179,6 +1184,7 @@ class Hero(pygame.sprite.Sprite):
 				self.etwas.s = self.etwas.s*10
 				self.etwas.n = (self.etwas.n+(2*self.etwas.s))
 				self.view.a = 0
+				sounds.clic2.play()
 
 				if self.etwas.n not in tree[interlocutor.branch]:
 					self.etwas.n = (self.etwas.n-(2*self.etwas.s))
@@ -1191,6 +1197,7 @@ class Hero(pygame.sprite.Sprite):
 				self.etwas.s = self.etwas.s*10
 				self.etwas.n = (self.etwas.n+(3*self.etwas.s))
 				self.view.a = 0
+				sounds.clic2.play()
 
 				if self.etwas.n not in tree[interlocutor.branch]:
 					self.etwas.n = (self.etwas.n-(3*self.etwas.s))
@@ -1203,10 +1210,13 @@ class Hero(pygame.sprite.Sprite):
 				self.etwas.s = self.etwas.s*10
 				self.etwas.n = (self.etwas.n+(4*self.etwas.s))
 				self.view.a = 0
+				sounds.clic2.play()
 
 				if self.etwas.n not in tree[interlocutor.branch]:
 					self.etwas.n = (self.etwas.n-(4*self.etwas.s))
 					self.etwas.s = int(self.etwas.s/10)
+
+
 
 	def collide (self, array):
 
@@ -1228,11 +1238,15 @@ class Hero(pygame.sprite.Sprite):
 		if self.collide_control == False or self.etwas.agression == True:
 			self.conv_stop = True
 
-
+	def evil_end(self):
+		if self.evil >9:
+			menu.ending ('Рихтер устроил кровавую резню в городе. Зачем? Почему? Словно какой-то злой дух заставлял его это делать, словно он был куклой в руках какого-то кровожадного кукловода, или ребёнка, желающего поразлечься, убивая ближних... А может это было просто безумие?', 'images/end/bad_end.png', 4, pic_x = 60, time_scroll = 50, speed_mod = 6)
 
 	def update (self, array):
 		self.drink_potion()
 		self.update_char()
+		self.evil_end()
+
 
 		if self.round == 160:
 			self.day +=1
@@ -1380,7 +1394,12 @@ class Hero(pygame.sprite.Sprite):
 			self.inception = False
 
 		if self.collide_control == True and self.etwas.agression == True:
-			functions.combat (self, self.etwas)			
+			if (self.control.k_1_control == True or self.control.k_2_control == True or self.control.k_3_control == True) and self.control.clic == True:
+				sounds.clic2.play()
+				self.control.clic = False
+
+			functions.combat (self, self.etwas)	
+
 
 	
 
@@ -1425,12 +1444,13 @@ class Hero(pygame.sprite.Sprite):
 
 		roll_screen.blit (self.line, (40, 20))
 		roll_screen.blit (self.marker.image, (self.mx, self.my+10))
+		dice_speed = 0
 
 		if self.go_left == False:
-			self.mx = self.mx + dice_speed
+			self.mx = self.mx + dice_speed + random.randint(-6,25)
 
 		if self.go_left == True:
-			self.mx = self.mx - dice_speed
+			self.mx = self.mx - dice_speed - random.randint(-6,25)
 
 		if self.mx > 410:
 			self.go_left = True
@@ -1451,7 +1471,7 @@ class Hero(pygame.sprite.Sprite):
 		roll_screen.blit(fonts.font3.render ('Нажмите E, когда меч ближе к центру.', True, (250,250,250)),(60,150))
 		roll_screen.blit(fonts.font3.render ('Ваша атака!', True, (250,250,250)),(60,60))
 
-		if value != 7:
+		if value != 8:
 			self.dice_value = value
 			roll_screen.blit(fonts.font12.render (str(value), True, (250,250,250)),(240,60))
 
@@ -1482,8 +1502,11 @@ class Hero(pygame.sprite.Sprite):
 		elif color[0:3] == C6:
 			return 6
 
-		else:
+		elif color[0:3] == C7:
 			return 7
+
+		else:
+			return 0
 
 												
 	def battle_action_main (self):
@@ -1554,6 +1577,7 @@ class Hero(pygame.sprite.Sprite):
 			self.control.k_e = False
 			self.etwas.hp = 0
 			self.dustAnim.play()
+			sounds.bell.play()
 	#def pos_definition(self):
 
 
@@ -1561,14 +1585,15 @@ class Hero(pygame.sprite.Sprite):
 	def special_fun (self):
 
 
-			if self.control.k_1 == True and self.etwas.race == 'undead' and ideas.revelation in self.journal:
+			if self.control.k_1 == True and self.back != True and self.etwas.race == 'undead' and ideas.revelation in self.journal:
 				self.control.k_1 = False
 				self.son.clear_text ()
+
 
 				if self.etwas.hp <= 100 and self.sp >0:
 					self.sp -= 1
 					self.press_to_kill = True
-					sounds.requiem.play()
+					
 					self.son.change_text (1, "Вы шепчете слова молитвы:")
 					self.son.change_text (2, "'Да воскреснет Бог, и расточатся врази Его,")
 					self.son.change_text (3, "и да бежат от лица Его ненавидящии Его. Яко исчезает дым, да исчезнут;")
@@ -1592,7 +1617,7 @@ class Hero(pygame.sprite.Sprite):
 				self.special = False
 				self.back = False
 
-			if self.control.k_2 == True and ideas.revelation in self.journal:
+			if self.control.k_2 == True and self.back != True and ideas.revelation in self.journal:
 				self.turn_main = False
 				self.control.k_2 = False
 				self.special = True
@@ -1614,13 +1639,16 @@ class Hero(pygame.sprite.Sprite):
 					self.son.change_text (1, "Ничего не произошло.")
 					self.son.change_text (3, "Нажмите Е")
 
-			if (self.control.k_2 == True or self.control.k_1 == True) and ideas.revelation not in self.journal:
+			if (self.control.k_2 == True or self.control.k_1 == True) and self.back != True and ideas.revelation not in self.journal:
 				self.control.k_2 = False
 				self.control.k_1 = False
-				self.son.change_text (1, "Ничего не происходит.")
-				self.son.change_text (3, "Теперь вы гностик ")				
-				self.son.change_text (4, "и благодать Святого Духа вас покинула!")
-				self.son.change_text (5, "Нажмите Е")
+				self.turn_main = False
+				self.special = True
+				self.son.clear_text ()
+				self.son.change_text (1, "Вы пробуете молиться, но ничего не происходит.")
+				self.son.change_text (3, "Ведь вы же теперь гностик... ")				
+				self.son.change_text (4, "...и благодать Святого Духа вас покинула!")
+				self.son.change_text (6, "Нажмите Е")
 				self.back = True				
 
 			if self.control.k_3 == True:
@@ -1652,6 +1680,7 @@ class Hero(pygame.sprite.Sprite):
 				if a > 6-self.master_of_sword:
 					d = monster.ac + b
 					self.son.change_text (3, 'Вы ударили в брешь в доспехах врага! ')
+					sounds.hit.play()
 				else:
 					d = monster.ac + b + monster.armor
 			else:
@@ -1661,7 +1690,7 @@ class Hero(pygame.sprite.Sprite):
 			self.son.change_text (1, 'БРОСОК КУБИКА: '+str(self.dice_value))
 			if c >= d:
 				self.bloodAnim.play()
-				sounds.hit.play()
+				self.etwas.sound.play()
 				if int(c/d)>1:
 					damg = self.damage*int(c/d)
 					self.son.change_text (4, 'Критический удар! Урон умножается на  '+str(int(c/d)))

@@ -1,5 +1,6 @@
 import pygame
 import sys
+import sounds
 
 class Holy_Spirit ():
 	def __init__ (self):
@@ -22,11 +23,15 @@ class Holy_Spirit ():
 		self.k_c = False
 		self.k_q = False
 		self.button_up = True
+		self.clic = False
 		self.k_j = False
 		self.k_esc = False
 		self.e_cntrl = False
 		self.up_is = False
 		self.down_is = False
+		self.k_1_control = False
+		self.k_2_control = False
+		self.k_3_control = False		
 #		R = False
 #		L = False
 #		U = False
@@ -94,14 +99,20 @@ class Holy_Spirit ():
 						self.down_is = False
 
 				if e.type == pygame.KEYDOWN:
-					if e.key == pygame.K_1:
+					if e.key == pygame.K_1 and self.k_1_control == False:
 						self.k_1 = True
+						self.k_1_control = True
+						self.clic = True
 
-					if e.key == pygame.K_2:
+					if e.key == pygame.K_2 and self.k_2_control == False:
 						self.k_2 = True
+						self.k_2_control = True
+						self.clic = True
 
-					if e.key == pygame.K_3:
+					if e.key == pygame.K_3 and self.k_3_control == False:
 						self.k_3 = True
+						self.k_3_control = True
+						self.clic = True
 
 					if e.key == pygame.K_4:
 						self.k_4 = True
@@ -111,6 +122,7 @@ class Holy_Spirit ():
 					if e.key == pygame.K_e and self.e_lock == False:
 						#self.e_cntrl = False
 						self.k_e = True
+						sounds.clic2.play()
 						self.e_lock = True
 
 					if e.key == pygame.K_i:
@@ -128,13 +140,17 @@ class Holy_Spirit ():
 					if e.key == pygame.K_1:
 						self.k_1 = False
 						self.button_up = True
+						self.k_1_control = False
 
 					if e.key == pygame.K_2:
 						self.k_2 = False
 						self.button_up = True
+						self.k_2_control = False
+
 					if e.key == pygame.K_3:
 						self.k_3 = False
 						self.button_up = True
+						self.k_3_control = False
 
 					if e.key == pygame.K_4:
 						self.k_4 = False
@@ -146,6 +162,8 @@ class Holy_Spirit ():
 						self.e_cntrl = True
 						self.k_e = False
 						self.e_lock = False
+						
+
 					if e.key == pygame.K_i:
 						self.k_i = False
 					if e.key == pygame.K_c:

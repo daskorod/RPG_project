@@ -2,6 +2,11 @@ from pygame import image
 import pyganim
 import re
 
+
+dogma_end = 'images/end/dogma.png'
+gnosis_end = 'images/end/gnosis.png'
+true_end = 'images/end/true.png'
+
 pave1 = image.load('images/pave1.png')
 pave2 = image.load('images/pave2.png')
 pave3 = image.load('images/pave3.png')

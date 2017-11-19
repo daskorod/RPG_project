@@ -6,6 +6,9 @@ import sys
 import screens
 import sounds 
 
+
+# 1смерть+ 2тюрьма+ 3тьма+ 4бойня+ 5лже-догмы+ 6гностик 7позитивные догмы+ 8иное+
+
 timer = pygame.time.Clock  ()
 
 menu_text = "  Нажмите SPACE"
@@ -21,7 +24,10 @@ def menu_loop ():
 		time = 0
 		x = 225
 		up = True
-
+		
+		pygame.mixer.music.load ('music/intro.ogg')
+		pygame.mixer.music.set_volume (0.2)
+		pygame.mixer.music.play ()
 		main_image = pygame.image.load ('images/main_pic_de.gif')
 		text_image = pygame.image.load ('images/logo_text.gif')
 
@@ -67,12 +73,14 @@ def menu_loop ():
 			pygame.display.update() 
 
 def load ():
-
+		pygame.mixer.music.load ('music/lel.ogg')
+		pygame.mixer.music.set_volume (0.2)
+		pygame.mixer.music.play ()
 		done1 = True
 		time = 0
 		x = 225
 		up = True
-		while time < 10:
+		while time < 5:
 			time = time+1
 			screens.window.blit(start_screen, (10, 10))
 			start_screen.fill ((black))
@@ -83,6 +91,7 @@ def load ():
 			pygame.display.update() 
 
 def pause ():
+
 
 		done1 = True
 		time = 0
@@ -287,6 +296,7 @@ def ending (text, pic, end_num, end_black = False, pic_x = 50, pic_y = 20, time_
 		text_to_print_compendium = [str() for x in range(6)]
 		stroke_compendium = splittext (text)
 		time4 = 0
+
 		while done1:
 
 
@@ -366,16 +376,6 @@ def ending (text, pic, end_num, end_black = False, pic_x = 50, pic_y = 20, time_
 						if e.key == pygame.K_ESCAPE:
 							sys.exit ()
 
-					#if e.type == pygame.KEYDOWN:
-						#if e.key == pygame.K_SPACE:
-							#sys.exit ()
-							#done1 = False
-#							if end_black == True:
-#								screens.window.blit(start_screen, (10, 10))
-#								start_screen.fill ((black))
-#								start_screen.blit(screens.start_screen_text_surface, (300, 510))
-#								screens.start_screen_text_surface.fill ((black))
-#	
-#								screens.start_screen_text_surface.blit(fonts.font2.render ("ЗАГРУЗКА...",True, (255,255,255)), (10,10))
+
 
 			pygame.display.update() 

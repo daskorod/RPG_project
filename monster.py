@@ -62,7 +62,7 @@ class Monster (sprite.Sprite):
 		self.prevent = 0
 		self.armor = 0
 		self.master_of_sword = 0
-
+		self.sound = sounds.zomb
 		self.item = item
 
 		#conversation data
@@ -161,6 +161,10 @@ class Monster (sprite.Sprite):
 				hero.move = True
 				self.kill ()
 				hero.collide_control = False
+			#hero.frag += 1
+			hero.frag_journal.append((self.mname))
+			if self.race != 'undead':
+				hero.evil +=1
 			self.special_death(hero)
 
 	def interaction (self, hero):
@@ -306,10 +310,10 @@ class Monster (sprite.Sprite):
 				if hero.prevent == 0: hero.hp = hero.hp - damg
 
 				else:
-					if hero.prevet >= damg: 
+					if hero.prevent >= damg: 
 						pass
 					else:
-						hero.hp = hero.hp - (damg-hero.prevet)
+						hero.hp = hero.hp - (damg-hero.prevent)
 
 			elif c<d:
 				sounds.flee.play()

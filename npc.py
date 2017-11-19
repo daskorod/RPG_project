@@ -19,6 +19,7 @@ from functions import end_dialog, war, br_change, br_auto
 import items
 import ends
 import menu
+import sounds
 
 
 class Gilbert (classes.Monk):
@@ -758,7 +759,7 @@ class Guard (Monster):
 		self.image = image.load('images/guard.png')
 		self.icon = pygame.image.load ('images/priest_av.png')
 		#self.image.set_colorkey ((254,254,254))
-
+		self.sound = sounds.hit
 		self.order = True
 		self.quest = False
 		self.second = False
@@ -840,6 +841,7 @@ class Guard2 (Monster):
 		self.mname = 'Стражник'
 		self.race = 'human'
 		self.flee = False
+		self.sound = sounds.hit
 		#self.image.fill ((220,130,100))
 		self.ll = False
 		self.image = image.load('images/guard.png')
@@ -1036,7 +1038,7 @@ class Peidron (Monster):
 		self.image = image.load('images/tiles/peid.png')
 		self.icon = pygame.image.load ('images/priest_av.png')
 		#self.image.set_colorkey ((254,254,254))
-
+		self.sound = sounds.pain
 		self.order = True
 		self.quest = False
 		self.second = False
@@ -1341,6 +1343,7 @@ class Master (classes.Monster):
 		self.matter = 0
 		self.order = True
 		self.master_of_sword = 1
+		self.sound = sounds.pain
 
 
 
@@ -1373,6 +1376,7 @@ class Kubert (classes.Monster):
 		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
 		self.tree = textus
 		self.lbolt = False
+		self.sound = sounds.hit
 		self.mname = 'Брат Куберт'
 		self.race = 'human'
 		self.image = Surface ((45,45))
