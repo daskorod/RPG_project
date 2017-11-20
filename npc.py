@@ -20,6 +20,7 @@ import items
 import ends
 import menu
 import sounds
+import img
 
 
 class Gilbert (classes.Monk):
@@ -1208,50 +1209,47 @@ class Gnostic (classes.Monster):
 		#self.image.set_colorkey ((254,254,254))
 		self.matter = 0
 		self.order = True
+		self.light = False
+		self.word = False
 
-#	def interaction (self, hero):
-#		Monster.interaction (self, hero)
+	def interaction (self, hero):
+		Monster.interaction (self, hero)
+		if 'gnostic_kill' in hero.quest and 'Отец Изольд' in hero.frag_journal and ideas.gnosis in hero.journal:
+			br_change (self, 5)
 
 
 	def dialog_special (self, hero):
-		if self.add_information == 'reductio':
-			hero.move = True
-			x = 0
-			for i in hero.journal:
-				if i.name == 'Пусто':
-					hero.journal[x] = ideas.reductio
-					break
-				x +=1
 
-
+		if self.add_information == 'quest' and self.control.k_e == True:
 			self.control.k_e = False
+			hero.append (items.gold_ring)
+			br_auto (self)
 
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Вы записали концепцию Редукции в свой дневничок.')
-			hero.son.change_text (3, 'Может быть теперь при встрече с чем-то неразрешимым и тёмным')
-			hero.son.change_text (4, 'вам удастся свести его к чему-то более простому и ясному?')
 
-			if self.branch_do == 'go':
-				self.branch_do = 'done'
-				self.branch = self.branch_id
-				self.s = 1
-				self.n = 0
-			hero.collide_control = False
-			hero.start_conv = True
+		if self.add_information == 'quest':
 
-		if self.add_information == 'thing' and self.control.k_e == True:
+			end_dialog (self, hero)
+			hero.quest['gnostic_kill'] = True
+
+		if self.add_information == 'word':
+
+			if self.word == False:
+				hero.take_damage(1, 'phis')
+				self.word = True
+
+
+		if self.add_information == 'light':
 			self.control.k_e = False
-			hero.inv.append(items.bottle)
+			if self.light == False:
+				hero.take_damage(random.randint(1,6), 'light')
+				img.boltAnim.play ()
+				sounds.light.play()
+				self.light = True
 
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Вы взяли странную бутылку у старика.')
-			hero.son.change_text (3, 'Кто знает, может вам её лучше выбросить?')
 
-		if self.add_information == 'learn':
-			if ideas.reductio in hero.journal:
-				br_change(self, 4)
-			else:
-				br_change(self, 3)
+		if self.add_information == 'gn_end' and self.control.k_e == True:
+			menu.ending ('Вы со всеми потрохами вступили в гностическую общину. Вы так никогда и не достигли в ней каких-то значимых высот. В то время как иерархи общины предавались наслаждениям, вам было предписано соблюдать жесткую аскезу. В итоге вас нашла инквизиция с сожгла на костре.', img.gnosis_end, 6, pic_x = 60, time_scroll = 250, speed_mod = 6)
+
 
 class Trader (classes.Monster):
 	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):

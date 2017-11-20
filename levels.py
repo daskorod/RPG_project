@@ -507,7 +507,7 @@ class _secta (SuperLevel):
 		self.son.change_text (3, 'Загадочный дом. Кто знает чем они тут занимаются?')
 	
 	def stage_content (self, hero):
-		pass
+		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 
 class _end2 (SuperLevel):
 	def __init__ (self, lev, battle, son, control):

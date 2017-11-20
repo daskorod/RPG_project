@@ -834,13 +834,14 @@ class Cupboard2 (Platform):
 			hero.son.change_text (2, 'Книжный шкаф. Очень старый.')
 			hero.son.change_text (4, 'Среди истлевших манускриптов вы нашли более-менее')
 			hero.son.change_text (5, 'целую книгу в чёрном переплёте.')	
-			hero.son.change_text (6, 'Вы взяли её с собой.')				
+			hero.son.change_text (7, 'Вы получаете предмет: старая книга.')				
 			hero.inv.append (items.old_book)
+			sounds.barrel.play()
 			self.first = False 
 		else:
 			hero.son.clear_text ()
-			hero.son.change_text (2, 'Книжный шкаф. Очень старый.')
-			hero.son.change_text (3, 'На полках пусто, нет ничего интересного.')
+			hero.son.change_text (2, 'Книжный шкаф. Очень старый. Вы взяли отсюда книгу.')
+			hero.son.change_text (3, 'Больше здесь нет ничего интересного.')
 		#hero.char_value['2exp'] +=50
 
 
@@ -1633,6 +1634,10 @@ class Monk (Monster):
 							self.n = 0
 							break
 
+		
+		if ideas.gnosis in hero.journal:
+			br_change (self, 6)
+
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:
 			hero.move = True
@@ -1663,6 +1668,25 @@ class Monk (Monster):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+
+		if self.add_information == 'metanoia' and self.control.k_e == True:
+			if ideas.gnosis in hero.journal:
+				hero.journal.remove(ideas.gnosis)
+
+			hero.journal.append(ideas.revelation)
+			if self.quest == True:
+				br_change (self, 4)
+			else:
+				br_change (self, 0)
+
+			self.son.clear_text ()
+			sounds.alell.play()
+			self.son.change_text (1, 'Вы чувствуете, что прощены.')
+			self.son.change_text (2, 'Вот так вот. Даром и просто так.')
+
+			self.control.k_e = False
+			end_dialog (self, hero)
+
 
 		if self.add_information == 'dogma_true' and self.control.k_e == True:
 
