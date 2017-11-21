@@ -38,8 +38,13 @@ class Gilbert (classes.Monk):
 		self.g = 1000
 		self.order = True
 		self.quest = False
+		self.hit = False
 
-
+	def battle_action (self, hero):
+		if self.hit == False:
+			hero.journal['gilbert_hit'] = True
+			self.hit = True
+		classes.Monk.battle_action (self, hero)
 
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:
@@ -247,6 +252,7 @@ class Gilbert (classes.Monk):
 				self.branch = self.branch_id
 				self.s = 1
 				self.n = 0
+
 
 
 
@@ -1367,6 +1373,93 @@ class Master (classes.Monster):
 			hero.master_of_sword +=1
 
 			end_dialog (self, hero)
+
+
+
+class Bomz (classes.Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Святой бомж'
+		self.race = 'human'
+		self.image = Surface ((45,45))
+		self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/bomz.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+		self.matter = 0
+		self.order = True
+		self.master_of_sword = 1
+		self.sound = sounds.pain
+		self.gold1 = False
+		self.gold2 = False
+
+	def dialog_special (self, hero):
+
+
+		if self.add_information == 'sword'  and self.control.k_e == True:
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы стоите с чувством выполненного долга.')
+			hero.son.change_text (4, 'Взамен своего оружия вы получили ржавый меч.')
+			hero.char_value['2exp'] += 50
+
+			for i in hero.inv:
+				print(i)
+				if i.__class__.__name__ == 'Weapon':
+					hero.inv.remove(i)
+					print(str(i)+'REMOVED')
+
+#			print(len(hero.inv))
+#			for i in range(0,len(hero.inv)-1):
+#				print(i)
+#
+#				if hero.inv[i].__class__.__name__ == 'Weapon':
+#					hero.inv.pop(i)
+#					print(str(hero.inv[i])+'REMOVED')
+
+			hero.weapon = items.first
+			hero.at += hero.weapon.at_mod
+			hero.damage = hero.weapon.dem
+
+			self.control.k_e = False
+
+			hero.inv.append(items.old_sword)
+			self.kill ()
+
+			end_dialog (self, hero)
+
+		if self.add_information == 'gold':
+
+			
+			if self.gold1 == False and hero.gold >0:
+				hero.gold -= 1
+				self.gold1 = True
+
+		if self.add_information == 'allgold':
+
+			
+			if self.gold2 == False:
+				hero.gold = 0
+				self.gold2 = True
+
+
+		if self.add_information == 'kill'  and self.control.k_e == True:
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы убили бедного бомжа!')
+			hero.char_value['2exp'] += 1
+			self.kill ()
+			
+
+			hero.frag_journal.append((self.mname))
+			hero.evil +=2
+
+			end_dialog (self, hero)
+
+
+
+
 
 
 class Kubert (classes.Monster):

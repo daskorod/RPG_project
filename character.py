@@ -123,6 +123,7 @@ class Hero(pygame.sprite.Sprite):
 		self.slashAnim_self = slashAnim2
 		self.inception = True
 		self.bloodAnim_self = img.bloodAnim2
+		self.to_war = False
 
 		self.image = pygame.Surface ((45,45))
 		self.image.fill ((100,200,230))
@@ -235,7 +236,7 @@ class Hero(pygame.sprite.Sprite):
 		self.weapon = items.short_sword
 		self.weapon.status = 'экипировано'
 		self.no_item = items.no_item
-		self.inv = [items.fire_resist, items.light_resist, self.weapon, items.long_sword,items.bouquet,items.hp_potion, items.chain_mail, items.str_potion, items.dex_potion]
+		self.inv = [self.weapon, items.bouquet, items.hp_potion, items.chain_mail]
 		self.inv_index_pos = 0
 		self.first = items.first
 		self.damage = self.weapon.dem
@@ -295,7 +296,7 @@ class Hero(pygame.sprite.Sprite):
 		#
 
 	def drink_potion (self):
-		if self.control.k_q == True:
+		if self.control.k_q == True and self.is_death != True:
 			self.control.k_q = False
 			for i in self.inv:
 				if i.name == 'Лечебное зелье':
@@ -656,7 +657,7 @@ class Hero(pygame.sprite.Sprite):
 									
 
 									self.char_value['4ac'] += 1
-									self.hp -= 1
+									
 						
 									self.son.clear_text ()
 									self.son.change_text (2, 'Вы жадно и обильно занюхнули дозу меланжа.')
@@ -675,6 +676,7 @@ class Hero(pygame.sprite.Sprite):
 									self.inv_index_pos = 0
 									self.inv_quit = False
 									img.healAnim.play()
+									self.take_damage (1, 'phis')
 
 						elif self.inv[self.inv_index_pos+(self.inv_page*self.number_of_things_on_the_page)].name == 'Старая книга':
 
@@ -1145,77 +1147,119 @@ class Hero(pygame.sprite.Sprite):
 		 чтобы не сводился на ноль постоянно. n - это значение которое растёт - это путсое вместилище,
 		  которое передаётся дальше. Растёт оно всегда при помощи s.'''
 
-		if self.control.k_e == True:
-			self.view.a = 0
 
-		text_massive, self.etwas.add_information, *other = tree[interlocutor.branch][interlocutor.n]
+		if self.to_war == False:
 
-		try:
-			text_massive_answer, branch = other
-			self.etwas.branch_do, self.etwas.branch_id = branch
-
-		except:
-			text_massive_answer = other[0]
-
-		self.son.change_text_tree(self.view.render_text (text_massive, text_massive_answer))
-
-		self.etwas.dialog_options (self)
-
-		if self.control.button_up == True:
+			if self.control.k_e == True:
+				self.view.a = 0
+	
+	
+			text_massive, self.etwas.add_information, *other = tree[interlocutor.branch][interlocutor.n]
+	
+			try:
+				text_massive_answer, branch = other
+				self.etwas.branch_do, self.etwas.branch_id = branch
+	
+			except:
+				text_massive_answer = other[0]
+	
+			self.son.change_text_tree(self.view.render_text (text_massive, text_massive_answer))
+	
+			self.etwas.dialog_options (self)
+	
+			if self.control.button_up == True:
+	
+				if self.control.k_1 == True:
+					self.control.k_1 = False
+					self.control.button_up = False
+					self.son.clear_text ()
+					sounds.clic2.play()
+	
+					self.etwas.s = self.etwas.s*10
+					self.etwas.n = (self.etwas.n+(1*self.etwas.s))
+					self.view.a = 0
+	
+					if self.etwas.n not in tree[interlocutor.branch]:
+						self.etwas.n = (self.etwas.n-(1*self.etwas.s))
+						self.etwas.s = int(self.etwas.s/10)	
+	
+				if self.control.k_2 == True:
+					self.control.k_2 = False
+					self.control.button_up = False
+					self.son.clear_text ()
+					self.etwas.s = self.etwas.s*10
+					self.etwas.n = (self.etwas.n+(2*self.etwas.s))
+					self.view.a = 0
+					sounds.clic2.play()
+	
+					if self.etwas.n not in tree[interlocutor.branch]:
+						self.etwas.n = (self.etwas.n-(2*self.etwas.s))
+						self.etwas.s = int(self.etwas.s/10)		
+	
+				if self.control.k_3 == True:
+					self.control.k_3 = False
+					self.control.button_up = False
+					self.son.clear_text ()
+					self.etwas.s = self.etwas.s*10
+					self.etwas.n = (self.etwas.n+(3*self.etwas.s))
+					self.view.a = 0
+					sounds.clic2.play()
+	
+					if self.etwas.n not in tree[interlocutor.branch]:
+						self.etwas.n = (self.etwas.n-(3*self.etwas.s))
+						self.etwas.s = int(self.etwas.s/10)
+	
+				if self.control.k_4 == True:
+					self.control.k_4 = False
+					self.control.button_up = False
+					self.son.clear_text ()
+					self.etwas.s = self.etwas.s*10
+					self.etwas.n = (self.etwas.n+(4*self.etwas.s))
+					self.view.a = 0
+					sounds.clic2.play()
+	
+					if self.etwas.n not in tree[interlocutor.branch]:
+						self.etwas.n = (self.etwas.n-(4*self.etwas.s))
+						self.etwas.s = int(self.etwas.s/10)
+	
+				if self.control.k_a == True:
+					try:
+						a = self.etwas.mname
+						self.control.k_a = False
+						self.control.button_up = False
+						self.son.clear_text ()
+						self.to_war = True
+				#		self.etwas.agression = True
+				#		self.turn_main = True
+				#		self.start_conv = True
+				#		self.view.a = 0
+						sounds.clic2.play()
+					except:
+						self.control.k_a = False
+						sounds.clic2.play()
+		else:
+			self.son.clear_text ()
+			self.son.change_text (2, 'Перед вами: %s . Вы хотите напасть на него?'% self.etwas.mname) 
+			self.son.change_text (4, '1 - да; 2 - нет.')
 
 			if self.control.k_1 == True:
 				self.control.k_1 = False
 				self.control.button_up = False
 				self.son.clear_text ()
 				sounds.clic2.play()
-
-				self.etwas.s = self.etwas.s*10
-				self.etwas.n = (self.etwas.n+(1*self.etwas.s))
+				self.etwas.agression = True
+				self.turn_main = True
+				self.start_conv = True
 				self.view.a = 0
+				self.to_war = False
 
-				if self.etwas.n not in tree[interlocutor.branch]:
-					self.etwas.n = (self.etwas.n-(1*self.etwas.s))
-					self.etwas.s = int(self.etwas.s/10)	
-
-			if self.control.k_2 == True:
+			elif self.control.k_2 == True:
 				self.control.k_2 = False
 				self.control.button_up = False
 				self.son.clear_text ()
-				self.etwas.s = self.etwas.s*10
-				self.etwas.n = (self.etwas.n+(2*self.etwas.s))
+				self.to_war = False
 				self.view.a = 0
-				sounds.clic2.play()
-
-				if self.etwas.n not in tree[interlocutor.branch]:
-					self.etwas.n = (self.etwas.n-(2*self.etwas.s))
-					self.etwas.s = int(self.etwas.s/10)		
-
-			if self.control.k_3 == True:
-				self.control.k_3 = False
-				self.control.button_up = False
-				self.son.clear_text ()
-				self.etwas.s = self.etwas.s*10
-				self.etwas.n = (self.etwas.n+(3*self.etwas.s))
-				self.view.a = 0
-				sounds.clic2.play()
-
-				if self.etwas.n not in tree[interlocutor.branch]:
-					self.etwas.n = (self.etwas.n-(3*self.etwas.s))
-					self.etwas.s = int(self.etwas.s/10)
-
-			if self.control.k_4 == True:
-				self.control.k_4 = False
-				self.control.button_up = False
-				self.son.clear_text ()
-				self.etwas.s = self.etwas.s*10
-				self.etwas.n = (self.etwas.n+(4*self.etwas.s))
-				self.view.a = 0
-				sounds.clic2.play()
-
-				if self.etwas.n not in tree[interlocutor.branch]:
-					self.etwas.n = (self.etwas.n-(4*self.etwas.s))
-					self.etwas.s = int(self.etwas.s/10)
-
+				sounds.clic2.play()			
 
 
 	def collide (self, array):
@@ -1408,22 +1452,25 @@ class Hero(pygame.sprite.Sprite):
 		sounds.pain.play()
 		dem = int(dem * (self.resistance[source]))
 		self.hp -= dem
+		self.check_for_death ()
 
 	# BATTLE OPTIONS
 
 	def check_for_death (self):
 		if self.hp <= 0 and self.is_death != True:
 			self.death ()
+			self.move = False
 
 	def death (self):
 		self.is_death = True
 		self.son.clear_text ()
+		
 		#self.son.change_text (1, 'Вы умерли.')
 		#self.son.change_text (2, 'На ваших костях упыри будут танцевать джигу.')
 		self.auto_text (random.choice([('Теперь вы мертвы.', "Ваши кости нынче объедают шакалы и никто не вспомнит вашего имени.", "Вы канули в пучину бесконечности."),("Вы почили в бозе.", "Но мир этого даже не заметил", "Ведь вы из себя практически ничего не пресдтавляли.", "Ведь вы - песчинка на берегу неизбежности."),("Вы сгинули в пучине бесконечности.", "А мир всё также продолжал существовать.", "Что есть вы, что нет - ему без разницы.")]))
 		self.son.change_text (6, 'Нажмите SPACE.')
 		self.status = 'dead'
-		self.kill ()
+		self.image = img.cross
 		self.move = False
 		self.control.k_e = False
 

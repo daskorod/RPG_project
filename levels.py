@@ -156,7 +156,7 @@ class _platz (SuperLevel):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.name = '- Главная площадь -'		
 		self.auto = False
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city, floor = classes.CityFloor)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 825, 420)
 		self.x = 0
@@ -243,8 +243,8 @@ class _shop (SuperLevel):
 class _temple (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.auto = False
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		#self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city, floor = classes.CityFloor)
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 		self.name = '- - - Храм Единого - - -'

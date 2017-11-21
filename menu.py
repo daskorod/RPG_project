@@ -26,7 +26,7 @@ def menu_loop ():
 		up = True
 		
 		pygame.mixer.music.load ('music/intro.ogg')
-		pygame.mixer.music.set_volume (0.2)
+		pygame.mixer.music.set_volume (0.4)
 		pygame.mixer.music.play ()
 		main_image = pygame.image.load ('images/main_pic_de.gif')
 		text_image = pygame.image.load ('images/logo_text.gif')
@@ -139,7 +139,7 @@ def experiment_loop (text, pic, end_black = False, pic_x = 50, pic_y = 20, time_
 		time2 = 0
 		count = 0
 		sound1 = pygame.mixer.Sound('sound/7.ogg')
-		#sound1.set_volume(0.01)
+		sound1.set_volume(0.1)
 		time3 = 0
 		end = False
 		intro = pygame.image.load (pic)

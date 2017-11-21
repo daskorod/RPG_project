@@ -7,6 +7,24 @@ dogma_end = 'images/end/dogma.png'
 gnosis_end = 'images/end/gnosis.png'
 true_end = 'images/end/true.png'
 
+pavec1 = image.load('images/pave/1.png')
+pavec2 = image.load('images/pave/2.png')
+pavec3 = image.load('images/pave/3.png')
+pavec4 = image.load('images/pave/4.png')
+pavec5 = image.load('images/pave/5.png')
+pavec6 = image.load('images/pave/6.png')
+pavec7 = image.load('images/pave/7.png')
+pavec8 = image.load('images/pave/8.png')
+pavec9 = image.load('images/pave/9.png')
+pavec10 = image.load('images/pave/10.png')
+pavec11 = image.load('images/pave/11.png')
+
+pave_small = [pavec6, pavec7, pavec10, pavec11]
+pave_big = [pavec1,pavec2,pavec3,pavec4,pavec5,pavec8,pavec9]
+
+pave_city2 = [pavec1,pavec2,pavec3,pavec4,pavec5,pavec6,pavec7,pavec8,pavec9,pavec10,pavec11]
+
+cross = image.load('images/cross.png')
 pave1 = image.load('images/pave1.png')
 pave2 = image.load('images/pave2.png')
 pave3 = image.load('images/pave3.png')

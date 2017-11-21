@@ -272,10 +272,10 @@ class SuperLevel ():
 			pos = self.camera.apply(hero)
 
 		hero_pos = self.camera.apply(hero)
-
+		adventure_screen.blit (hero.image, self.camera.apply(hero))
 		#rendering hero
 		if hero.status != 'dead':
-			adventure_screen.blit (hero.image, self.camera.apply(hero))
+			
 			hero.dustAnim.blit (adventure_screen, (pos.x-45, pos.y-45))
 			hero.slashAnim.blit (adventure_screen, (pos.x, pos.y))
 			hero.bloodAnim.blit (adventure_screen, (pos.x+20, pos.y))

@@ -31,7 +31,9 @@ class Holy_Spirit ():
 		self.down_is = False
 		self.k_1_control = False
 		self.k_2_control = False
-		self.k_3_control = False		
+		self.k_3_control = False	
+		self.k_a = False	
+		self.move_cntrl_a = False
 #		R = False
 #		L = False
 #		U = False
@@ -62,41 +64,52 @@ class Holy_Spirit ():
 				if e.type == pygame.KEYDOWN:
 					if e.key == pygame.K_LEFT:
 						self.left = True
-						self.move_cntrl = True
+						if self.move_cntrl_a == False:
+							self.move_cntrl = True
+							self.move_cntrl_a = True
 
 					if e.key == pygame.K_RIGHT:
 						self.right = True
-						self.move_cntrl = True
+						if self.move_cntrl_a == False:
+							self.move_cntrl = True
+							self.move_cntrl_a = True
 
 				if e.type == pygame.KEYDOWN:
-					self.move_cntrl = True
+					
 					if e.key == pygame.K_UP:
 						self.up = True
 						self.up_is = True
-						
+						if self.move_cntrl_a == False:
+							self.move_cntrl = True
+							self.move_cntrl_a = True
 
 					if e.key == pygame.K_DOWN:
 						self.down = True
 						self.down_is = True
+						if self.move_cntrl_a == False:
+							self.move_cntrl = True
+							self.move_cntrl_a = True
 
 				if e.type == pygame.KEYUP:
 					if e.key == pygame.K_LEFT:
 						self.left = False
-						self.move_cntrl = False
+						self.move_cntrl_a = False
 
 					if e.key == pygame.K_RIGHT:
 						self.right = False
-						self.move_cntrl = False
+						self.move_cntrl_a = False
 
 				if e.type == pygame.KEYUP:
-					self.move_cntrl = False
+					
 					if e.key == pygame.K_UP:
 						self.up = False
 						self.up_is = False
+						self.move_cntrl_a = False
 
 					if e.key == pygame.K_DOWN:
 						self.down = False
 						self.down_is = False
+						self.move_cntrl_a = False
 
 				if e.type == pygame.KEYDOWN:
 					if e.key == pygame.K_1 and self.k_1_control == False:
@@ -127,6 +140,10 @@ class Holy_Spirit ():
 
 					if e.key == pygame.K_i:
 						self.k_i = True
+
+					if e.key == pygame.K_a:
+						self.k_a = True
+
 					if e.key == pygame.K_c:
 						self.k_c = True
 					if e.key == pygame.K_j:
@@ -166,6 +183,11 @@ class Holy_Spirit ():
 
 					if e.key == pygame.K_i:
 						self.k_i = False
+
+					if e.key == pygame.K_a:
+						self.k_a = False
+
+
 					if e.key == pygame.K_c:
 						self.k_c = False
 					if e.key == pygame.K_j:

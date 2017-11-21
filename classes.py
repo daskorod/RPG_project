@@ -192,6 +192,7 @@ class Platform(sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.name = "block"
+
 	def interaction (self,hero):
 		if hero.control.right == True:
 			hero.rect.x -= hero.back_move
@@ -337,10 +338,12 @@ class BoneFloor(sprite.Sprite):
 
 	def interaction (self,hero):
 		pass
+
 class CityFloor(sprite.Sprite):
 	def __init__(self, x, y):
 		sprite.Sprite.__init__(self)
-		self.image = self.random(img.pavestones_city)
+		#self.image = self.random(img.pavestones_city)
+		self.image = self.random(img.pave_big)
 		#self.image.set_colorkey ((255,255,255))
 		#self.image = Surface ((45,45))
 		#self.image.fill ((95,95,95))
@@ -354,6 +357,26 @@ class CityFloor(sprite.Sprite):
 
 	def interaction (self,hero):
 		pass
+
+class CityFloor2(sprite.Sprite):
+	def __init__(self, x, y):
+		sprite.Sprite.__init__(self)
+		#self.image = self.random(img.pavestones_city)
+		self.image = self.random(img.pave_small)
+		#self.image.set_colorkey ((255,255,255))
+		#self.image = Surface ((45,45))
+		#self.image.fill ((95,95,95))
+		self.rect = Rect(0,0,45,45)
+		self.rect.x = x
+		self.rect.y = y
+		self.name = "no"
+
+	def random(self, florlist):
+		return random.choice(florlist)
+
+	def interaction (self,hero):
+		pass
+
 
 class Door(sprite.Sprite):
 	def __init__(self, x, y):
@@ -828,20 +851,35 @@ class Cupboard2 (Platform):
 
 		self.first = True
 	def interaction (self,hero):
-		Platform.interaction (self, hero)
-		if self.first == True:
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Книжный шкаф. Очень старый.')
-			hero.son.change_text (4, 'Среди истлевших манускриптов вы нашли более-менее')
-			hero.son.change_text (5, 'целую книгу в чёрном переплёте.')	
-			hero.son.change_text (7, 'Вы получаете предмет: старая книга.')				
-			hero.inv.append (items.old_book)
-			sounds.barrel.play()
-			self.first = False 
-		else:
-			hero.son.clear_text ()
-			hero.son.change_text (2, 'Книжный шкаф. Очень старый. Вы взяли отсюда книгу.')
-			hero.son.change_text (3, 'Больше здесь нет ничего интересного.')
+		
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
+
+		if hero.control.move_cntrl == True:
+			hero.control.move_cntrl = False
+			
+			
+
+			if self.first == True:
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Книжный шкаф. Очень старый.')
+				hero.son.change_text (4, 'Среди истлевших манускриптов вы нашли более-менее')
+				hero.son.change_text (5, 'целую книгу в чёрном переплёте.')	
+				hero.son.change_text (7, 'Вы получаете предмет: старая книга.')				
+				hero.inv.append (items.old_book)
+				sounds.barrel.play()
+				self.first = False 
+	
+			else:
+				hero.son.clear_text ()
+				hero.son.change_text (2, 'Книжный шкаф. Очень старый. Вы взяли отсюда книгу.')
+				hero.son.change_text (3, 'Больше здесь нет ничего интересного.')
 		#hero.char_value['2exp'] +=50
 
 
@@ -1116,58 +1154,71 @@ class Obstacle_useful(Platform):
 		self.rnd = random.randint(1,4)
 
 	def interaction (self,hero):
-		Platform.interaction (self, hero)
-		if self.untapped == True:
-			if self.rnd == 1:
-				hero.son.clear_text ()
-				hero.son.change_text (2, self.text)
-				hero.son.change_text (5, 'Вы получаете предмет: %s' % self.item.name)
-				hero.son.change_text (3, 'Вы исследуете содержимое... И что-то находите.')
-				#hero.son.change_text (5, 'Вы за.')
-				hero.inv.append(self.item)
-				self.image = self.choice[2]
-				self.text = self.choice[3]
-				self.untapped = False
-				sounds.barrel.play()
-			elif self.rnd == 2:
-				a = random.randint(1,6)
-				hero.son.clear_text ()
-				hero.son.change_text (2, self.text)
-				hero.son.change_text (5, 'Вы получаете немного золотишка: %s' % str(a))
-				hero.son.change_text (3, 'Вы исследуете содержимое... и находите пару монет.')
-				#hero.son.change_text (5, 'Вы за.')
-				hero.gold += a
-				self.image = self.choice[2]
-				self.text = self.choice[3]
-				self.untapped = False
-				sounds.barrel.play()
+		if hero.control.right == True:
+			hero.rect.x -= hero.back_move
+		elif hero.control.left == True:
+			hero.rect.x += hero.back_move
+		elif hero.control.up == True:
+			hero.rect.y += hero.back_move
+		elif hero.control.down == True:
+			hero.rect.y -= hero.back_move
 
-			elif self.rnd == 3:
-				
-				hero.son.clear_text ()
-				hero.son.change_text (2, self.text)
-				hero.son.change_text (5, 'Вы теряете 1 жизненную силу!')
-				hero.son.change_text (3, 'Вы исследуете содержимое... и вас кусает крыса!')
-				#hero.son.change_text (5, 'Вы за.')
-				hero.take_damage (1, 'phis')
-				self.image = self.choice[2]
-				self.text = self.choice[3]
-				self.untapped = False	
 
-			elif self.rnd == 4:	
+		if hero.control.move_cntrl == True:
+			hero.control.move_cntrl = False
+			if self.untapped == True:
+				hero.control.move_cntrl = False
+				if self.rnd == 1:
+					hero.son.clear_text ()
+					hero.son.change_text (2, self.text)
+					hero.son.change_text (5, 'Вы получаете предмет: %s' % self.item.name)
+					hero.son.change_text (3, 'Вы исследуете содержимое... И что-то находите.')
+					#hero.son.change_text (5, 'Вы за.')
+					hero.inv.append(self.item)
+					self.image = self.choice[2]
+					self.text = self.choice[3]
+					self.untapped = False
+					sounds.barrel.play()
+				elif self.rnd == 2:
+					a = random.randint(1,6)
+					hero.son.clear_text ()
+					hero.son.change_text (2, self.text)
+					hero.son.change_text (5, 'Вы получаете немного золотишка: %s' % str(a))
+					hero.son.change_text (3, 'Вы исследуете содержимое... и находите пару монет.')
+					#hero.son.change_text (5, 'Вы за.')
+					hero.gold += a
+					self.image = self.choice[2]
+					self.text = self.choice[3]
+					self.untapped = False
+					sounds.barrel.play()
+	
+				elif self.rnd == 3:
+					
+					hero.son.clear_text ()
+					hero.son.change_text (2, self.text)
+					hero.son.change_text (5, 'Вы теряете 1 жизненную силу!')
+					hero.son.change_text (3, 'Вы исследуете содержимое... и вас кусает крыса!')
+					#hero.son.change_text (5, 'Вы за.')
+					hero.take_damage (1, 'phis')
+					self.image = self.choice[2]
+					self.text = self.choice[3]
+					self.untapped = False	
+	
+				elif self.rnd == 4:	
+					hero.son.clear_text ()
+					hero.son.change_text (2, self.text)
+					hero.son.change_text (5, 'Вы получаете предемет: Меланж.')
+					hero.son.change_text (3, 'Вы находите воровскую закладку с наркотой.')
+					#hero.son.change_text (5, 'Вы за.')
+					hero.inv.append(items.melanj)
+					self.image = self.choice[2]
+					self.text = self.choice[3]
+					self.untapped = False
+					sounds.barrel.play()
+	
+			else:
 				hero.son.clear_text ()
 				hero.son.change_text (2, self.text)
-				hero.son.change_text (5, 'Вы получаете предемет: Меланж.')
-				hero.son.change_text (3, 'Вы находите воровскую закладку с наркотой.')
-				#hero.son.change_text (5, 'Вы за.')
-				hero.inv.append(items.melanj)
-				self.image = self.choice[2]
-				self.text = self.choice[3]
-				self.untapped = False
-				sounds.barrel.play()				
-		else:
-			hero.son.clear_text ()
-			hero.son.change_text (2, self.text)
 		#hero.move = False
 		#hero.son.change_text (3, 'Вы исследуете содержимое и находите %s ' % self.item.name)
 		#hero.son.change_text (2, self.text)
