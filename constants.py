@@ -10,7 +10,7 @@ blue = ((30, 30, 180))
 PF_HEIGHT = 45
 PF_WIDTH = 45
 yellow = (255, 199, 0)
-version = 'demo 1.1'
+version = '2.1'
 
 C1 = (255, 193,193)
 C2 = (255, 140,140)

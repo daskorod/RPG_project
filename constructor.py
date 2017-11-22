@@ -85,7 +85,7 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             s = classes.MinorChest (x,y, 'open', items.scythe )
                             sprite_group.add (s)
                      if col == 'a':
-                            a = classes.Skelet ((x/45)+(20/45),y/45,battle, text_data.skeletonw_dict.text, control, 10,8,30,3, son, 120)
+                            a = classes.Skelet ((x/45)+(20/45),y/45,battle, text_data.skeletonw_dict.text, control, 10,2,30,3, son, 120)
                             sprite_group.add (a)
                      if col == 'Q':
                             s = classes.MinorChest (x,y, 'open', items.hp_potion )
@@ -100,7 +100,7 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             well = classes.Well(x,y)  
                             sprite_group.add (well)
                      if col == 'T':
-                            well = monster.SkeletLord(x/45,y/45,battle, text_data.skelet_lord2_dict.text, control, 6,5,6,2, son, 150)  
+                            well = monster.SkeletLord(x/45,y/45,battle, text_data.skelet_lord2_dict.text, control, 6,2,6,2, son, 150)  
                             sprite_group.add (well)
                      if col == 'Y':
                             pr = classes.PortalLink (x,y, 'dung3', 'dung2', 'D', locationname )
@@ -111,7 +111,7 @@ def create_dungeon2 (level, battle, control, son, locationname):
                             dec = classes.Ding(x,y, 'images/tiles/door_open.png', 'Открытая дверь')
                             addition.append(dec)
                      if col == 'I':
-                            well = monster.ZombiLord(x/45,y/45,battle, text_data.zombi_lord_dict.text, control, 15,5,16,4, son, 250)  
+                            well = monster.ZombiLord(x/45,y/45,battle, text_data.zombi_lord_dict.text, control, 15,0,16,4, son, 250)  
                             sprite_group.add (well)      
                      if col == 'O':
                             well = classes.Obstacle(x,y)  
@@ -169,7 +169,7 @@ def create_dungeon3 (level, battle, control, son, locationname):
                             pr = classes.PortalLink (x,y, 'dung2', 'dung3', 'U', locationname )
                             sprite_group.add (pr)
                      if col == 'T':
-                            pr = monster.SkeletKing (x/45,y/45, battle, text_data.skeleton_king_dict.text, control, 12, 8, 15, 4, son, 100)
+                            pr = monster.SkeletKing (x/45,y/45, battle, text_data.skeleton_king_dict.text, control, 12, 3, 15, 4, son, 100)
                             sprite_group.add (pr)
                      if col == 'S':
                             pr = classes.DingSpecial (x,y, img.kubert, text_data.corpse_dict.text, functions.dialog_special, functions.interaction_special)
@@ -185,7 +185,7 @@ def create_dungeon3 (level, battle, control, son, locationname):
                             pr = classes.SkeletGod (x/45,y/45, battle, text_data.god_dict.text, control, 20, 20, 30, 4, son, 10000)
                             sprite_group.add (pr)
                      if col == 'V':
-                            pr = npc.Kubert (x/45,y/45, battle, text_data.kubert_dict.text, control, 12, 10, 10, 4, son, 300)
+                            pr = npc.Kubert (x/45,y/45, battle, text_data.kubert_dict.text, control, 12, 5, 10, 4, son, 300)
                             sprite_group.add (pr)
                      if col == 'B':
                             pr = classes.PortalLink (x,y, 'pit1', 'dark', 'D', locationname )
@@ -340,10 +340,10 @@ def create_level_city (level, battle, control, son, locationname):
                             pr = classes.PortalLink (x,y, 'todung1', 'oldhousefromdung', 'D', locationname )
                             sprite_group.add (pr)
                      if col == 'V':
-                            mn = npc.Guard (x/45,y/45,battle, text_data.guard_dict.text, control, 7,6,6,2, son, 50)
+                            mn = npc.Guard (x/45,y/45,battle, text_data.guard_dict.text, control, 7,4,6,2, son, 50)
                             sprite_group.add (mn)
                      if col == 'B':
-                            mn = npc.Guard2 (x/45,y/45,battle, text_data.guard2_dict.text, control, 7,6,6,2, son, 50)
+                            mn = npc.Guard2 (x/45,y/45,battle, text_data.guard2_dict.text, control, 7,4,6,2, son, 50)
                             sprite_group.add (mn)   
                      if col == 'N':
                             pr = classes.PortalLink (x,y, 'towerplatz', 'still2', 'U', locationname )
@@ -361,7 +361,7 @@ def create_level_city (level, battle, control, son, locationname):
                             s = classes.MinorChest (x,y, 'open', items.hp_potion )
                             sprite_group.add (s)
                      if col == 'к':
-                            pr = npc.Peidron (x/45,y/45,battle, text_data.peid_dict.text, control, 12,10,8,3, son, 330)
+                            pr = npc.Peidron (x/45,y/45,battle, text_data.peid_dict.text, control, 12,5,8,3, son, 330)
                             sprite_group.add (pr)
                      if col == 'е':
                             pr = npc.Merch (x/45,y/45,battle, text_data.merch_dict.text, control, 5,5,5,1, son, 10)

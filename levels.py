@@ -4,6 +4,7 @@ import constructor
 import classes
 import screens
 import img
+import pygame
 #import time
 #import math
 #functions.create_level
@@ -82,6 +83,7 @@ class _dungeon4 (SuperLevel):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_dungeon3,create_interior = constructor.create_interior_dung, floor = classes.BoneFloor)
 		self.name = '- - - Яма костей - - -'
+		self.music = False
 		#self.camera = camera.Camera (self.level_width, self.level_height, 750, 400)
 
 	def render_location_info (self):
@@ -94,6 +96,12 @@ class _dungeon4 (SuperLevel):
 		self.son.change_text (6, 'Вы в яме костей.')		
 
 	def stage_content (self, hero):
+		if self.music == False:
+			pygame.mixer.music.load ('music/steam.ogg')
+			pygame.mixer.music.set_volume (1)
+			pygame.mixer.music.play ()
+			self.music = True
+
 		img.boltAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 
 class _dungeon5 (SuperLevel):
@@ -264,7 +272,7 @@ class _lib (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.auto = False
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city2, floor = classes.CityFloor)
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 		self.name = '- - - Библиотека - - -'
@@ -283,7 +291,7 @@ class _cell (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.auto = False
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city, floor = classes.CityFloor)
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 		self.name = '- - - Кельи - - -'
@@ -338,7 +346,7 @@ class _toweroutside (SuperLevel):
 		SuperLevel.__init__ (self, lev, battle, son, control)
 		self.name = '- Главная площадь -'		
 		self.auto = False
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city, floor = classes.CityFloor)
 		self.back = True
 		self.camera = camera.Camera (self.level_width, self.level_height, 735, 420)
 		self.x = 0
@@ -373,8 +381,8 @@ class _toweroutside (SuperLevel):
 class _tower1 (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.auto = False
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		#self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city, floor = classes.CityFloor)
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 		self.name = '- - - Башня - - -'
@@ -392,8 +400,8 @@ class _tower1 (SuperLevel):
 class _tower2 (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
-		self.auto = False
-		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city)
+		#self.auto = False
+		self.block_group, self.background,self.decor = self.create (create_level = constructor.create_level_city, floor = classes.CityFloor)
 		
 		self.camera = camera.Camera (self.level_width, self.level_height, 680, 420)
 		self.name = '- - - Башня 2- - -'

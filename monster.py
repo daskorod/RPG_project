@@ -122,7 +122,7 @@ class Monster (sprite.Sprite):
 
 
 		monster_screen.blit(fonts.font5.render (str(self.at) +'/'+str(self.damage) , True, (250,250,250)),(25,140))
-		monster_screen.blit(fonts.font5.render (str(self.ac), True, (250,250,250)),(90,140))
+		monster_screen.blit(fonts.font5.render (str(self.ac) +'/'+str(self.armor), True, (250,250,250)),(90,140))
 		monster_screen.blit(self.at_ic,(5,145))
 		monster_screen.blit(self.ac_ic,(75,145))
 	def special_death (self,hero):
@@ -311,9 +311,11 @@ class Monster (sprite.Sprite):
 
 				else:
 					if hero.prevent >= damg: 
+						self.son.change_text (5, 'Ваши доспехи погасили весь урон!')
 						pass
 					else:
 						hero.hp = hero.hp - (damg-hero.prevent)
+						self.son.change_text (5, 'Урон: '+str(self.damage) + "Часть урона погасил доспех!")
 
 			elif c<d:
 				sounds.flee.play()
@@ -344,6 +346,7 @@ class SkeletLord (Monster):
 		self.image.set_colorkey ((254,254,254))
 		self.item = items.gold_key
 		self.hit = False
+		self.armor = 3
 
 	def dialog_special (self, hero):
 		if self.add_information == 'gold' and self.control.k_e == True:
@@ -498,6 +501,8 @@ class ZombiLord (Monster):
 		self.image.set_colorkey ((254,254,254))
 		self.item = items.silver_key
 		self.quest = False
+		self.armor = 5
+
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
 		if self.quest == True:
@@ -589,6 +594,8 @@ class SkeletKing (Monster):
 		self.rect.x = x*PF_WIDTH
 		self.rect.y = y*PF_HEIGHT
 		self.reducted = False
+		self.armor = 5
+		self.prevent = 1
 
 
 		#self.image.fill ((220,130,100))
@@ -613,7 +620,7 @@ class SkeletKing (Monster):
 			self.light1 = True
 			self.light2 = True
 	
-			if hero.sp > 2 and self.check_for_courage == False:
+			if hero.char_value['6sp'] > 2 and self.check_for_courage == False:
 				self.branch = 1
 				self.check_for_courage = True
 	
@@ -632,15 +639,10 @@ class SkeletKing (Monster):
 				self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
 				self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
 				gold = random.randint(1,30)
-				#self.son.change_text (5, "Так же вы нашли немного золотишка: %s " % str(gold) )
-				#hero.gold +=gold
-#				self.son.change_text (5, "С трупа вы забрали: %s " % self.item.name)	
-				#self.status = 'killed'
 				hero.turn_main = True
 				hero.move = True
 				self.agression = False
 				self.hp = 15
-				#self.kill ()
 				hero.collide_control = False
 				self.one_death = True
 

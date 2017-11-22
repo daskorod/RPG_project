@@ -771,7 +771,7 @@ class Guard (Monster):
 		self.quest = False
 		self.second = False
 		self.step_away = False
-
+		self.armor = 2
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
 		if self.step_away == False:
@@ -863,6 +863,7 @@ class Guard2 (Monster):
 		self.wait_for_priest_turn = False
 		self.priest_turn = False
 		self.heal = False
+		self.armor = 2
 
 #	def interaction (self, hero):
 		#Monster.interaction (self, hero)
@@ -909,10 +910,10 @@ class Guard2 (Monster):
 				if hero.prevent == 0: hero.hp = hero.hp - damg
 
 				else:
-					if hero.prevet >= damg: 
+					if hero.prevent >= damg: 
 						pass
 					else:
-						hero.hp = hero.hp - (damg-hero.prevet)
+						hero.hp = hero.hp - (damg-hero.prevent)
 
 			elif c<d:
 				self.son.change_text (4, 'Вы уклонились!')	
@@ -1054,6 +1055,8 @@ class Peidron (Monster):
 		self.wait_for_priest_turn = False
 		self.priest_turn = False
 		self.heal = False
+		self.armor = 5
+		self.prevent = 1
 
 #	def interaction (self, hero):
 		#Monster.interaction (self, hero)
@@ -1217,6 +1220,7 @@ class Gnostic (classes.Monster):
 		self.order = True
 		self.light = False
 		self.word = False
+		self.armor = 2
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
@@ -1348,6 +1352,8 @@ class Master (classes.Monster):
 		self.order = True
 		self.master_of_sword = 1
 		self.sound = sounds.pain
+		self.item = items.great_sword
+		self.armor = 4
 
 
 
@@ -1373,6 +1379,13 @@ class Master (classes.Monster):
 			hero.master_of_sword +=1
 
 			end_dialog (self, hero)
+
+		if self.add_information == 'check'  and self.control.k_e == True:
+			hero.control.k_e = False
+			if hero.char_value['1lvl'] >2:
+				br_change (self, 3)
+			else:
+				br_change (self, 2)
 
 
 

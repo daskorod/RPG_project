@@ -102,6 +102,8 @@ class Skelet (Monster):
 		self.order = False
 		self.item = items.rope
 		self.quest = False
+		self.armor = 5
+		self.prevent = 1
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)

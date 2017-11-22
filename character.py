@@ -406,7 +406,7 @@ class Hero(pygame.sprite.Sprite):
 		self.sp_max = self.char_value['6sp']
 		self.hp_max = self.char_value['5hp']
 		self.at = self.char_value['3at']
-		self.ac = self.char_value['4ac']
+		self.ac = self.char_value['4ac'] + self.armor_equip.dex_mod
 		self.level = self.char_value['1lvl']
 		self.exp = self.char_value ['2exp']	
 
@@ -1752,10 +1752,12 @@ class Hero(pygame.sprite.Sprite):
 				if monster.prevent == 0: monster.hp = monster.hp - damg
 
 				else:
-					if monster.prevet >= damg: 
+					if monster.prevent >= damg: 
+						self.son.change_text (6, "Но весь урон был поглощён доспехами!..")
 						pass
 					else:
-						monster.hp = monster.hp - (damg-monster.prevet)
+						monster.hp = monster.hp - (damg-monster.prevent)
+						self.son.change_text (6, "Часть урона было поглощено доспехами!..")
 
 			elif c<d:
 				self.son.change_text (4, 'Вы промазали!')	
