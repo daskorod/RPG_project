@@ -1483,6 +1483,7 @@ class MinorChest2(sprite.Sprite):
 		self.branch = 0
 		self.branch_do = ''
 		self.branch_id = ''
+		self.f = True
 
 	def interaction (self, hero):
 
@@ -1979,7 +1980,7 @@ class SkeletGod (Monster):
 			menu.ending ('Вы сгинули во тьме, убитые нечеловеческим могуществом Бога Скелета. Действительно, что человек может противопоставить такому созданию?', 'images/end/dead_in_dark.png', 3, pic_x = 90, time_scroll = 250, speed_mod = 5)
 
 		if self.add_information == 'other' and self.control.k_e == True:
-			menu.ending ('. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .232%@@ . . e . . . . . . . . . . . . . . . . . . . . . . .$# ^$()#). . . . . . . wgw . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . )$%#lJ$#m. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ', 'images/end/other.gif', 5, pic_x = 90, time_scroll = 250, speed_mod = 5)
+			menu.ending ('Радикальная инаковость. После победы (?) над Богом скелетом начинается что-то совершенно другое ... 232%@@ . . e . . . . . . . . . . . . . . . . . . . . . . .$# ^$()#). . . . . . . wgw . . . . . . .t. ', 'images/end/other.gif', 10, pic_x = 90, time_scroll = 250, speed_mod = 5)
 								
 		if self.add_information == 'pray' and self.control.k_e == True:
 			self.control.k_e = False

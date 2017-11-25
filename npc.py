@@ -1177,7 +1177,7 @@ class Tubus (classes.Monk):
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
-		if items.old_book in hero.inv == True:
+		if items.old_book in hero.inv:
 			br_change(self, 3)
 
 	def dialog_special (self, hero):
@@ -1191,7 +1191,7 @@ class Tubus (classes.Monk):
 				self.s = 1
 				self.n = 0
 			self.control.k_e = False
-			hero.pop(items.old_book)
+			hero.inv.pop(items.old_book)
 			end_dialog (self, hero)
 
 		if self.add_information == 'book_not':
@@ -1258,7 +1258,7 @@ class Gnostic (classes.Monster):
 
 
 		if self.add_information == 'gn_end' and self.control.k_e == True:
-			menu.ending ('Вы со всеми потрохами вступили в гностическую общину. Вы так никогда и не достигли в ней каких-то значимых высот. В то время как иерархи общины предавались наслаждениям, вам было предписано соблюдать жесткую аскезу. В итоге вас нашла инквизиция с сожгла на костре.', img.gnosis_end, 6, pic_x = 60, time_scroll = 250, speed_mod = 6)
+			menu.ending ('Вы со всеми потрохами вступили в гностическую общину. Вы так никогда и не достигли в ней каких-то значимых высот. В то время как иерархи общины предавались наслаждениям, вам было предписано соблюдать жесткую аскезу. В итоге вас нашла инквизиция и сожгла на костре.', img.gnosis_end, 6, pic_x = 60, time_scroll = 250, speed_mod = 6)
 
 
 class Trader (classes.Monster):
