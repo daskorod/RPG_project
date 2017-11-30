@@ -1735,7 +1735,7 @@ class Hero(pygame.sprite.Sprite):
 
 			a = self.dice_value
 			b = random.randint (1,6)
-			c = self.at + a + self.weapon.at_mod
+			c = self.at + a + self.weapon.at_mod + int(self.sp/2.1)
 
 			if self.master_of_sword != 0:
 				if a > 6-self.master_of_sword:
@@ -1747,7 +1747,7 @@ class Hero(pygame.sprite.Sprite):
 			else:
 				d = monster.ac + b + monster.armor
 
-			self.son.change_text (2, "Ваша атака: "+str(c) + "  Защита монстра: "+ str(d))
+			self.son.change_text (2, "Ваша атака: "+str(c) + "  Защита противника: "+ str(d))
 			self.son.change_text (1, 'БРОСОК КУБИКА: '+str(self.dice_value))
 			if c >= d:
 				self.bloodAnim.play()

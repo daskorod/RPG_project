@@ -1418,6 +1418,26 @@ class Master (classes.Monster):
 			else:
 				br_change (self, 2)
 
+class Bogost (classes.Monster):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.mname = 'Боргост'
+		self.race = 'human'
+		self.image = Surface ((45,45))
+		self.image.fill ((220,130,100))
+		self.ll = False
+		self.image = image.load('images/bar.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+		self.matter = 0
+		self.order = True
+		self.master_of_sword = 4
+		self.sound = sounds.pain
+		self.item = items.short_sword
+		#self.armor = 4
+
 
 
 class Bomz (classes.Monster):

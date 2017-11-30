@@ -87,7 +87,7 @@ faith_potion = Potion ('Зелье веры.', 'Вы можете восстан
 
 melanj = Narco ('Меланж', 'Белый порошок. Наркотик, увеличивающий вашу подвижность и реакцию, приводящий вас в возмуждённое состояние.', 20, 6, 'narc', '1 - нюхнуть; 2 - выбросить.')
 
-potion_list = [hp_potion, fire_resist, light_resist, str_potion, dex_potion, melanj]
+potion_list = [hp_potion, fire_resist, light_resist, str_potion, dex_potion]
 
 #QUEST ITEMS
 

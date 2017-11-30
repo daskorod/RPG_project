@@ -993,15 +993,19 @@ class Well(Platform):
 					self.n = 0
 
 		elif self.add_information == 'infinity' and hero.control.k_e == True:
-			hero.hp = 0
-			hero.check_for_death()
-			hero.move = False
-			hero.control.k_e = False
-			hero.collide_control = False
-			hero.start_conv = True
-			hero.view.a = 0
-			self.s = 1
-			self.n = 0
+			if hero.sp > 5:
+				menu.ending ('Радикальная инаковость. Благодаря вашей вере вы смогли удержаться действительность. Вот только всё стало каким-то иным. Где вы?... 232%@@ . . e  . .$# ^$()#). .t. ', 'images/end/other.gif', 9, pic_x = 90, time_scroll = 250, speed_mod = 5)
+			else:
+
+				hero.hp = 0
+				hero.check_for_death()
+				hero.move = False
+				hero.control.k_e = False
+				hero.collide_control = False
+				hero.start_conv = True
+				hero.view.a = 0
+				self.s = 1
+				self.n = 0
 
 		 		
 		elif self.add_information == 'end':

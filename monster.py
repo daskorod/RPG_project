@@ -284,11 +284,11 @@ class Monster (sprite.Sprite):
 			if self.master_of_sword != 0:
 				if a > 6-self.master_of_sword:
 					d = hero.ac + b
-					self.son.change_text (3, 'Вы ударили в брешь в доспехах врага! ')
+					self.son.change_text (3, 'Ваш противник ударил нашёл брешь в твоей броне! ')
 				else:
-					d = hero.ac + b + hero.armor
+					d = hero.ac + b + hero.armor+ int(hero.sp/2.1)
 			else:
-				d = hero.ac + b + hero.armor
+				d = hero.ac + b + hero.armor + int(hero.sp/2.1)
 
 
 			self.son.change_text (1, "Атака монстра: "+str(c) + "  Защита ваша: "+ str(d))
