@@ -277,19 +277,19 @@ class Hero(pygame.sprite.Sprite):
 		self.char = [
 
 #0
-		('Уровень', self.char_value['1lvl'], 'Каждый уровень вы получаете одно очко для распределения', '','lvl'),
+		('Уровень', self.char_value['1lvl'], 'Каждый уровень вы получаете одно очко для распределения.', '','lvl'),
 #1
 		 ('Опыт',self.char_value['2exp'], 'Когда его достаточно много вы повышаете уровень', '','exp'),
 #2
-		  ('Атака',self.char_value['3at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери', self.d,'at'),
+		  ('Атака',self.char_value['3at'], 'Влияет на то, как успешно вы нападаете и вышибаете двери.', self.d,'at'),
 #3
-		   ('Защита',self.char_value['4ac'], 'Ваши навыки обороны', self.d),
+		   ('Защита',self.char_value['4ac'], 'Ваши навыки обороны.', self.d),
 #4
-		    ('Жизни',self.char_value['5hp'], 'Сколько ударов вы можете держать', self.d),
+		    ('Жизни',self.char_value['5hp'], 'Сколько ударов вы можете держать. Восстанавливаются после отдыха.', self.d),
 #5
-		     ('Вера',self.char_value['6sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
+		     ('Вера',self.char_value['6sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места. Не восстанавливается с отдыхом. Помни: если ты будешь искушать Бога, требуя чудес, то грош цена твоей вере.', self.d),
 #6
-		      ('Очки на распределение', self.char_value['7points'], 'За одно очко можно повысить один параметр', '')
+		      ('Очки на распределение', self.char_value['7points'], 'За одно очко можно повысить один параметр.', '')
 
 		      ]
 		#self.char = {level: 1, exp: 0, at:, self.ac, self.hp_max, self.sp, self.char_point}
@@ -382,6 +382,9 @@ class Hero(pygame.sprite.Sprite):
 						self.char_value[self.sorted_char_value_keys[self.inv_index_pos]] +=1
 						self.char_value['7points'] -=1
 						self.control.k_e = False
+
+						if self.char_value[self.sorted_char_value_keys[self.inv_index_pos]] is self.char_value['6sp']:
+							self.sp += 1
 				else:
 	
 					try:
@@ -1129,10 +1132,10 @@ class Hero(pygame.sprite.Sprite):
 				self.narc_start = 0
 
 
-		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp), True, (250,250,250)),(230,0))
+		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp)+ '/' +str(self.next_level), True, (250,250,250)),(230,0))
 		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
-		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level), True, (250,250,250)),(10,0))
-		high_screen.blit(fonts.font5.render ('Сл. ур. '+str(self.next_level), True, (250,250,250)),(340,0))
+		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level) , True, (250,250,250)),(10,0))
+		high_screen.blit(fonts.font5.render ('День '+str(self.day) , True, (250,250,250)),(340,0))
 
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
@@ -1639,6 +1642,8 @@ class Hero(pygame.sprite.Sprite):
 
 				if self.etwas.hp <= 100 and self.sp >0:
 					self.sp -= 1
+					#self.char_value['6sp'] -= 1
+
 					self.press_to_kill = True
 					
 					self.son.change_text (1, "Вы шепчете слова молитвы:")
@@ -1671,11 +1676,12 @@ class Hero(pygame.sprite.Sprite):
 				self.son.clear_text ()
 				if self.sp > 0:
 					self.sp -= 1
-					self.hp += 4
+					#self.char_value['6sp'] -= 1
+					self.hp += 10
 					if self.hp > self.hp_max:
 						self.hp = self.hp_max
 					sounds.credo.play()
-					self.son.change_text (1, "Ваши раны восстановились чудесным образом. +4 ЖС")
+					self.son.change_text (1, "Ваши раны восстановились чудесным образом.")
 					self.son.change_text (3, "Нажмите Е")
 					self.back = True
 					img.healAnim.play()

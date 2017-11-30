@@ -501,7 +501,10 @@ def create_level_city2 (level, battle, control, son, locationname):
                             sprite_group.add (ding)
                      elif col == "M":
                             mn = npc.Smith (x/45,y/45,battle, text_data.smith_dict.text, control, 12,3,12,2, son, 1)
-                            sprite_group.add (mn)                 
+                            sprite_group.add (mn)   
+                     elif col == "ю":
+                            s = classes.MinorChest (x,y, 'open', random.choice(items.potion_list))
+                            sprite_group.add (s)              
                      x += 45
               x = 0
               y += 45

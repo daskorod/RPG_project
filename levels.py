@@ -223,8 +223,7 @@ class _tavern (SuperLevel):
 
 
 	def stage_content (self, hero):
-		pass
-
+		img.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 class _shop (SuperLevel):
 	def __init__ (self, lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)
@@ -302,8 +301,8 @@ class _cell (SuperLevel):
 		self.son.change_text (3, 'помещения монахов.')
 
 	def stage_content (self, hero):
+		img.fireAnim.blit (screens.adventure_screen, (self.camera.apply(hero).x-45, self.camera.apply(hero).y-45))
 		pass
-
 class _still (SuperLevel):
 	def __init__ (self,lev, battle, son, control):
 		SuperLevel.__init__ (self, lev, battle, son, control)

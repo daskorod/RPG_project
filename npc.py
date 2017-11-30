@@ -42,7 +42,7 @@ class Gilbert (classes.Monk):
 
 	def battle_action (self, hero):
 		if self.hit == False:
-			hero.journal['gilbert_hit'] = True
+			hero.quest['gilbert_hit'] = True
 			self.hit = True
 		classes.Monk.battle_action (self, hero)
 
@@ -311,7 +311,7 @@ class Barmen (classes.Monster):
 			hero.son.change_text (4, 'Хотя, тяжесть грехов и старые раны так просто не исцелить.')
 			hero.son.change_text (5, 'Но вы готовы к новому дню!')
 
-			hero.sp = hero.char_value['6sp']
+			#hero.sp = hero.char_value['6sp']
 			hero.hp = hero.char_value['5hp']
 
 			if self.branch_do == 'go':
@@ -355,7 +355,7 @@ class Barmen (classes.Monster):
 
 
 			if hero.hp < hero.char_value['5hp']:
-				hero.hp = hero.hp + 1
+				hero.hp = hero.hp + 2
 
 			if self.branch_do == 'go':
 				self.branch_do = 'done'
@@ -426,7 +426,7 @@ class Martin (classes.Monk):
 				x +=1
 
 			self.control.k_e = False
-
+			hero.char_value['6sp'] +=1
 			hero.son.clear_text ()
 			hero.son.change_text (2, 'Вы записали концепцию Божественного Мрака в свой дневничок.')
 			hero.son.change_text (3, 'Теперь вы по-другому будете относиться к сущему и не-сущему.')
@@ -1173,6 +1173,7 @@ class Tubus (classes.Monk):
 		self.g = 1000
 		self.order = True
 		self.quest = False
+		self.item = items.gold_ring
 
 
 	def interaction (self, hero):
@@ -1191,7 +1192,14 @@ class Tubus (classes.Monk):
 				self.s = 1
 				self.n = 0
 			self.control.k_e = False
-			hero.inv.pop(items.old_book)
+			hero.inv.remove(items.old_book)
+			self.item = items.old_book
+			hero.son.clear_text ()
+			hero.son.change_text (2, 'Вы отдали богопротивную книгу в жирные руки Тубуса.')
+			hero.son.change_text (3, 'Теперь она в надежном месте.')
+			hero.son.change_text (4, 'Брат Тубус вас горячо поблагодарил и накормил печеньем.')
+
+			hero.char_value['2exp'] += 100
 			end_dialog (self, hero)
 
 		if self.add_information == 'book_not':
@@ -1435,6 +1443,7 @@ class Bomz (classes.Monster):
 			hero.weapon = items.first
 			hero.at += hero.weapon.at_mod
 			hero.damage = hero.weapon.dem
+			hero.char_value['6sp']  +=1
 
 			self.control.k_e = False
 
