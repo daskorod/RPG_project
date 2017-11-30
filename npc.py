@@ -311,7 +311,7 @@ class Barmen (classes.Monster):
 			hero.son.change_text (3, 'Ваши силы восстанавливаются.')
 			hero.son.change_text (4, 'Хотя, тяжесть грехов и старые раны так просто не исцелить.')
 			hero.son.change_text (5, 'Но вы готовы к новому дню!')
-
+			hero.day += 1
 			#hero.sp = hero.char_value['6sp']
 			hero.hp = hero.char_value['5hp']
 

@@ -385,7 +385,7 @@ class Hero(pygame.sprite.Sprite):
 						self.char_value['7points'] -=1
 						self.control.k_e = False
 
-						if self.char_value[self.sorted_char_value_keys[self.inv_index_pos]] is self.char_value['6sp']:
+						if self.inv_index_pos == 5:
 							self.sp += 1
 				else:
 	
@@ -1143,7 +1143,7 @@ class Hero(pygame.sprite.Sprite):
 		high_screen.blit(fonts.font5.render ('Опыт '+str(self.exp)+ '/' +str(self.next_level), True, (250,250,250)),(230,0))
 		high_screen.blit(fonts.font5.render ('Деньги '+str(self.gold), True, (250,250,250)),(115,0))
 		high_screen.blit(fonts.font5.render ('Уровень '+str(self.level) , True, (250,250,250)),(10,0))
-		high_screen.blit(fonts.font5.render ('День '+str(self.day) , True, (250,250,250)),(340,0))
+		high_screen.blit(fonts.font5.render ('День '+str(self.day) , True, (250,250,250)),(360,0))
 
 		
 		hero_screen.blit(fonts.font5.render (self.name, True, (250,250,250)),(55,0))
@@ -1297,10 +1297,16 @@ class Hero(pygame.sprite.Sprite):
 		if self.evil >9:
 			menu.ending ('Рихтер устроил кровавую резню в городе. Зачем? Почему? Словно какой-то злой дух заставлял его это делать, словно он был куклой в руках какого-то кровожадного кукловода, или ребёнка, желающего поразлечься, убивая ближних... А может это было просто безумие?', 'images/end/bad_end.png', 4, pic_x = 60, time_scroll = 50, speed_mod = 6)
 
+	def long_end(self):
+		if self.day >100:
+			menu.ending ('Вы слишком долго страдали хернёй. Пока вы медлили некоторые личности провернули всё что хотели. Ну а к вам ночью что-то пришло. Надо быть более решительным!', 'images/end/dead_in_dark.png', 0, pic_x = 60, time_scroll = 50, speed_mod = 6)
+
+
 	def update (self, array):
 		self.drink_potion()
 		self.update_char()
 		self.evil_end()
+		self.long_end ()
 
 
 		if self.round == 160:

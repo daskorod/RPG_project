@@ -607,6 +607,7 @@ class SkeletKing (Monster):
 		self.light1 = True
 		self.light2 = True
 		self.all = False
+		self.number_of_death = 0
 
 	def interaction (self, hero):
 		Monster.interaction (self, hero)
@@ -620,7 +621,7 @@ class SkeletKing (Monster):
 			self.light1 = True
 			self.light2 = True
 	
-			if hero.char_value['6sp'] > 2 and self.check_for_courage == False:
+			if hero.char_value['6sp'] > 1 and self.check_for_courage == False:
 				self.branch = 1
 				self.check_for_courage = True
 	
@@ -631,7 +632,23 @@ class SkeletKing (Monster):
 
 	def death_check (self, hero):
 
-		if self.hp <= 0:
+		if self.hp <= 0 and self.number_of_death <2:
+
+				self.number_of_death += 1
+				self.son.clear_text ()
+				hero.char_value['2exp'] += self.exp
+				self.son.change_text (2, "%s повержен!" % self.mname.lstrip())
+				self.son.change_text (4, "Вы получаете опыт: %s " % self.exp)
+				gold = random.randint(1,30)
+				hero.turn_main = True
+				hero.move = True
+				self.agression = False
+				self.hp = 12 + (self.number_of_death*4)
+				hero.collide_control = False
+				self.one_death = True
+				
+
+		if self.hp <= 0 and self.number_of_death >=2:
 
 
 				self.son.clear_text ()
@@ -642,9 +659,12 @@ class SkeletKing (Monster):
 				hero.turn_main = True
 				hero.move = True
 				self.agression = False
-				self.hp = 15
+				self.kill()
 				hero.collide_control = False
 				self.one_death = True
+				self.number_of_death += 1
+				hero.locations_dict['dungeon3'].block_group.add (classes.PortalLink ((45*7),5*45, 'thron', 'pit', 'D', 'dungeon3' ))
+				hero.locations_dict['dungeon3'].background.append (classes.Ding2 ((45*7),5*45, 'images/tiles/pit.png', 'Яма'))
 
 	def dialog_special (self, hero):
 		
