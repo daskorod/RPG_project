@@ -148,10 +148,12 @@ class Hero(pygame.sprite.Sprite):
 		self.anima = animlist[self.direction]
 
 		#CHARACTERSTICS
+
 		self.exp_old = 0
 		self.level = 1
 		self.sp = 2
 		self.sp_max = 2
+		self.sp_old2 = self.sp
 		self.at = at 
 		self.ac = 6
 		self.hp = hp
@@ -327,7 +329,7 @@ class Hero(pygame.sprite.Sprite):
 
 		    ('Жизни',self.char_value['5hp'], 'Сколько ударов вы можете держать', self.d),
 
-		     ('Вера',self.char_value['6sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места', self.d),
+		     ('Вера',self.char_value['6sp'], 'Имея веры с горчичное зерно можно заставить гору сойти с места. Не восстанавливается с отдыхом. Помни: если ты будешь искушать Бога, требуя чудес, то грош цена твоей вере.', self.d),
 
 		      ('Очки на распределение', self.char_value['7points'], 'За одно очко можно повысить один параметр', '')
 
@@ -406,7 +408,13 @@ class Hero(pygame.sprite.Sprite):
 
 
 	def update_char(self):
-		self.sp_max = self.char_value['6sp']
+		#self.sp_max = self.char_value['6sp']
+		self.char_value['6sp'] = self.sp
+		#if self.sp_old2 > self.sp:
+		#	self.char_value['6sp'] = self.sp
+		#	self.sp_old2 = self.sp
+		#elif self.sp_old2 < self.sp:
+
 		self.hp_max = self.char_value['5hp']
 		self.at = self.char_value['3at']
 		self.ac = self.char_value['4ac'] + self.armor_equip.dex_mod

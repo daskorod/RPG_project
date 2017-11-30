@@ -7,7 +7,7 @@ import text
 import items
 import npc
 import monster
-import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict, text_data.gnostic_dict, text_data.zombi_bandit_dict, text_data.trader_dict, text_data.smith_dict, text_data.master_dict, text_data.god_dict, text_data.kubert_dict, text_data.bomz_dict
+import text_data.zombisad,text_data.guard_dict,text_data.tubus_dict,  text_data.zombi_lord_dict, text_data.monk, text_data.gilbert_dict,text_data.barmen_dict, text_data.skeletonw_dict, text_data.skelet_lord2_dict, text_data.corpse_dict,text_data.skeleton_king_dict, text_data.martin_dict, text_data.rouge_dict, text_data.august_dict, text_data.guard2_dict, text_data.hermit_dict, text_data.peid_dict, text_data.merch_dict, text_data.goblin_dict, text_data.gnostic_dict, text_data.zombi_bandit_dict, text_data.trader_dict, text_data.smith_dict, text_data.master_dict, text_data.god_dict, text_data.kubert_dict, text_data.bomz_dict,  text_data.exsor_dict
 import img
 import functions
 import random
@@ -396,6 +396,9 @@ def create_level_city (level, battle, control, son, locationname):
                             sprite_group.add (well)
                      if col == 'ы':
                             well = npc.Bomz(x/45,y/45,battle, text_data.bomz_dict.text, control, 2,2,3,1, son, 1)  
+                            sprite_group.add (well)
+                     if col == 'в':
+                            well = npc.Peter(x/45,y/45,battle, text_data.exsor_dict.text, control, 3,5,10,1, son, 50)  
                             sprite_group.add (well)
 
                      x += 45

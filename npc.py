@@ -124,6 +124,7 @@ class Gilbert (classes.Monk):
 				hero.son.change_text (6, 'На утро вы чувствовали себя отлично. Ваша вера возросла.')
 
 				hero.char_value['6sp'] += 1
+				hero.sp +=1
 
 
 				self.branch = 12
@@ -427,6 +428,7 @@ class Martin (classes.Monk):
 
 			self.control.k_e = False
 			hero.char_value['6sp'] +=1
+			hero.sp +=1
 			hero.son.clear_text ()
 			hero.son.change_text (2, 'Вы записали концепцию Божественного Мрака в свой дневничок.')
 			hero.son.change_text (3, 'Теперь вы по-другому будете относиться к сущему и не-сущему.')
@@ -439,6 +441,27 @@ class Martin (classes.Monk):
 				self.n = 0
 			hero.collide_control = False
 			hero.start_conv = True
+
+class Peter (classes.Monk):
+	def __init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp):
+		Monster.__init__ (self, x, y, battle, textus, control, at, ac, hp, dem, son, exp)
+		self.tree = textus
+		self.lbolt = False
+		self.race = 'human'
+		self.mname = 'Отец Пётр'
+		self.image = image.load('images/priest4.png')
+		self.icon = pygame.image.load ('images/priest_av.png')
+		#self.image.set_colorkey ((254,254,254))
+		self.g = 1000
+		self.order = True
+		self.quest = False
+		self.qcheck = False
+		self.gold_quest = False
+		self.first = True
+
+	def dialog_special (self, hero):
+		if self.add_information == 'exsor' and self.control.k_e == True:
+			hero.control.k_esc = True
 
 
 class Rouge (Monster):
@@ -1444,7 +1467,7 @@ class Bomz (classes.Monster):
 			hero.at += hero.weapon.at_mod
 			hero.damage = hero.weapon.dem
 			hero.char_value['6sp']  +=1
-
+			hero.sp +=1
 			self.control.k_e = False
 
 			hero.inv.append(items.old_sword)
